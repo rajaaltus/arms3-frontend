@@ -77,7 +77,7 @@ export default {
         })
         .then((data) => {
           console.log(data.data.user);
-          // this.$store.dispatch('setDepartmentName',data.data.user.department.name);
+          this.$store.dispatch('setDepartmentName',data.data.user.department.name);
           if (data.data.user.userType === "SUPER_ADMIN") {
             this.$store.dispatch("setUserData", data.data.user);
             this.$router.push("/super");

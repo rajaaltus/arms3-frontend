@@ -35,40 +35,40 @@
           <v-text-field v-model="search" label="Search" class="mx-4"></v-text-field>
         </template>
         <template v-slot:[`item.4`]="{ item }">
-          <ReportButton :department="item" :month="4" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 4)" />
+          <SuperAdminReportButton :department="item" :month="4" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 4)" />
         </template>
         <template v-slot:[`item.5`]="{ item }">
-          <ReportButton :department="item" :month="5" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 5)" />
+          <SuperAdminReportButton :department="item" :month="5" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 5)" />
         </template>
         <template v-slot:[`item.6`]="{ item }">
-          <ReportButton :department="item" :month="6" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 6)" />
+          <SuperAdminReportButton :department="item" :month="6" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 6)" />
         </template>
         <template v-slot:[`item.7`]="{ item }">
-          <ReportButton :department="item" :month="7" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 7)" />
+          <SuperAdminReportButton :department="item" :month="7" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 7)" />
         </template>
         <template v-slot:[`item.8`]="{ item }">
-          <ReportButton :department="item" :month="8" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 8)" />
+          <SuperAdminReportButton :department="item" :month="8" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 8)" />
         </template>
         <template v-slot:[`item.9`]="{ item }">
-          <ReportButton :department="item" :month="9" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 9)" />
+          <SuperAdminReportButton :department="item" :month="9" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 9)" />
         </template>
         <template v-slot:[`item.10`]="{ item }">
-          <ReportButton :department="item" :month="10" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 10)" />
+          <SuperAdminReportButton :department="item" :month="10" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 10)" />
         </template>
         <template v-slot:[`item.11`]="{ item }">
-          <ReportButton :department="item" :month="11" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 11)" />
+          <SuperAdminReportButton :department="item" :month="11" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 11)" />
         </template>
         <template v-slot:[`item.12`]="{ item }">
-          <ReportButton :department="item" :month="12" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 12)" />
+          <SuperAdminReportButton :department="item" :month="12" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 12)" />
         </template>
         <template v-slot:[`item.1`]="{ item }">
-          <ReportButton :department="item" :month="1" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 1)" />
+          <SuperAdminReportButton :department="item" :month="1" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 1)" />
         </template>
         <template v-slot:[`item.2`]="{ item }">
-          <ReportButton :department="item" :month="2" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 2)" />
+          <SuperAdminReportButton :department="item" :month="2" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 2)" />
         </template>
         <template v-slot:[`item.3`]="{ item }">
-          <ReportButton :department="item" :month="3" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 3)" />
+          <SuperAdminReportButton :department="item" :month="3" :selectedYear="selectedYear" :userType="userType" :available="checkReport(item, 3)" />
         </template>
         <template v-slot:no-data>
           <img class="stars py-12" src="/counting_stars.svg" alt="counting_stars" width="300" />

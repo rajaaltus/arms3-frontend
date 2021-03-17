@@ -27,7 +27,7 @@
           :index="index"
           :key="index"
         >
-          <DepartmentCard
+          <SuperAdminDepartmentCard
             :selectedYear="selectedYear"
             :department="department"
           />

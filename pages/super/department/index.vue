@@ -15,11 +15,11 @@
 
       <v-tab-item>
         <v-container fluid>
-          <CreateUser />
+          <SuperAdminDepartmentCreateUser />
         </v-container>
       </v-tab-item>
       <v-tab-item> 
-        <ManageDepartment />
+        <SuperAdminDepartmentManageDepartment />
       </v-tab-item>
     </v-tabs>
   </div>
