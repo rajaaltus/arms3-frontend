@@ -1,0 +1,37 @@
+.disp
+{
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: normal;
+}
+.v-main__wrap {
+  background: #FFFFFF !important;
+}
+.disp-icon
+{
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: normal;
+}
+.customMonth input {
+  background-color: transparent !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+.customMonth input:hover {
+  border-color: rgba(255, 255, 255, 0.9) !important;
+}
+.cust-icon {
+  font-size: 20px;
+  color: #ff7e00;
+  padding-right: 10px;
+}
+.swal2-header {
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
+.swal2-styled.swal2-confirm {
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
+.swal2-styled.swal2-cancel {
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}

@@ -1,0 +1,16 @@
+// Ref: https://github.com/nuxt-community/vuetify-module#customvariables
+//
+// The variables you want to modify
+// $font-size-root: 20px;
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700');
+$body-font-family: 'Poppins', sans-serif !default;
+$border-radius-root: 3px;
+
+$subtitle-color: #a1aab2;
+$info: #1e88e5;
+$gray-500: #a1aab2;
+
+$light-primary: #ffffff;
+$light-warning: #fff8ec;
+$light-success: #e8fdf8;
+$light-danger: #f9e7eb;
