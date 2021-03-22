@@ -2,81 +2,35 @@
   <div>
     <v-row class="px-5">
       <v-col cols="12" lg="2" class="mt-5">
-        <v-select
-          outlined
-          dense
-          v-model="selectedYear"
-          ref="year"
-          :items="reportYears"
-          item-value="id"
-          item-text="val"
-          label="Reporting Year"
-          placeholder="Pick Year"
-          color="success"
-        ></v-select>
+        <v-select outlined dense v-model="selectedYear" ref="year" :items="reportYears" item-value="id" item-text="val" label="Reporting Year" placeholder="Pick Year" color="success"></v-select>
       </v-col>
       <v-col cols="12" lg="3" class="mt-5">
-        <v-select
-          :items="months"
-          item-text="text"
-          item-value="val"
-          v-model="mon"
-          outlined
-          dense
-          label="Month"
-          placeholder="Select Month"
-          color="success"
-        >
-        </v-select>
+        <v-select :items="months" item-text="text" item-value="val" v-model="mon" outlined dense label="Month" placeholder="Select Month" color="success"> </v-select>
       </v-col>
       <v-col cols="12" lg="3">
-        <v-label><small>Start Date - End Date</small></v-label>
-        <vc-date-picker mode="range" v-model="range" ref="range" />
+        <vc-date-picker v-model="range" is-range style="display: flex; margin-top: 1.3rem; align-items: baseline; z-index: 99;">
+          <template v-slot="{ inputValue, inputEvents }">
+            <v-text-field :value="inputValue.start" label="From" v-on="inputEvents.start" outlined dense></v-text-field>
+            <svg style="width: 1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+            <v-text-field :value="inputValue.end" label="To" v-on="inputEvents.end" outlined dense></v-text-field>
+          </template>
+        </vc-date-picker>
       </v-col>
-      <v-col
-        cols="12"
-        lg="3"
-        class="mt-5"
-        v-if="$auth.user.userType === 'DEPARTMENT'"
-      >
-        <v-select
-          outlined
-          dense
-          ref="user-type"
-          v-model="userType"
-          label="Report of the"
-          placeholder="Pick User Type"
-          :items="userTypes"
-          color="success"
-        ></v-select>
+      <v-col cols="12" lg="3" class="mt-5" v-if="$auth.user.userType === 'DEPARTMENT'">
+        <v-select outlined dense ref="user-type" v-model="userType" label="Report of the" placeholder="Pick User Type" :items="userTypes" color="success"></v-select>
       </v-col>
 
       <v-col cols="auto" lg="auto">
         <v-row>
           <v-layout align-start justify-start>
-            <v-btn
-              v-if="selectedYear && mon && range && userType"
-              :loading="loading"
-              :disabled="loading"
-              color="green"
-              x-small
-              class="mt-6 mr-1 white--text"
-              fab
-              @click="loader()"
-            >
+            <v-btn v-if="selectedYear && mon && range && userType" :loading="loading" :disabled="loading" color="green" x-small class="mt-6 mr-1 white--text" fab @click="loader()">
               Go
             </v-btn>
             <v-tooltip right color="blue-grey darken-2">
               <template v-slot:activator="{ on }">
-                <v-btn
-                  color="blue-grey"
-                  fab
-                  x-small
-                  class="mt-6 white--text"
-                  dark
-                  @click="resetFilter"
-                  v-on="on"
-                >
+                <v-btn color="blue-grey" fab x-small class="mt-6 white--text" dark @click="resetFilter" v-on="on">
                   <v-icon>mdi-reload</v-icon>
                 </v-btn>
               </template>
@@ -197,16 +151,10 @@ export default {
       console.log("Range Val: ", val);
       if (val) {
         var range = Object.assign({}, val);
-        this.monthParam = `&from=${this.$moment(range.start).format(
-          "YYYY-MM-DD"
-        )}&to=${this.$moment(range.end).format("YYYY-MM-DD")}`;
+        this.monthParam = `&from=${this.$moment(range.start).format("YYYY-MM-DD")}&to=${this.$moment(range.end).format("YYYY-MM-DD")}`;
         this.querySavedReport.range = this.monthParam;
 
-        this.queryFetch.range = `&created_at_gt=${this.$moment(
-          range.start
-        ).format("YYYY-MM-DD")}&created_at_lt=${this.$moment(range.end).format(
-          "YYYY-MM-DD"
-        )}`;
+        this.queryFetch.range = `&created_at_gt=${this.$moment(range.start).format("YYYY-MM-DD")}&created_at_lt=${this.$moment(range.end).format("YYYY-MM-DD")}`;
       }
     },
     userType(val) {
@@ -241,17 +189,10 @@ export default {
   },
   methods: {
     loader() {
-      this.selectedQuery =
-        this.querySavedReport.year +
-        this.querySavedReport.month +
-        this.querySavedReport.userType +
-        this.range
-          ? this.querySavedReport.range
-          : "";
+      this.selectedQuery = this.querySavedReport.year + this.querySavedReport.month + this.querySavedReport.userType + this.range ? this.querySavedReport.range : "";
 
       var altQuery = "";
-      altQuery =
-        this.queryFetch.year + this.queryFetch.range + this.queryFetch.userType;
+      altQuery = this.queryFetch.year + this.queryFetch.range + this.queryFetch.userType;
       console.log("Selected Query: ", this.selectedQuery);
       // console.log("Alt Query: ", altQuery);
       this.$emit(

@@ -7,7 +7,7 @@
             <v-select v-model="selectedYear" outlined dense ref="year" :items="reportYears" item-value="id" item-text="val" label="Reporting Year" placeholder="Pick Year" color="success" class="disp"></v-select>
           </v-col>
           <v-col cols="12" :lg="$auth.user.userType === 'DEPARTMENT' ? '3' : '4'">
-            <vc-date-picker v-model="range" is-range>
+            <vc-date-picker v-model="range" is-range style="display: flex; margin-top: 1.3rem; align-items: baseline;">
               <template v-slot="{ inputValue, inputEvents }">
                 <v-text-field :value="inputValue.start" label="From" v-on="inputEvents.start" outlined dense></v-text-field>
                 <svg style="width: 1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor">

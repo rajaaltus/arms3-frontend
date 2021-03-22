@@ -1,30 +1,21 @@
 <template>
   <v-app>
     <div v-if="codeGreen">
-      <Header />
-      <MenuBar :userProfile="userProfile" />
+      <PublicProfileHeader />
+      <PublicProfileMenuBar :userProfile="userProfile" />
 
       <v-container>
         <v-row>
           <PublicProfileCard :userProfile="userProfile" />
 
           <v-col cols="12" md="7" lg="7" class="pro-content">
-            <PublicProfilePublication v-if="total>0"
-              :publicationTypeCounts="publicationTypeCounts"
-              :total="total"
-            />
+            <PublicProfilePublication v-if="total > 0" :publicationTypeCounts="publicationTypeCounts" :total="total" />
 
             <PublicProfileQualification :qualifications="qualifications" />
 
             <PublicProfileExperience :experiences="experiences" />
 
-            <PublicProfileExpansion
-              :publicationsData="publicationsData"
-              :recognitionsData="recognitionsData"
-              :presentationsData="presentationsData"
-              :participationsData="participationsData"
-              :patentsData="patentsData"
-            />
+            <PublicProfileExpansion :publicationsData="publicationsData" :recognitionsData="recognitionsData" :presentationsData="presentationsData" :participationsData="participationsData" :patentsData="patentsData" />
           </v-col>
 
           <v-col cols="12" md="2" lg="2">
@@ -32,18 +23,9 @@
             <span class="body-2 font-weight-normal"> Same Department</span>
             <!-- {{sameDepartmentProfiles}} -->
             <v-list>
-              <v-list-item
-                v-for="item in sameDepartmentProfiles"
-                :key="item.id"
-              >
+              <v-list-item v-for="item in sameDepartmentProfiles" :key="item.id">
                 <v-list-item-avatar>
-                  <v-img
-                    :src="
-                      item.image
-                        ? `${$axios.defaults.baseURL}${item.image.url}`
-                        : '/avatar-default-icon.png'
-                    "
-                  ></v-img>
+                  <v-img :src="item.image ? `${$axios.defaults.baseURL}${item.image.url}` : '/avatar-default-icon.png'"></v-img>
                 </v-list-item-avatar>
 
                 <v-list-item-content>
@@ -51,12 +33,7 @@
                 </v-list-item-content>
 
                 <v-list-item-icon>
-                  <nuxt-link :to="`/profile/${item.employee_id}`">
-                    <v-icon
-                      :color="item.active ? 'deep-purple accent-4' : 'grey'"
-                      >mdi-eye</v-icon
-                    ></nuxt-link
-                  >
+                  <nuxt-link :to="`/profile/${item.employee_id}`"> <v-icon :color="item.active ? 'deep-purple accent-4' : 'grey'">mdi-eye</v-icon></nuxt-link>
                 </v-list-item-icon>
               </v-list-item>
             </v-list>
@@ -82,7 +59,7 @@ export default {
   auth: false,
   data() {
     return {
-      codeGreen: false
+      codeGreen: false,
     };
   },
   computed: {
@@ -99,65 +76,46 @@ export default {
       stats: (state) => state.publication.stats,
 
       journalArticles() {
-        var result = this.$store.state.publication.publicationsData.result.filter(
-          (publication) => publication.publication_type === "Journal_Article"
-        ).length;
+        var result = this.$store.state.publication.publicationsData.result.filter((publication) => publication.publication_type === "Journal_Article").length;
         return result;
       },
       articles() {
-        var result = this.$store.state.publication.publicationsData.result.filter(
-          (publication) =>
-            publication.publication_type === "Articles_for_Professionals"
-        ).length;
+        var result = this.$store.state.publication.publicationsData.result.filter((publication) => publication.publication_type === "Articles_for_Professionals").length;
         return result;
       },
       books() {
-        var result = this.$store.state.publication.publicationsData.result.filter(
-          (publication) => publication.publication_type === "Book"
-        ).length;
+        var result = this.$store.state.publication.publicationsData.result.filter((publication) => publication.publication_type === "Book").length;
         return result;
       },
       bookChapters() {
-        var result = this.$store.state.publication.publicationsData.result.filter(
-          (publication) => publication.publication_type === "Book_Chapter"
-        ).length;
+        var result = this.$store.state.publication.publicationsData.result.filter((publication) => publication.publication_type === "Book_Chapter").length;
         return result;
       },
       monoGraphs() {
-        var result = this.$store.state.publication.publicationsData.result.filter(
-          (publication) => publication.publication_type === "Monograph"
-        ).length;
+        var result = this.$store.state.publication.publicationsData.result.filter((publication) => publication.publication_type === "Monograph").length;
         return result;
       },
       manuals() {
-        var result = this.$store.state.publication.publicationsData.result.filter(
-          (publication) => publication.publication_type === "Manual"
-        ).length;
+        var result = this.$store.state.publication.publicationsData.result.filter((publication) => publication.publication_type === "Manual").length;
         return result;
       },
       reports() {
-        var result = this.$store.state.publication.publicationsData.result.filter(
-          (publication) => publication.publication_type === "Report"
-        ).length;
+        var result = this.$store.state.publication.publicationsData.result.filter((publication) => publication.publication_type === "Report").length;
         return result;
       },
       general() {
-        var result = this.$store.state.publication.publicationsData.result.filter(
-          (publication) =>
-            publication.publication_type === "Article_for_General_public"
-        ).length;
+        var result = this.$store.state.publication.publicationsData.result.filter((publication) => publication.publication_type === "Article_for_General_public").length;
         return result;
       },
       people() {
         return this.$store.state.user.activeUsersList.result;
       },
       publicationTypeCounts() {
-        var counts=[];
+        var counts = [];
         counts.push(this.journalArticles, this.articles, this.books, this.bookChapters, this.monoGraphs, this.manuals, this.reports, this.general);
         return counts;
       },
-      total()
-      {
+      total() {
         return this.$store.state.publication.publicationsData.result.length;
       },
       reportYears() {
@@ -165,9 +123,7 @@ export default {
       },
     }),
     sameDepartmentProfiles() {
-      return this.$store.state.user.sameDepartmentProfiles.filter(
-        (profile) => profile.id != this.userProfile.id
-      );
+      return this.$store.state.user.sameDepartmentProfiles.filter((profile) => profile.id != this.userProfile.id);
     },
   },
   async fetch({ store, params }) {
@@ -176,8 +132,7 @@ export default {
       id: empId,
     });
 
-    if (store.state.user.publicProfile)
-      var userId = store.state.user.publicProfile.user.id;
+    if (store.state.user.publicProfile) var userId = store.state.user.publicProfile.user.id;
     else {
       this.codeGreen = false;
     }

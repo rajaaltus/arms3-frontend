@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card tile>
+    <v-card flat>
       <v-card-text class="px-0 py-0">
         <QuerySelector :reportYears="reportYears" :userTypes="userTypes" @go="loader" @resetFilters="dataLoaded = false" />
         <div class="preview">
@@ -51,14 +51,14 @@
               </h4>
               <!-- Program -->
               <div v-for="(program, index) in programmes" :key="program.id">
-                <ProgramFormat :index="index" :program="program" />
+                <fomattingProgramFormat :index="index" :program="program" />
               </div>
               <!-- Visitor -->
               <h4 style="font-family: Calibri; font-style: normal;">
                 <b>2. VISITORS TO THE DEPARTMENT</b>
               </h4>
               <div v-for="(visitor, index) in visitors" :key="visitor.id">
-                <VisitorFormat :visitor="visitor" :index="index" :deptartmentName="$store.state.departmentName" />
+                <fomattingVisitorFormat :visitor="visitor" :index="index" :deptartmentName="$store.state.departmentName" />
               </div>
 
               <!-- Training -->
@@ -66,7 +66,7 @@
                 <b>3. SPECIFIC TRAINING UNDERWENT BY THE FACULTY /STAFF /STUDENTS OUTSIDE NIMHANS</b>
               </h4>
               <div v-for="(training, index) in trainings" :key="training.id">
-                <TrainingFormat :index="index" :training="training" />
+                <fomattingTrainingFormat :index="index" :training="training" />
               </div>
 
               <!-- Presentation -->
@@ -77,7 +77,7 @@
                 <b>A. PRESENTATIONS/ POSTERS</b>
               </h4>
               <div v-for="(presentation, index) in presentations" :key="presentation.id">
-                <PresentationFormat :index="index" :presentation="presentation" />
+                <fomattingPresentationFormat :index="index" :presentation="presentation" />
               </div>
 
               <!-- Participation -->
@@ -85,7 +85,7 @@
                 <b>B. PARTICIPATION</b>
               </h4>
               <div v-for="(participation, index) in participations" :key="participation.id">
-                <ParticipationFormat :index="index" :participation="participation" />
+                <fomattingParticipationFormat :index="index" :participation="participation" />
               </div>
 
               <!-- Public Engagement -->
@@ -93,7 +93,7 @@
                 <b>5. PUBLIC ENGAGEMENT &amp; OUTREACH ACTIVITIES</b>
               </h4>
               <div v-for="(publicE, index) in publics" :key="publicE.id">
-                <PublicEngagementFormat :index="index" :publicE="publicE" />
+                <fomattingPublicEngagementFormat :index="index" :publicE="publicE" />
               </div>
 
               <!-- Research Activities -->
@@ -101,7 +101,7 @@
                 <b>6. RESEARCH ACTIVITIES</b>
               </h4>
               <div v-for="(research, index) in researchData" :key="research.id">
-                <ResearchFormat :index="index" :research="research" />
+                <fomattingResearchFormat :index="index" :research="research" />
               </div>
 
               <!-- Publications -->
@@ -109,7 +109,7 @@
                 <b>7. PUBLICATIONS</b>
               </h4>
               <div v-for="(item, index) in publications" :key="item.id">
-                <PublicationFormat :index="index" :item="item" />
+                <fomattingPublicationFormat :index="index" :item="item" />
               </div>
 
               <!-- Recognition -->
@@ -120,7 +120,7 @@
                 <b>A. AWARDS AND HONORS</b>
               </h4>
               <div v-for="(recognition, index) in recognitions" :key="recognition.id">
-                <RecognitionFormat :index="index" :recognition="recognition" />
+                <fomattingRecognitionFormat :index="index" :recognition="recognition" />
               </div>
 
               <!-- Patents -->
@@ -128,7 +128,7 @@
                 <b>B. PATENTS</b>
               </h4>
               <div v-for="(patent, index) in patents" :key="patent.id">
-                <PatentFormat :index="index" :patent="patent" />
+                <fomattingPatentFormat :index="index" :patent="patent" />
               </div>
 
               <!-- Key Assignments -->
@@ -136,10 +136,15 @@
                 <b>C. KEY ASSIGNMENTS </b>
               </h4>
               <div v-for="(assignment, index) in assignments" :key="assignment.id">
-                <AssignmentFormat :index="index" :assignment="assignment" />
+                <fomattingAssignmentFormat :index="index" :assignment="assignment" />
               </div>
             </div>
           </v-sheet>
+          <div v-else>
+            <img class="stars py-12" src="/counting_stars.svg" alt="counting_stars" width="300" />
+            <h2 class="pb-2">No Data</h2>
+            <span class="pb-4">Please choose Reporting Year &amp; Month / Date Range / User type</span>
+          </div>
         </div>
       </v-card-text>
     </v-card>

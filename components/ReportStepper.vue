@@ -90,6 +90,11 @@
         </v-stepper-content> -->
       </v-stepper-items>
     </v-stepper>
+    <div v-else>
+      <img class="stars py-12" src="/counting_stars.svg" alt="counting_stars" width="300" />
+      <h2 class="pb-2">No Data</h2>
+      <span class="pb-4">Please choose Reporting Year, Month, Date Range &amp; User type</span>
+    </div>
     <AvailableReports :availableReports="availableReports" v-if="sheet" />
   </div>
 </template>

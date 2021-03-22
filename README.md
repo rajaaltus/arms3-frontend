@@ -1,20 +1,7 @@
 # genie3
 
-## Build Setup
-
-```bash
-# install dependencies
-$ yarn install
-
-# serve with hot reload at localhost:3000
-$ yarn dev
-
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+- <s>Data fetch limit of 100 should be removed in the Reporting part</s>
+- Making super admin Dashboard to be fully functional
+- Adding the Department level data in the report (Section A) in the super admin part. (Will discuss once again on this)
+- Adding of a new field in all the forms
+- <s>Fixing of the minor glitches when creating account from Department Account</s>

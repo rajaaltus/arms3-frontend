@@ -68,14 +68,14 @@
           </h4>
           <!-- Program -->
           <div v-for="(program, index) in programmes" :key="program.id">
-            <ProgramFormat :index="index" :program="program" />
+            <FomattingProgramFormat :index="index" :program="program" />
           </div>
           <!-- Visitor -->
           <h4 style="font-family: Calibri; font-style: normal;">
             <b>2. VISITORS TO THE DEPARTMENT</b>
           </h4>
           <div v-for="(visitor, index) in visitors" :key="visitor.id">
-            <VisitorFormat :visitor="visitor" :index="index" :departmentName="selectedDepartmentName" />
+            <FomattingVisitorFormat :visitor="visitor" :index="index" :departmentName="selectedDepartmentName" />
           </div>
 
           <!-- Training -->
@@ -83,7 +83,7 @@
             <b>3. SPECIFIC TRAINING UNDERWENT BY THE FACULTY /STAFF /STUDENTS OUTSIDE NIMHANS</b>
           </h4>
           <div v-for="(training, index) in trainings" :key="training.id">
-            <TrainingFormat :index="index" :training="training" />
+            <FomattingTrainingFormat :index="index" :training="training" />
           </div>
 
           <!-- Presentation -->
@@ -94,15 +94,16 @@
             <b>A. PRESENTATIONS/ POSTERS</b>
           </h4>
           <div v-for="(presentation, index) in presentations" :key="presentation.id">
-            <PresentationFormat :index="index" :presentation="presentation" />
+            <FomattingPresentationFormat :index="index" :presentation="presentation" />
           </div>
 
           <!-- Participation -->
           <h4 style="font-family: Calibri; font-style: normal;">
             <b>B. PARTICIPATION</b>
           </h4>
+
           <div v-for="(participation, index) in participations" :key="participation.id">
-            <ParticipationFormat :index="index" :participation="participation" />
+            <FomattingParticipationFormat :index="index" :participation="participation" />
           </div>
 
           <!-- Public Engagement -->
@@ -110,7 +111,7 @@
             <b>5. PUBLIC ENGAGEMENT &amp; OUTREACH ACTIVITIES</b>
           </h4>
           <div v-for="(publicE, index) in publics" :key="publicE.id">
-            <PublicEngagementFormat :index="index" :publicE="publicE" />
+            <FomattingPublicEngagementFormat :index="index" :publicE="publicE" />
           </div>
 
           <!-- Research Activities -->
@@ -118,15 +119,16 @@
             <b>6. RESEARCH ACTIVITIES</b>
           </h4>
           <div v-for="(research, index) in researchData" :key="research.id">
-            <ResearchFormat :index="index" :research="research" />
+            <FomattingResearchFormat :index="index" :research="research" />
           </div>
 
           <!-- Publications -->
           <h4 style="font-family: Calibri; font-style: normal;">
             <b>7. PUBLICATIONS</b>
           </h4>
+          <pre>{{ publications.length }}</pre>
           <div v-for="(item, index) in publications" :key="item.id">
-            <PublicationFormat :index="index" :item="item" />
+            <FomattingPublicationFormat :index="index" :item="item" />
           </div>
 
           <!-- Recognition -->
@@ -137,7 +139,7 @@
             <b>A. AWARDS AND HONORS</b>
           </h4>
           <div v-for="(recognition, index) in recognitions" :key="recognition.id">
-            <RecognitionFormat :index="index" :recognition="recognition" />
+            <FomattingRecognitionFormat :index="index" :recognition="recognition" />
           </div>
 
           <!-- Patents -->
@@ -145,7 +147,7 @@
             <b>B. PATENTS</b>
           </h4>
           <div v-for="(patent, index) in patents" :key="patent.id">
-            <PatentFormat :index="index" :patent="patent" />
+            <FomattingPatentFormat :index="index" :patent="patent" />
           </div>
 
           <!-- Key Assignments -->
@@ -153,7 +155,7 @@
             <b>C. KEY ASSIGNMENTS </b>
           </h4>
           <div v-for="(assignment, index) in assignments" :key="assignment.id">
-            <AssignmentFormat :index="index" :assignment="assignment" />
+            <FomattingAssignmentFormat :index="index" :assignment="assignment" />
           </div>
         </div>
       </v-sheet>

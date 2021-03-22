@@ -1,11 +1,6 @@
 <template>
   <div>
-    <v-tabs
-      background-color="light-green lighten-5"
-      color="green darken-3"
-      light
-      vertical
-    >
+    <v-tabs background-color="light-green lighten-5" color="green darken-3" light vertical>
       <v-tab>
         <span class="mdi mdi-account-plus cust-icon"></span>
         New User
@@ -18,10 +13,7 @@
       <v-tab-item>
         <div style="height: 400px;" v-if="loading" intermediate>
           <v-row class="fill-height" align-content="center" justify="center">
-            <v-progress-circular
-              indeterminate
-              color="green"
-            ></v-progress-circular>
+            <v-progress-circular indeterminate color="green"></v-progress-circular>
           </v-row>
         </div>
         <v-card v-else>
@@ -32,25 +24,17 @@
             <v-form ref="form" v-model="valid" lazy-validation @submit.prevent>
               <v-row>
                 <v-col cols="4">
-                  <v-select
-                    color="green"
-                    v-model="newUser.userType"
-                    dense
-                    label="User Type"
-                    required
-                    outlined
-                    :items="userTypes"
-                    prepend-inner-icon="mdi-account-question"
-                  ></v-select>
+                  <v-select color="green" v-model="newUser.userType" dense label="User Type" required outlined :items="userTypes" prepend-inner-icon="mdi-account-question"></v-select>
                 </v-col>
                 <v-col cols="8">
                   <v-text-field
                     color="green"
                     v-model="newUser.fullname"
                     label="Full Name"
+                    dense
                     outlined
                     hint="Ex: Mr. Mighty Joe"
-                    :rules="[v => !!v || 'Please Enter User\'s Full Name']"
+                    :rules="[(v) => !!v || 'Please Enter User\'s Full Name']"
                     prepend-inner-icon="mdi-account-settings"
                   ></v-text-field>
                 </v-col>
@@ -62,10 +46,8 @@
                     required
                     hint="Also your primary Login ID"
                     outlined
-                    :rules="[
-                      v => !!v || 'Please enter email',
-                      v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
-                    ]"
+                    dense
+                    :rules="[(v) => !!v || 'Please enter email', (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid']"
                     prepend-inner-icon="email"
                   ></v-text-field>
                 </v-col>
@@ -73,7 +55,7 @@
                   <v-text-field
                     v-model="password"
                     color="green"
-                    :rules="[v => !!v || 'Password is Required']"
+                    :rules="[(v) => !!v || 'Password is Required']"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show1 ? 'text' : 'password'"
                     @click:append="show1 = !show1"
@@ -82,25 +64,15 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="6">
-                  <v-switch
-                    v-model="newUser.blocked"
-                    color="red"
-                    label="Blocked"
-                    class="pl-2"
-                  ></v-switch>
+                  <v-switch v-model="newUser.blocked" color="red" label="Blocked" class="pl-2"></v-switch>
                 </v-col>
               </v-row>
             </v-form>
           </v-card-text>
           <v-card-actions class="pr-5">
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" small dark @click="reset"
-              >Reset</v-btn
-            >
-            <v-btn color="green darken-1" small dark @click="addUser"
-              ><v-icon small class="pr-2">mdi-account-plus</v-icon>Create
-              Account</v-btn
-            >
+            <v-btn color="green darken-1" small dark @click="reset">Reset</v-btn>
+            <v-btn color="green darken-1" small dark @click="addUser"><v-icon small class="pr-2">mdi-account-plus</v-icon>Create Account</v-btn>
           </v-card-actions>
 
           <!-- <pre>{{ newUser }}</pre> -->
@@ -110,26 +82,13 @@
       <v-tab-item>
         <v-card flat>
           <v-card-text class="px-0 py-1">
-            <v-data-table
-              :items="users"
-              :headers="headers"
-              :loading="loading"
-              loading-text="Loading... Please wait"
-            >
+            <v-data-table :items="users" :headers="headers" :loading="loading" loading-text="Loading... Please wait">
               <template v-slot:[`item.userType`]="{ item }">
-                <v-chip :color="getColor(item.userType)" dark>{{
-                  item.userType
-                }}</v-chip>
+                <v-chip :color="getColor(item.userType)" dark>{{ item.userType }}</v-chip>
               </template>
 
               <template v-slot:[`item.blocked`]="{ item }">
-                <v-switch
-                  color="red"
-                  class="pl-2"
-                  :value="false"
-                  :input-value="item.blocked"
-                  @change="blockUser(item.id, $event !== null, $event)"
-                ></v-switch>
+                <v-switch color="red" class="pl-2" :value="false" :input-value="item.blocked" @change="blockUser(item.id, $event !== null, $event)"></v-switch>
               </template>
             </v-data-table>
           </v-card-text>
@@ -152,7 +111,7 @@ import Swal from "sweetalert2";
 export default {
   head() {
     return {
-      title: "Settings"
+      title: "Settings",
     };
   },
   // components: {
@@ -166,53 +125,53 @@ export default {
       username: "",
       fullname: "",
       email: "",
-      password: "user@2020",
+      password: "",
       userType: "",
       department: 0,
       confirmed: true,
-      blocked: false
+      blocked: false,
     },
     dafaultUser: {
       username: "",
       fullname: "",
       email: "",
-      password: "changemenow",
+      password: "",
       userType: "",
       department: 0,
       confirmed: true,
-      blocked: false
+      blocked: false,
     },
-    password: 'changemenow',
+    password: "changemenow",
     userTypes: [
       {
         text: "Faculty / Staff",
-        value: "FACULTY"
+        value: "FACULTY",
       },
       {
         text: "Student",
-        value: "STUDENT"
-      }
+        value: "STUDENT",
+      },
     ],
     headers: [
       { text: "Full Name", value: "fullname" },
       { text: "Email", value: "email" },
       { text: "Role", value: "userType" },
-      { text: "Block user", value: "blocked" }
+      { text: "Block user", value: "blocked" },
     ],
     chartOptions: {
       series: [
         {
-          data: [1, 2, 3] // sample data
-        }
-      ]
+          data: [1, 2, 3], // sample data
+        },
+      ],
     },
     myColors: ["#1f77b4", "#629fc9", "#94bedb", "#c9e0ef"],
   }),
 
   computed: {
     ...mapState({
-      users: state => state.user.usersList.result
-    })
+      users: (state) => state.user.usersList.result,
+    }),
   },
   async fetch({ store }) {
     let queryString = "";
@@ -220,7 +179,7 @@ export default {
     store.dispatch("user/setUsersList", { qs: queryString });
   },
   mounted() {
-    this.users = this.$store.state.user.usersList.result
+    this.users = this.$store.state.user.usersList.result;
     this.reloadData();
   },
   methods: {
@@ -231,35 +190,33 @@ export default {
         this.reloadData();
       }
     },
-    blockUser(index, value, event) { 
-       var payload = Object.assign({}, {
-         id: index,
-         blocked: event
-       })
-       var currentState = event?'block':'unblock';
-       Swal.fire({
+    blockUser(index, value, event) {
+      var payload = Object.assign({
+        id: index,
+        blocked: event,
+      });
+      var currentState = event ? "block" : "unblock";
+      Swal.fire({
         title: `Are you sure you want to ${currentState} this user?`,
         showCancelButton: true,
         confirmButtonText: "Yes, I am Sure.",
         showLoaderOnConfirm: true,
-        allowOutsideClick: () => !Swal.isLoading()
-      }).then(result => {
+        allowOutsideClick: () => !Swal.isLoading(),
+      }).then((result) => {
         if (!result.dismiss) {
-          this.$store
-            .dispatch("user/updateUser", payload)
-            .then(response => {
-              Swal.fire({
-                type: "success",
-                title: "Updated Successfully!",
-                position: "top-end",
-                icon: "success",
-                showConfirmButton: false,
-                timer: 1500
-              });
-              let queryString = "";
-              queryString = `department.id=${this.$store.state.auth.user.department}`;
-              this.$store.dispatch("user/setUsersList", {qs: queryString});
+          this.$store.dispatch("user/updateUser", payload).then((response) => {
+            Swal.fire({
+              type: "success",
+              title: "Updated Successfully!",
+              position: "top-end",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
             });
+            let queryString = "";
+            queryString = `department.id=${this.$store.state.auth.user.department}&userType_ne=DEPARTMENT`;
+            this.$store.dispatch("user/setUsersList", { qs: queryString });
+          });
         }
       });
     },
@@ -268,23 +225,21 @@ export default {
       this.newUser.password = this.password;
       this.newUser.username = this.newUser.email;
       var payload = this.newUser;
-      // console.log(payload);
       this.$store
         .dispatch("user/addUser", payload)
-        .then(resp => {
-          // console.log(resp);
+        .then((resp) => {
           Swal.fire({
             title: "Account Created",
             text: "User has been added successfully!",
             icon: "success",
             showConfirmButton: false,
-            timer: 1500
+            timer: 1500,
           });
           this.dialog = false;
           this.newUser = Object.assign({}, this.defaultUser);
           this.reloadData();
         })
-        .catch(e => {});
+        .catch((e) => {});
     },
     reset() {
       this.$refs.form.reset();
@@ -302,7 +257,7 @@ export default {
     // wordClickHandler(name, value, vm) {
     //   console.log("wordClickHandler", name, value, vm);
     // }
-  }
+  },
 };
 </script>
 

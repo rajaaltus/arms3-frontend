@@ -53,7 +53,7 @@ export const actions = {
   },
   async setAvailableReports({ commit }, { qs }) {
     await this.$axios
-      .$get(`/saved-reports?${qs}`)
+      .$get(`/saved-reports?${qs}${limit}`)
       .then((response) => {
         commit("SET_AVAILABLE_REPORTS", response);
       })
@@ -75,7 +75,7 @@ export const actions = {
   },
   async setSavedReport({ commit }, { fq }) {
     await this.$axios
-      .$get(`/saved-reports?${fq}`)
+      .$get(`/saved-reports?${fq}${limit}`)
       .then((response) => {
         commit("SET_REPORTS", response);
       })
