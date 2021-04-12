@@ -17,6 +17,7 @@
           color="success"
           @input="fetchUsers"
         ></v-autocomplete>
+        <v-checkbox v-model="isSectionA" label="Report with Section A"></v-checkbox>
       </v-col>
     </v-row>
     <super-query :reportYears="reportYears" :userTypes="userTypes" @go="loader" @resetFilters="dataLoaded = false" />
@@ -59,6 +60,41 @@
             </div>
           </div>
           <h6 style="text-align: right; font-family: Calibri; font-style: normal; color: gray;">Generated On: {{ $moment().format("Do MMMM YYYY, h:mm:ss a") }}</h6>
+
+          <div v-if="isSectionA">
+            <div>
+              <FomattingAboutDataFormat :aboutData="aboutData" />
+            </div>
+
+            <h3>2. PATIENT CARE ACTIVITIES</h3>
+            <h3>A. Clinical Services</h3>
+            <div>
+              <FomattingPatientCareFormat :clinicalData="clinicalData" />
+            </div>
+            <h3>B. Emergency Services</h3>
+            <div>
+              <FomattingEmergencyFormat :emergencyData="emergencyData" />
+            </div>
+            <h3>C. Diagnostic Services</h3>
+            <div>
+              <FormattingDiagnosticFormat :diagnosticData="diagnosticData" />
+            </div>
+            <div>
+              <FomattingSpecialFormat :specialData="specialData" />
+            </div>
+            <div>
+              <FomattingOTFormat :otservicesData="otservicesData" />
+            </div>
+            <div>
+              <FomattingHRDFormat :hrdCourses="hrdCourses" />
+            </div>
+            <div>
+              <FomattingHrdTrainingsFormat :hrdTrainings="hrdTrainings" />
+            </div>
+            <div>
+              <FomattingRetairedFormat :retaired="retaired" />
+            </div>
+          </div>
 
           <h2 style="font-family: Calibri; font-style: normal;">
             <b><u>Section B:</u></b>
@@ -169,6 +205,7 @@ export default {
   layout: "super",
   data() {
     return {
+      isSectionA: false,
       search: null,
       selectedDepartmentName: "",
       reportTitle: "",
@@ -204,6 +241,14 @@ export default {
     },
     ...mapState({
       aboutData: (state) => state.about.newAbout,
+      clinicalData: (state) => state.clinical.clinicalData.result,
+      emergencyData: (state) => state.emergency.emergencyData,
+      diagnosticsData: (state) => state.diagnostic.diagnosticData,
+      specialData: (state) => state.special.specialData,
+      otservicesData: (state) => state.otservice.otservicesData,
+      hrdCourses: (state) => state.hrdCourse.hrdCourses.result,
+      hrdTrainings: (state) => state.hrdTraining.hrdTrainings.result,
+      retaired: (state) => state.faculty.facultyData.result,
       programmes: (state) => state.program.programmesData.result,
       visitors: (state) => state.visitor.visitorsData.result,
       trainings: (state) => state.training.trainingsData.result,
