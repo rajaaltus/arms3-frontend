@@ -77,7 +77,7 @@
             </div>
             <h3>C. Diagnostic Services</h3>
             <div>
-              <FormattingDiagnosticFormat :diagnosticData="diagnosticData" />
+              <FomattingDiagnosticFormat :diagnosticsData="diagnosticsData" />
             </div>
             <div>
               <FomattingSpecialFormat :specialData="specialData" />
@@ -316,6 +316,17 @@ export default {
       let queryString = "";
       queryString = selectedQuery + `&department.id=${this.selectedDepartment}&deleted_ne=true`;
 
+      //Section A fetch
+      await this.$store.dispatch("about/setAboutData", { qs: queryString });
+      await this.$store.dispatch("clinical/setClinicalData", { qs: queryString });
+      await this.$store.dispatch("emergency/setEmergencyData", { qs: queryString });
+      await this.$store.dispatch("diagnostic/setDiagnosticData", { qs: queryString });
+      await this.$store.dispatch("special/setSpecialData", { qs: queryString });
+      await this.$store.dispatch("otservice/setOTServicesData", { qs: queryString });
+      await this.$store.dispatch("hrdCourse/setHRDCourses", { qs: queryString });
+      await this.$store.dispatch("hrdTraining/setHRDTrainings", { qs: queryString });
+      await this.$store.dispatch("faculty/setFacultyData", { qs: queryString });
+      //section B fetch
       await this.$store.dispatch("program/setProgrammesData", {
         qs: queryString,
       });

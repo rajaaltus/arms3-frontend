@@ -14,7 +14,7 @@
       <tr v-for="(hrd, index) in hrdCourses" :key="index">
         <td style="border: 1px solid #dddddd;">{{ hrd.course_name }}</td>
         <td style="border: 1px solid #dddddd;">{{ hrd.candidate_name }}</td>
-        <td style="border: 1px solid #dddddd;">{{hrd.durations} Years}</td>
+        <td style="border: 1px solid #dddddd;">{{ hrd.durations }} Years</td>
         <td style="border: 1px solid #dddddd;">{{ hrd.remarks_status }}</td>
         <td style="border: 1px solid #dddddd;">{{ hrd.thesis_title }}</td>
         <td style="border: 1px solid #dddddd;">{{ hrd.guides }}</td>
