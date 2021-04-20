@@ -10,9 +10,9 @@
     </h1>
     <h3>1. ABOUT THE DEPARTMENT</h3>
     <h3>A. Introduction: Specifically indicate the recognition / contribution of the Department during the year to policies, planning and programmes at State / National and International levels.</h3>
-    <p>{{ aboutData.introduction }}</p>
+    <p v-html="aboutData && aboutData.introduction"></p>
     <h3>B. New facilities developed: New initiatives taken up by the Department(s) within NIMHANS during the year.</h3>
-    <p>{{ aboutData.facilities }}</p>
+    <p v-html="aboutData && aboutData.facilities && aboutData.facilities"></p>
   </div>
 </template>
 

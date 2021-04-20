@@ -14,7 +14,7 @@
       <tr v-for="(hrdTraining, index) in hrdTrainings" :key="index">
         <td style="border: 1px solid #dddddd;">{{ hrdTraining.training_name }}</td>
         <td style="border: 1px solid #dddddd;">{{ hrdTraining.institutional_affiliation }}</td>
-        <td style="border: 1px solid #dddddd;">{{hrdTraining.no_of_candidates} Years}</td>
+        <td style="border: 1px solid #dddddd;">{{ hrdTraining.no_of_candidates }} Years</td>
         <td style="border: 1px solid #dddddd;">{{ hrdTraining.from_date }}</td>
         <td style="border: 1px solid #dddddd;">{{ hrdTraining.to_date }}</td>
         <td style="border: 1px solid #dddddd;">{{ hrdTraining.remarks_status }}</td>
