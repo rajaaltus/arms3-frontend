@@ -44,9 +44,9 @@ export const mutations = {
     state.userProfile = userProfile;
     if (userProfile.image) state.avatar_url = this.$axios.defaults.baseURL + userProfile.image.url;
   },
-  SET_FULL_USER(state, fullUser) {
-    state.fullUser = fullUser;
-    state.avatarUrl = fullUser.avatar.url;
+  SET_FULL_USER(state, response) {
+    state.fullUser = response;
+    state.avatarUrl = response.avatar.url;
   },
   SET_DEPT_DATA(state, departments) {
     if (departments && Array.isArray(departments)) {

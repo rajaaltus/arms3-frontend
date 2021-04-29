@@ -3,24 +3,14 @@
     <v-card tile class="mx-auto my-card">
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="headline">{{
-            profile.name
-          }}</v-list-item-title>
+          <v-list-item-title class="headline">{{ username }}</v-list-item-title>
           <v-list-item-subtitle>{{ profile.designation }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <div>
         <v-hover>
           <template v-slot:default="{ hover }">
-            <v-img
-              :src="
-                image_url !== null
-                  ? `${$axios.defaults.baseURL}${image_url}`
-                  : '/image_placeholder.png'
-              "
-              class="mt-3"
-              max-width="100%"
-            >
+            <v-img :src="image_url !== null ? `${$axios.defaults.baseURL}${image_url}` : '/image_placeholder.png'" class="mt-3" max-width="100%">
               <v-fade-transition>
                 <v-overlay v-if="hover" absolute color="#00564c">
                   <v-btn @click="$refs.image.click()">
@@ -31,13 +21,7 @@
             </v-img>
           </template>
         </v-hover>
-        <input
-          ref="image"
-          type="file"
-          style="display: none;"
-          label="File input"
-          @change="handleFileUpload"
-        />
+        <input ref="image" type="file" style="display: none;" label="File input" @change="handleFileUpload" />
       </div>
       <!-- <v-img
         v-if="image_url !== null"
@@ -55,14 +39,12 @@
       </v-card-text>
     </v-card>
     <v-card tile>
-      <v-card-title>
-        <v-icon color="green" class="pr-1">mdi-link</v-icon> Public Profile Link
-      </v-card-title>
+      <v-card-title> <v-icon color="green" class="pr-1">mdi-link</v-icon> Public Profile Link </v-card-title>
       <v-card-text>
         <nuxt-link :to="`/profile/${profile.employee_id}`">
-        <div v-if="publicProfile">
-          {{'http://arms.nimhans.ac.in/profile/'+profile.employee_id}}
-        </div>
+          <div v-if="publicProfile">
+            {{ "http://arms.nimhans.ac.in/profile/" + profile.employee_id }}
+          </div>
         </nuxt-link>
       </v-card-text>
     </v-card>
@@ -82,7 +64,9 @@ export default {
     };
   },
   computed: {
-    
+    username() {
+      return this.$store.state.user.userProfile.name;
+    },
   },
   mounted() {
     // console.log(this.profile);

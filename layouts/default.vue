@@ -17,7 +17,7 @@
         </v-list-item-avatar>
 
         <v-list-item-title class="pl-2"
-          >{{ this.$store.state.auth.user.fullname }} <br />
+          >{{ this.$store.state.user.userProfile ? this.$store.state.user.userProfile.name : this.$store.state.auth.user.fullname }} <br />
           <span class="caption font-weight-light">
             {{ user ? user.designation : "" }}
           </span></v-list-item-title
