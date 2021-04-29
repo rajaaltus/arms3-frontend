@@ -2,28 +2,28 @@
   <div>
     <table>
       <tr>
-        <th style="border: 1px solid #dddddd;">Emergency Services</th>
-        <th style="border: 1px solid #dddddd;">No.Of Patients /Cases</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Emergency Services</b>&nbsp;</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>No. of Patients / Cases</b>&nbsp;</th>
       </tr>
       <tr>
-        <td style="border: 1px solid #dddddd;">Registrations</td>
-        <td style="border: 1px solid #dddddd;">{{ emergencyData.reduce((sum, item) => sum + item.registrations, 0) }}</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;Registrations&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ emergencyData.reduce((sum, item) => sum + item.registrations, 0) }}&nbsp;</td>
       </tr>
       <tr>
-        <td style="border: 1px solid #dddddd;">Admissions</td>
-        <td style="border: 1px solid #dddddd;">{{ emergencyData.reduce((sum, item) => sum + item.admissions, 0) }}</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;Admissions&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ emergencyData.reduce((sum, item) => sum + item.admissions, 0) }}&nbsp;</td>
       </tr>
       <tr>
-        <td style="border: 1px solid #dddddd;">Deaths</td>
-        <td style="border: 1px solid #dddddd;">{{ emergencyData.reduce((sum, item) => sum + item.deaths, 0) }}</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;Deaths&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ emergencyData.reduce((sum, item) => sum + item.deaths, 0) }}&nbsp;</td>
       </tr>
       <tr>
-        <td style="border: 1px solid #dddddd;">External Reference</td>
-        <td style="border: 1px solid #dddddd;">{{ emergencyData.reduce((sum, item) => sum + item.external_ref, 0) }}</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;External Reference&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ emergencyData.reduce((sum, item) => sum + item.external_ref, 0) }}&nbsp;</td>
       </tr>
       <tr>
-        <td style="border: 1px solid #dddddd;">Internal Reference</td>
-        <td style="border: 1px solid #dddddd;">{{ emergencyData.reduce((sum, item) => sum + item.internal_ref, 0) }}</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;Internal Reference&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ emergencyData.reduce((sum, item) => sum + item.internal_ref, 0) }}&nbsp;</td>
       </tr>
     </table>
   </div>

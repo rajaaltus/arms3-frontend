@@ -1,24 +1,24 @@
 <template>
   <div>
-    <h3>B. Faculty/staff/students from other institutions trained at NIMHANS</h3>
+    <h4 style="font-family: Calibri; font-style: normal;">B. Faculty/staff/students from other institutions trained at NIMHANS</h4>
     <table>
       <tr>
-        <th style="border: 1px solid #dddddd;">Name of the course / Training</th>
-        <th style="border: 1px solid #dddddd;">Institutional affiliation</th>
-        <th style="border: 1px solid #dddddd;">Number of Candidates</th>
-        <th style="border: 1px solid #dddddd;">From</th>
-        <th style="border: 1px solid #dddddd;">To</th>
-        <th style="border: 1px solid #dddddd;">Status</th>
-        <th style="border: 1px solid #dddddd;">Description</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Name of the course / Training</b>&nbsp;</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Institutional affiliation</b>&nbsp;</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Number of Candidates</b>&nbsp;</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>From</b>&nbsp;</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>To</b>&nbsp;</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Status</b>&nbsp;</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Description</b>&nbsp;</th>
       </tr>
       <tr v-for="(hrdTraining, index) in hrdTrainings" :key="index">
-        <td style="border: 1px solid #dddddd;">{{ hrdTraining.training_name }}</td>
-        <td style="border: 1px solid #dddddd;">{{ hrdTraining.institutional_affiliation }}</td>
-        <td style="border: 1px solid #dddddd;">{{ hrdTraining.no_of_candidates }} Years</td>
-        <td style="border: 1px solid #dddddd;">{{ hrdTraining.from_date }}</td>
-        <td style="border: 1px solid #dddddd;">{{ hrdTraining.to_date }}</td>
-        <td style="border: 1px solid #dddddd;">{{ hrdTraining.remarks_status }}</td>
-        <td style="border: 1px solid #dddddd;">{{ hrdTraining.brief_report }}</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ hrdTraining.training_name }}&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ hrdTraining.institutional_affiliation }}&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ hrdTraining.no_of_candidates }} Years&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ hrdTraining.from_date }}&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ hrdTraining.to_date }}&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ hrdTraining.remarks_status }}&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ hrdTraining.brief_report }}&nbsp;</td>
       </tr>
     </table>
   </div>
