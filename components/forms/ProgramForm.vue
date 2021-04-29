@@ -4,7 +4,7 @@
       <v-col cols="12" md="12">
         <v-form ref="form" v-model="valid" lazy-validation @submit.prevent>
           <v-row no-gutters v-if="$auth.user.userType === 'DEPARTMENT'">
-            <v-col cols="11" lg="11">
+            <v-col cols="7" lg="7">
               <v-select
                 v-model="program.user"
                 :items="dataFrom"
@@ -13,183 +13,83 @@
                 label="Data received from?"
                 placeholder="Select Faculty / Staff from the List"
                 color="success"
-                :rules="[
-                  (v) => !!v || 'Selecting the Faculty / Staff is Required',
-                ]"
+                :rules="[(v) => !!v || 'Selecting the Faculty / Staff is Required']"
               ></v-select>
             </v-col>
             <v-col cols="1" lg="1" sm="1">
-              <AddUser
-                @new-user="getLatestUsers()"
-                @new-student="getLatestStudents()"
-              />
+              <AddUser @new-user="getLatestUsers()" @new-student="getLatestStudents()" />
+            </v-col>
+            <v-col cols="4">
+              <v-select v-model="program.month" :items="months" item-value="id" item-text="text" label="for the Month of" placeholder="Select the month for the entry" color="success" :rules="[(v) => !!v || 'Required']"></v-select>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="4">
-              <v-select
-                v-model="program.type"
-                :rules="[(v) => !!v || 'Item is required']"
-                :items="programTypes"
-                label="Program Type "
-                color="success"
-              ></v-select>
+              <v-select v-model="program.type" :rules="[(v) => !!v || 'Item is required']" :items="programTypes" label="Program Type " color="success"></v-select>
             </v-col>
             <v-col cols="4">
-              <v-select
-                v-model="program.forum"
-                :rules="[(v) => !!v || 'Item is required']"
-                :items="programLevels"
-                label="Forum "
-                color="success"
-              ></v-select>
+              <v-select v-model="program.forum" :rules="[(v) => !!v || 'Item is required']" :items="programLevels" label="Forum " color="success"></v-select>
             </v-col>
             <v-col cols="4">
-              <v-select
-                v-model="program.colloborations"
-                :rules="[(v) => !!v || 'Item is required']"
-                :items="colloborations"
-                label="Colloborations "
-                color="success"
-              ></v-select>
+              <v-select v-model="program.colloborations" :rules="[(v) => !!v || 'Item is required']" :items="colloborations" label="Colloborations " color="success"></v-select>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="8">
-              <v-combobox
-                v-model="program.name"
-                :rules="[(v) => !!v || 'Item is required']"
-                :items="programNames"
-                item-text="name"
-                item-value="name"
-                label="Program Name "
-                color="success"
-              >
-              </v-combobox>
+              <v-combobox v-model="program.name" :rules="[(v) => !!v || 'Item is required']" :items="programNames" item-text="name" item-value="name" label="Program Name " color="success"> </v-combobox>
             </v-col>
             <v-col cols="4">
-              <v-text-field
-                v-model="program.participants_count"
-                :rules="[(v) => !!v || 'Item is required']"
-                type="number"
-                label="Participants Count "
-                color="success"
-              >
-              </v-text-field>
+              <v-text-field v-model="program.participants_count" :rules="[(v) => !!v || 'Item is required']" type="number" label="Participants Count " color="success"> </v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="4">
-              <v-menu
-                ref="menu"
-                v-model="duration_from"
-                :close-on-content-click="false"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
+              <v-menu ref="menu" v-model="duration_from" :close-on-content-click="false" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="program.from_date"
-                    :return-value.sync="duration_from"
-                    :rules="[(v) => !!v || 'Item is required']"
-                    readonly
-                    color="success"
-                    label="From Date "
-                    v-on="on"
-                  ></v-text-field>
+                  <v-text-field v-model="program.from_date" :return-value.sync="duration_from" :rules="[(v) => !!v || 'Item is required']" readonly color="success" label="From Date " v-on="on"></v-text-field>
                 </template>
-                <v-date-picker
-                  v-model="program.from_date"
-                  color="green lighten-1"
-                  no-title
-                  scrollable
-                >
+                <v-date-picker v-model="program.from_date" color="green lighten-1" no-title scrollable>
                   <v-spacer></v-spacer>
                   <v-btn text color="primary" @click="duration_from = false">
                     Cancel
                   </v-btn>
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="$refs.menu.save(duration_from)"
-                  >
+                  <v-btn text color="primary" @click="$refs.menu.save(duration_from)">
                     OK
                   </v-btn>
                 </v-date-picker>
               </v-menu>
             </v-col>
             <v-col cols="4">
-              <v-menu
-                ref="menu1"
-                v-model="duration_to"
-                :close-on-content-click="false"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
+              <v-menu ref="menu1" v-model="duration_to" :close-on-content-click="false" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="program.to_date"
-                    :rules="[(v) => !!v || 'Item is required']"
-                    :return-value.sync="duration_to"
-                    readonly
-                    color="success"
-                    label="To Date "
-                    v-on="on"
-                  ></v-text-field>
+                  <v-text-field v-model="program.to_date" :rules="[(v) => !!v || 'Item is required']" :return-value.sync="duration_to" readonly color="success" label="To Date " v-on="on"></v-text-field>
                 </template>
                 <v-date-picker v-model="program.to_date" no-title scrollable>
                   <v-spacer></v-spacer>
                   <v-btn text color="primary" @click="duration_to = false">
                     Cancel
                   </v-btn>
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="$refs.menu1.save(duration_to)"
-                  >
+                  <v-btn text color="primary" @click="$refs.menu1.save(duration_to)">
                     OK
                   </v-btn>
                 </v-date-picker>
               </v-menu>
             </v-col>
             <v-col cols="4">
-              <v-select
-                v-model="program.location"
-                :rules="[(v) => !!v || 'Item is required']"
-                :items="locations"
-                label="Location "
-                color="success"
-              ></v-select>
+              <v-select v-model="program.location" :rules="[(v) => !!v || 'Item is required']" :items="locations" label="Location " color="success"></v-select>
             </v-col>
             <v-col v-if="program.location === 'OUTSIDE_NIMHANS'" cols="12">
-              <v-text-field
-                v-model="program.outsidelocation"
-                :rules="[(v) => !!v || 'Item is required']"
-                label="Specify the place where the program happened"
-                color="success"
-              ></v-text-field>
+              <v-text-field v-model="program.outsidelocation" :rules="[(v) => !!v || 'Item is required']" label="Specify the place where the program happened" color="success"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12">
-              <v-text-field
-                v-model="program.coordinators"
-                label="Co-ordinators"
-                :rules="[(v) => !!v || 'Item is required']"
-                color="success"
-              ></v-text-field>
+              <v-text-field v-model="program.coordinators" label="Co-ordinators" :rules="[(v) => !!v || 'Item is required']" color="success"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12" md="12" sm="12">
-              <v-textarea
-                v-model="program.brief_report"
-                counter
-                color="success"
-                label="Brief Report "
-              ></v-textarea>
+              <v-textarea v-model="program.brief_report" counter color="success" label="Brief Report "></v-textarea>
             </v-col>
 
             <v-col cols="12" lg="4" md="12">
@@ -197,40 +97,22 @@
               <!-- <input type="file" style="display:none;" label="File input" ref="image"  @change="handleFileUpload"> -->
               <v-hover>
                 <template v-slot:default="{ hover }">
-                  <v-img
-                    :src="
-                      image_url
-                        ? `${$axios.defaults.baseURL}${image_url}`
-                        : '/image_placeholder.png'
-                    "
-                    class="mt-3"
-                    max-width="100%"
-                    max-height="175"
-                  >
-                    <v-progress-linear
-                      :active="imgLoader"
-                      :indeterminate="imgLoader"
-                      absolute
-                      bottom
-                      color="deep-purple accent-4"
-                    ></v-progress-linear>
+                  <v-img :src="image_url ? `${$axios.defaults.baseURL}${image_url}` : '/image_placeholder.png'" class="mt-3" max-width="100%" max-height="175">
+                    <v-progress-linear :active="imgLoader" :indeterminate="imgLoader" absolute bottom color="deep-purple accent-4"></v-progress-linear>
                     <v-fade-transition>
                       <v-overlay v-if="hover" absolute color="#00564c">
                         <v-btn @click="$refs.image.click()">
                           Upload Image
+                        </v-btn>
+                        <v-btn v-if="image_url" class="mt-0" x-small fab dark color="red darken-3" @click="deleteImage(image_url.id)">
+                          <v-icon>mdi-delete</v-icon>
                         </v-btn>
                       </v-overlay>
                     </v-fade-transition>
                   </v-img>
                 </template>
               </v-hover>
-              <input
-                ref="image"
-                type="file"
-                style="display: none"
-                label="File input"
-                @change="handleFileUpload"
-              />
+              <input ref="image" type="file" style="display: none;" label="File input" @change="handleFileUpload" />
             </v-col>
           </v-row>
         </v-form>
@@ -257,6 +139,11 @@ export default {
   props: ["programNames", "dataFrom"],
   components: {
     AddUser,
+  },
+  computed: {
+    ...mapState({
+      months: (state) => state.months,
+    }),
   },
   data() {
     return {
@@ -289,20 +176,8 @@ export default {
       },
       selectedFile: null,
       image_url: null,
-      programTypes: [
-        "Conference",
-        "Workshop",
-        "Seminar",
-        "Symposium",
-        "Scientific",
-      ],
-      programLevels: [
-        "International",
-        "National",
-        "Regional",
-        "State",
-        "Local",
-      ],
+      programTypes: ["Conference", "Workshop", "Seminar", "Symposium", "Scientific"],
+      programLevels: ["International", "National", "Regional", "State", "Local"],
       locations: ["NIMHANS", "OUTSIDE_NIMHANS"],
       colloborations: ["Departmental", "Interdepartmental"],
       approvals: ["Pending", "Rejected", "Approved"],
@@ -310,6 +185,10 @@ export default {
   },
 
   methods: {
+    async deleteImage(id) {
+      await this.$store.dispatch("deleteFile", { id: id });
+      this.image_url = null;
+    },
     getLatestUsers() {
       console.log("recieving....");
       let queryString = "";
@@ -328,20 +207,18 @@ export default {
       this.$refs.form.reset();
       this.image_url = null;
     },
-    programAdd() {
+    async programAdd() {
       if (this.$refs.form.validate()) {
         this.program.annual_year = this.$store.state.selectedYear;
         this.program.department = this.$store.state.auth.user.department;
-        if (this.$store.state.auth.user.userType !== "DEPARTMENT")
-          this.program.user = this.$auth.user.id;
-        if (typeof this.program.name === "object")
-          this.program.name = this.program.name.name;
+        if (this.$store.state.auth.user.userType !== "DEPARTMENT") this.program.user = this.$auth.user.id;
+        if (typeof this.program.name === "object") this.program.name = this.program.name.name;
         var payload = this.program;
         // console.log(payload);
-        let res = this.$store.dispatch("program/addProgram", payload);
-        res.then((data) => {
-          if (data) this.reset();
-        });
+        await this.$store.dispatch("program/addProgram", payload);
+      }
+      if (this.$store.state.program.programmesData.success) {
+        this.$refs.form.reset();
       }
     },
     async reloadData() {
@@ -350,10 +227,7 @@ export default {
       let userId = this.$store.state.auth.user.id;
       let queryString = "";
 
-      if (
-        this.$store.state.auth.user.userType === "Faculty" ||
-        this.$store.state.auth.user.userType === "Student"
-      ) {
+      if (this.$store.state.auth.user.userType === "Faculty" || this.$store.state.auth.user.userType === "Student") {
         queryString = `department.id=${deptId}&user.id=${userId}&deleted_ne=true&annual_year=${this.$store.state.selectedYear}`;
         await this.$store.dispatch("program/setProgrammesData", {
           qs: queryString,
