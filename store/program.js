@@ -38,6 +38,10 @@ export const mutations = {
     state.programmesData.success = false;
     state.programmesData.error = {};
   },
+  UPDATE_SUCCESS(state) {
+    state.programmesData.success = true;
+    state.programmesData.error = {};
+  },
 };
 
 export const actions = {
@@ -79,9 +83,11 @@ export const actions = {
       });
   },
   async updateProgram({ commit, dispatch }, payload) {
-    return await this.$axios
+    commit("INIT_ERROR");
+    await this.$axios
       .$put(`/programmes/${payload.id}`, payload)
       .then((response) => {
+        commit("UPDATE_SUCCESS");
         Swal.fire({
           title: "Success",
           text: "Updated Successfully!",
@@ -90,11 +96,9 @@ export const actions = {
           timer: 1500,
           timerProgressBar: true,
         });
-        return true;
       })
       .catch((e) => {
         dispatch("snackbar/setSnackbar", { color: "red", text: "Program update Failed!", timeout: 3000 }, { root: true });
-        return false;
       });
   },
   async deleteProgram({ commit }, { id }) {

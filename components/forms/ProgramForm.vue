@@ -97,14 +97,14 @@
               <!-- <input type="file" style="display:none;" label="File input" ref="image"  @change="handleFileUpload"> -->
               <v-hover>
                 <template v-slot:default="{ hover }">
-                  <v-img :src="image_url ? `${$axios.defaults.baseURL}${image_url}` : '/image_placeholder.png'" class="mt-3" max-width="100%" max-height="175">
+                  <v-img :src="image_url ? `${$axios.defaults.baseURL}${image_url}` : '/image_placeholder.png'" contain class="mt-3" max-width="100%" max-height="175">
                     <v-progress-linear :active="imgLoader" :indeterminate="imgLoader" absolute bottom color="deep-purple accent-4"></v-progress-linear>
                     <v-fade-transition>
                       <v-overlay v-if="hover" absolute color="#00564c">
                         <v-btn @click="$refs.image.click()">
-                          Upload Image
+                          {{ image_url ? "Change Image" : "Upload Image" }}
                         </v-btn>
-                        <v-btn v-if="image_url" class="mt-0" x-small fab dark color="red darken-3" @click="deleteImage(image_url.id)">
+                        <v-btn v-if="image_url" class="mt-0" x-small fab dark color="red darken-3" @click="deleteImage(program.image.id)">
                           <v-icon>mdi-delete</v-icon>
                         </v-btn>
                       </v-overlay>
@@ -119,7 +119,16 @@
         <!-- <pre>{{ program | json }} {{ user }}</pre> -->
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="programData">
+      <v-spacer></v-spacer>
+      <v-btn small color="#d74f4f" dark @click="$emit('close')" class="mr-4">
+        Cancel
+      </v-btn>
+      <v-btn small color="#57a727" dark @click="$emit('save', program)" class="mr-4">
+        Update
+      </v-btn>
+    </v-row>
+    <v-row v-else>
       <v-spacer></v-spacer>
       <v-btn small color="#d74f4f" dark @click="reset" class="mr-4">
         Reset
@@ -136,7 +145,7 @@ import Swal from "sweetalert2";
 import { mapState } from "vuex";
 import AddUser from "@/components/forms/AddUser";
 export default {
-  props: ["programNames", "dataFrom"],
+  props: ["programNames", "dataFrom", "programData"],
   components: {
     AddUser,
   },
@@ -173,6 +182,7 @@ export default {
         image: null,
         department: 0,
         user: 0,
+        month: 0,
       },
       selectedFile: null,
       image_url: null,
@@ -183,7 +193,12 @@ export default {
       approvals: ["Pending", "Rejected", "Approved"],
     };
   },
-
+  mounted() {
+    if (this.programData) {
+      this.program = Object.assign({}, this.programData);
+      this.image_url = this.programData.image && this.programData.image.url;
+    }
+  },
   methods: {
     async deleteImage(id) {
       await this.$store.dispatch("deleteFile", { id: id });
