@@ -147,7 +147,7 @@ export default {
         qs: queryString,
       });
     } else {
-      queryString = `department.id=${store.state.auth.user.department}&annual_year=${store.state.selectedYear}&deleted_ne=true`;
+      queryString = `department.id=${store.state.auth.user.department}&annual_year=${store.state.selectedYear}&deleted_ne=true&user.userType=${this.dataFrom}`;
       await store.dispatch("participation/setParticipationsData", {
         qs: queryString,
       });
@@ -259,7 +259,7 @@ export default {
         });
       } else {
         let queryString = "";
-        queryString = `department.id=${this.$auth.user.department}&annual_year=${this.annualYear}&deleted_ne=true`;
+        queryString = `department.id=${this.$auth.user.department}&annual_year=${this.annualYear}&deleted_ne=true&user.userType=${this.dataFrom}`;
         await this.$store.dispatch("participation/setParticipationsData", {
           qs: queryString,
         });

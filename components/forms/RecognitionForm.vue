@@ -155,14 +155,12 @@ export default {
     },
 
     getLatestUsers() {
-      console.log("recieving....");
       let queryString = "";
       queryString = `department.id=${this.$store.state.auth.user.department}&userType=FACULTY&blocked_ne=true`;
       this.$store.dispatch("setStaffs", { qs: queryString });
       this.dataFrom = this.$store.state.staffs;
     },
     getLatestStudents() {
-      console.log("recieving...");
       let queryString = "";
       queryString = `department.id=${this.$store.state.auth.user.department}&userType=STUDENT&blocked_ne=true`;
       this.$store.dispatch("setStudents", { qs: queryString });

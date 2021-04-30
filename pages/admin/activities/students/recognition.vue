@@ -22,7 +22,7 @@
                 </v-card>
               </v-col>
               <v-col cols="12" md="9" lg="9">
-                <formsRecognitionForm :dataFrom="students" section="Select Student from the list" formType="Student" />
+                <FormsRecognitionForm :dataFrom="students" section="Select Student from the list" formType="Student" />
               </v-col>
             </v-row>
           </v-card-text>

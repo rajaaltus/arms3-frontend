@@ -111,7 +111,6 @@ export default {
   },
   data: () => ({
     imgLoader: false,
-    dataFrom: [],
     loading: false,
     duration_from: false,
     duration_to: false,
