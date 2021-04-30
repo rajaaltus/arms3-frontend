@@ -274,7 +274,7 @@ export default {
     },
     close() {
       this.dialog = false;
-      this.image_url = "/image_placeholder.png";
+      this.image = "/image_placeholder.png";
     },
 
     async save(program) {

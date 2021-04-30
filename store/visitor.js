@@ -34,6 +34,14 @@ export const mutations = {
   SET_ERROR(state, visitorError) {
     state.visitorError = visitorError;
   },
+  INIT_ERROR(state) {
+    state.visitorsData.success = false;
+    state.visitorsData.error = {};
+  },
+  UPDATE_SUCCESS(state) {
+    state.visitorsData.success = true;
+    state.visitorsData.error = {};
+  },
 };
 
 export const actions = {
@@ -54,7 +62,8 @@ export const actions = {
       .catch((e) => {});
   },
   async addVisitor({ commit, dispatch }, payload) {
-    return await this.$axios
+    commit("INIT_ERROR");
+    await this.$axios
       .$post("/visitors", payload)
       .then((response) => {
         commit("ADD_TO_VISITORSDATA", response);
@@ -66,20 +75,29 @@ export const actions = {
           timer: 1500,
           timerProgressBar: true,
         });
-        return true;
       })
       .catch((e) => {
         dispatch("snackbar/setSnackbar", { color: "red", text: "Program Creation Failed!", timeout: 3000 }, { root: true });
-        return false;
       });
   },
-  async updateVisitor({ commit }, payload) {
+  async updateVisitor({ commit, dispatch }, payload) {
+    commit("INIT_ERROR");
     await this.$axios
       .$put(`/visitors/${payload.id}`, payload)
       .then((response) => {
-        commit("SET_VISITORSDATA", response);
+        commit("UPDATE_SUCCESS");
+        Swal.fire({
+          title: "Success",
+          text: "Updated Successfully!",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+        });
       })
-      .catch((e) => {});
+      .catch((e) => {
+        dispatch("snackbar/setSnackbar", { color: "red", text: "Program update Failed!", timeout: 3000 }, { root: true });
+      });
   },
   async deleteVisitor({ commit }, { id }) {
     await this.$axios

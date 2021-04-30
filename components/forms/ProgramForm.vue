@@ -3,8 +3,8 @@
     <v-row>
       <v-col cols="12" md="12">
         <v-form ref="form" v-model="valid" lazy-validation @submit.prevent>
-          <v-row no-gutters v-if="$auth.user.userType === 'DEPARTMENT'">
-            <v-col cols="7" lg="7">
+          <v-row no-gutters>
+            <v-col cols="7" lg="7" v-if="$auth.user.userType === 'DEPARTMENT'">
               <v-select
                 v-model="program.user"
                 :items="dataFrom"
@@ -16,7 +16,7 @@
                 :rules="[(v) => !!v || 'Selecting the Faculty / Staff is Required']"
               ></v-select>
             </v-col>
-            <v-col cols="1" lg="1" sm="1">
+            <v-col cols="1" lg="1" sm="1" v-if="$auth.user.userType === 'DEPARTMENT'">
               <AddUser @new-user="getLatestUsers()" @new-student="getLatestStudents()" />
             </v-col>
             <v-col cols="4">
@@ -97,14 +97,14 @@
               <!-- <input type="file" style="display:none;" label="File input" ref="image"  @change="handleFileUpload"> -->
               <v-hover>
                 <template v-slot:default="{ hover }">
-                  <v-img :src="image_url ? `${$axios.defaults.baseURL}${image_url}` : '/image_placeholder.png'" contain class="mt-3" max-width="100%" max-height="175">
+                  <v-img :src="image ? `${$axios.defaults.baseURL}${image.url}` : '/image_placeholder.png'" contain class="mt-3" max-width="100%" max-height="175">
                     <v-progress-linear :active="imgLoader" :indeterminate="imgLoader" absolute bottom color="deep-purple accent-4"></v-progress-linear>
                     <v-fade-transition>
                       <v-overlay v-if="hover" absolute color="#00564c">
                         <v-btn @click="$refs.image.click()">
-                          {{ image_url ? "Change Image" : "Upload Image" }}
+                          {{ image ? "Change Image" : "Upload Image" }}
                         </v-btn>
-                        <v-btn v-if="image_url" class="mt-0" x-small fab dark color="red darken-3" @click="deleteImage(program.image.id)">
+                        <v-btn v-if="image" class="mt-0" x-small fab dark color="red darken-3" @click="deleteImage(image.id)">
                           <v-icon>mdi-delete</v-icon>
                         </v-btn>
                       </v-overlay>
@@ -185,7 +185,7 @@ export default {
         month: 0,
       },
       selectedFile: null,
-      image_url: null,
+      image: null,
       programTypes: ["Conference", "Workshop", "Seminar", "Symposium", "Scientific"],
       programLevels: ["International", "National", "Regional", "State", "Local"],
       locations: ["NIMHANS", "OUTSIDE_NIMHANS"],
@@ -196,13 +196,13 @@ export default {
   mounted() {
     if (this.programData) {
       this.program = Object.assign({}, this.programData);
-      this.image_url = this.programData.image && this.programData.image.url;
+      this.image = this.program.image ? this.program.image : null;
     }
   },
   methods: {
     async deleteImage(id) {
       await this.$store.dispatch("deleteFile", { id: id });
-      this.image_url = null;
+      this.image = null;
     },
     getLatestUsers() {
       console.log("recieving....");
@@ -220,7 +220,7 @@ export default {
     },
     reset() {
       this.$refs.form.reset();
-      this.image_url = null;
+      this.image = null;
     },
     async programAdd() {
       if (this.$refs.form.validate()) {
@@ -266,7 +266,7 @@ export default {
         url: "/upload",
         data,
       });
-      this.image_url = uploadRes.data[0].url;
+      this.image = uploadRes.data[0];
       this.program.image = uploadRes.data[0].id;
       this.imgLoader = false;
     },
