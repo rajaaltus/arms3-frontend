@@ -114,7 +114,7 @@ export const actions = {
         });
       })
       .catch((e) => {
-        dispatch("snackbar/setSnackbar", { color: "red", text: "Program update Failed!", timeout: 3000 }, { root: true });
+        dispatch("snackbar/setSnackbar", { color: "red", text: "Public Engagement update Failed!", timeout: 3000 }, { root: true });
       });
   },
   async deletePublic({ commit }, { id }) {

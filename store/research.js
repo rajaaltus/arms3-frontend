@@ -87,7 +87,7 @@ export const actions = {
         });
       })
       .catch((e) => {
-        dispatch("snackbar/setSnackbar", { color: "red", text: "Program Creation Failed!", timeout: 3000 }, { root: true });
+        dispatch("snackbar/setSnackbar", { color: "red", text: "Research activity Creation Failed!", timeout: 3000 }, { root: true });
       });
   },
   async updateResearch({ commit, dispatch }, payload) {
@@ -106,7 +106,7 @@ export const actions = {
         });
       })
       .catch((e) => {
-        dispatch("snackbar/setSnackbar", { color: "red", text: "Program update Failed!", timeout: 3000 }, { root: true });
+        dispatch("snackbar/setSnackbar", { color: "red", text: "Research activity update Failed!", timeout: 3000 }, { root: true });
       });
   },
   async deleteResearch({ commit }, { id }) {

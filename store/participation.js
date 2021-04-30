@@ -92,7 +92,7 @@ export const actions = {
         });
       })
       .catch((e) => {
-        dispatch("snackbar/setSnackbar", { color: "red", text: "Program update Failed!", timeout: 3000 }, { root: true });
+        dispatch("snackbar/setSnackbar", { color: "red", text: "Participation update Failed!", timeout: 3000 }, { root: true });
       });
   },
   async deleteParticipation({ commit }, { id }) {
