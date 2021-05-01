@@ -8,17 +8,7 @@
         >
       </v-col>
       <v-col cols="12" lg="3" v-if="reportYears">
-        <v-select
-          filled
-          color="green"
-          v-model="annualYear"
-          :items="reportYears"
-          item-text="val"
-          item-value="id"
-          label="Reporting Year"
-          required
-          @input="reloadData"
-        ></v-select>
+        <v-select filled color="green" v-model="annualYear" :items="reportYears" item-text="val" item-value="id" label="Reporting Year" required @input="reloadData"></v-select>
       </v-col>
     </v-row>
     <v-row>
@@ -29,28 +19,9 @@
       </v-col>
       <v-col cols="12" md="9" lg="9">
         <v-row align="center" justify="start" no-gutters>
-          <v-col
-            cols="12"
-            md="4"
-            lg="4"
-            v-for="(activity, index) in $store.state.studentActivities"
-            :key="index"
-          >
-						<v-skeleton-loader
-            v-if="loading"
-            height="94"
-            type="list-item-two-line"
-						>
-						</v-skeleton-loader>
-            <v-alert
-							v-else
-              class="mr-2"
-              border="left"
-              colored-border
-              color="yellow accent-4"
-              elevation="2"
-              tile
-            >
+          <v-col cols="12" md="4" lg="4" v-for="(activity, index) in $store.state.studentActivities" :key="index">
+            <v-skeleton-loader v-if="loading" height="94" type="list-item-two-line"> </v-skeleton-loader>
+            <v-alert v-else class="mr-2" border="left" colored-border color="yellow accent-4" elevation="2" tile>
               <v-list-item three-line>
                 <v-list-item-content>
                   <v-list-item-title class="mb-0"
@@ -73,61 +44,60 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from "vuex";
 export default {
   head() {
     return {
-      title: "Activities & Resources of Students"
+      title: "Activities & Resources of Students",
     };
   },
   data: () => ({
-		annualYear: 0,
-		loading: true
-	}),
-	computed: {
+    annualYear: 0,
+    loading: true,
+  }),
+  computed: {
     ...mapState({
-      selectedYear: state => state.selectedYear
+      selectedYear: (state) => state.selectedYear,
     }),
-    	reportYears() {
-			return this.$store.state.reportYears
-		}
+    reportYears() {
+      return this.$store.state.reportYears;
+    },
   },
   async fetch({ store }) {
     await store.dispatch("setStudentActivities");
 
     let id = store.state.auth.user.id;
     let queryString = "";
-    if (store.state.auth.user.userType === "DEPARTMENT")
-      queryString = `department.id=${store.state.auth.user.department}&deleted_ne=true&annual_year=${store.state.selectedYear}&approval_status=Approved`;
+    if (store.state.auth.user.userType === "DEPARTMENT") queryString = `department.id=${store.state.auth.user.department}&deleted_ne=true&annual_year=${store.state.selectedYear}&approval_status=Approved&user.userType=STUDENT`;
     else queryString = `department.id=${store.state.auth.user.department}&user.id=${id}&deleted_ne=true&annual_year=${store.state.selectedYear}&approval_status=Approved`;
 
     await store.dispatch("presentation/countPresentations", {
-      qs: queryString
+      qs: queryString,
     });
     await store.dispatch("participation/countParticipations", {
-      qs: queryString
+      qs: queryString,
     });
     await store.dispatch("publication/countPublications", {
-      qs: queryString
+      qs: queryString,
     });
     await store.dispatch("recognition/countRecognitions", {
-      qs: queryString
+      qs: queryString,
     });
-		await store.dispatch("theses/countTheses", { qs: queryString });
-		let qs = "";
+    await store.dispatch("theses/countTheses", { qs: queryString });
+    let qs = "";
     qs = `department.id=${store.state.auth.user.department}&blocked_ne=true`;
     await store.dispatch("setStudents", { qs: qs });
-	},
-	watch: {
+  },
+  watch: {
     selectedYear(val) {
       this.annualYear = this.selectedYear;
       this.reloadData();
-    }
+    },
   },
-	async mounted() {
-		this.annualYear = this.$store.state.selectedYear;
-		this.loading = false;
-	},
+  async mounted() {
+    this.annualYear = this.$store.state.selectedYear;
+    this.loading = false;
+  },
   methods: {
     getActivityCount(id) {
       if (id == 1) {
@@ -166,31 +136,29 @@ export default {
       if (id == 12) {
         return this.$store.state.theses.thesesCount;
       }
-		},
-		async reloadData() {
-			this.loading = true;
+    },
+    async reloadData() {
+      this.loading = true;
       let queryString = "";
-      if (this.$store.state.auth.user.userType === "DEPARTMENT")
-        queryString = `department.id=${this.$store.state.auth.user.department}&deleted_ne=true&annual_year=${this.annualYear}`;
-      else
-        queryString = `department.id=${this.$store.state.auth.user.department}&user.id=${id}&deleted_ne=true&annual_year=${this.annualYear}`;
-      
+      if (this.$store.state.auth.user.userType === "DEPARTMENT") queryString = `department.id=${this.$store.state.auth.user.department}&deleted_ne=true&annual_year=${this.annualYear}`;
+      else queryString = `department.id=${this.$store.state.auth.user.department}&user.id=${id}&deleted_ne=true&annual_year=${this.annualYear}`;
+
       await this.$store.dispatch("presentation/countPresentations", {
-        qs: queryString
+        qs: queryString,
       });
       await this.$store.dispatch("participation/countParticipations", {
-        qs: queryString
+        qs: queryString,
       });
       await this.$store.dispatch("publication/countPublications", {
-        qs: queryString
+        qs: queryString,
       });
       await this.$store.dispatch("recognition/countRecognitions", {
-        qs: queryString
+        qs: queryString,
       });
       await this.$store.dispatch("theses/countTheses", { qs: queryString });
-			this.loading = false
-    }
-  }
+      this.loading = false;
+    },
+  },
 };
 </script>
 <style scoped>

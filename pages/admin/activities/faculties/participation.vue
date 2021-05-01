@@ -21,7 +21,7 @@
                 </v-card>
               </v-col>
               <v-col cols="12" md="9" lg="9">
-                <formsParticipationForm :dataFrom="staffs" section="Select Faculty / Staff from the list" />
+                <FormsParticipationForm :dataFrom="staffs" section="Select Faculty / Staff from the list" />
               </v-col>
             </v-row>
           </v-card-text>
@@ -33,7 +33,7 @@
           <v-card-text class="px-0 py-1">
             <v-row>
               <v-col cols="12" md="12">
-                <tablesActivitiesParticipationTable :reportYears="reportYears" dataFrom="FACULTY" />
+                <TablesActivitiesParticipationTable :reportYears="reportYears" dataFrom="FACULTY" />
               </v-col>
             </v-row>
           </v-card-text>

@@ -10,6 +10,20 @@ export const state = () => ({
   departmentName: "",
   reportStepper: 0,
   userData: {},
+  months: [
+    { id: 1, text: "January" },
+    { id: 2, text: "Febraury" },
+    { id: 3, text: "March" },
+    { id: 4, text: "April" },
+    { id: 5, text: "May" },
+    { id: 6, text: "June" },
+    { id: 7, text: "July" },
+    { id: 8, text: "August" },
+    { id: 9, text: "September" },
+    { id: 10, text: "October" },
+    { id: 11, text: "November" },
+    { id: 12, text: "December" },
+  ],
   reportYears: [
     {
       id: 2018,
