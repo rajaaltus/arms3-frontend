@@ -21,7 +21,7 @@
                 </v-card>
               </v-col>
               <v-col cols="12" md="9" lg="9">
-                <formsPublicationForm :dataFrom="staffs" :publicationTypes="publicationTypes" section="Select Faculty / Staff from the list" />
+                <FormsPublicationForm :dataFrom="staffs" :publicationTypes="publicationTypes" section="Select Faculty / Staff from the list" />
               </v-col>
             </v-row>
           </v-card-text>

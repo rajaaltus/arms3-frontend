@@ -22,7 +22,7 @@
                 </v-card>
               </v-col>
               <v-col cols="12" md="9" lg="9">
-                <formsThesesForm :dataFrom="students" />
+                <FormsThesesForm :dataFrom="students" />
               </v-col>
             </v-row>
           </v-card-text>

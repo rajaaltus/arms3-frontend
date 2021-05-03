@@ -30,6 +30,14 @@ export const mutations = {
   SET_PRESENTATIONS_COUNT(state, presentationsCount) {
     state.presentationsCount = presentationsCount;
   },
+  INIT_ERROR(state) {
+    state.presentationsData.success = false;
+    state.presentationsData.error = {};
+  },
+  UPDATE_SUCCESS(state) {
+    state.presentationsData.success = true;
+    state.presentationsData.error = {};
+  },
 };
 
 export const actions = {
@@ -50,7 +58,8 @@ export const actions = {
       .catch((e) => {});
   },
   async addPresentation({ commit, dispatch }, payload) {
-    return await this.$axios
+    commit("INIT_ERROR");
+    await this.$axios
       .$post("/presentations", payload)
       .then((response) => {
         commit("ADD_TO_PRESENTATIONSDATA", response);
@@ -62,20 +71,29 @@ export const actions = {
           timer: 1500,
           timerProgressBar: true,
         });
-        return true;
       })
       .catch((e) => {
         dispatch("snackbar/setSnackbar", { color: "red", text: "Presentation Creation Failed!", timeout: 3000 }, { root: true });
-        return false;
       });
   },
-  async updatePresentation({ commit }, payload) {
+  async updatePresentation({ commit, dispatch }, payload) {
+    commit("INIT_ERROR");
     await this.$axios
       .$put(`/presentations/${payload.id}`, payload)
       .then((response) => {
-        commit("SET_PRESENTATIONSDATA", response);
+        commit("UPDATE_SUCCESS");
+        Swal.fire({
+          title: "Success",
+          text: "Updated Successfully!",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+        });
       })
-      .catch((e) => {});
+      .catch((e) => {
+        dispatch("snackbar/setSnackbar", { color: "red", text: "Presentation update Failed!", timeout: 3000 }, { root: true });
+      });
   },
   async deletePresentation({ commit }, { id }) {
     await this.$axios

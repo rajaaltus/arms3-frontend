@@ -26,63 +26,10 @@
                 </v-btn>
                 <v-toolbar-title>Key Assignments</v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-toolbar-items>
-                  <v-btn dark text @click="close">
-                    Cancel
-                  </v-btn>
-                  <v-btn dark text @click="save">
-                    Save
-                  </v-btn>
-                </v-toolbar-items>
               </v-toolbar>
               <v-card-text>
                 <v-container>
-                  <v-row>
-                    <v-col cols="12">
-                      <v-text-field v-model="editedItem.faculty_name" label="Faculty Name(s)" color="success"></v-text-field>
-                    </v-col>
-                    <v-col cols="3">
-                      <v-select v-model="editedItem.classification" :items="classifications" item-text="name" item-value="value" label="Classification" color="success"></v-select>
-                    </v-col>
-
-                    <v-col cols="9">
-                      <v-text-field v-model="editedItem.roles" label="Roles" color="success"></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12">
-                      <v-text-field v-model="editedItem.designation" label="Designation" color="success"></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12">
-                      <v-textarea counter auto-grow row-height="15" v-model="editedItem.brief_report" label="Brief Report"></v-textarea>
-                    </v-col>
-                  </v-row>
-                  <v-hover>
-                    <template v-slot:default="{ hover }">
-                      <v-img
-                        :src="image_url === '/image_placeholder.png' ? '/image_placeholder.png' : `${$axios.defaults.baseURL}${image_url}`"
-                        lazy-src="/image_placeholder.png"
-                        aspect-ratio="1"
-                        class="grey lighten-2"
-                        max-width="100%"
-                        max-height="400"
-                      >
-                        <template v-slot:placeholder>
-                          <v-row class="fill-height ma-0" align="center" justify="center">
-                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                          </v-row>
-                        </template>
-                        <v-fade-transition>
-                          <v-overlay v-if="hover" absolute color="#036358">
-                            <v-btn @click="$refs.image.click()">
-                              {{ image_url ? "Edit Image" : "Upload Image" }}
-                            </v-btn>
-                          </v-overlay>
-                        </v-fade-transition>
-                      </v-img>
-                    </template>
-                  </v-hover>
-                  <input ref="image" type="file" style="display: none;" label="File input" @change="handleFileUpload" />
+                  <FormsAssignmentForm :dataFrom="staffs" :assignmentData="editedItem" :key="renderKey" @close="close" @save="save" />
                 </v-container>
               </v-card-text>
             </v-card>
@@ -103,6 +50,7 @@ import Swal from "sweetalert2";
 export default {
   props: ["reportYears"],
   data: () => ({
+    renderKey: 0,
     loading: false,
     dialog: false,
     annualYear: 0,
@@ -133,6 +81,7 @@ export default {
       department: 0,
       user: 0,
       image: null,
+      month: 0,
       rejected_reason: null,
     },
     image_url: "/image_placeholder.png",
@@ -151,6 +100,7 @@ export default {
       department: 0,
       user: 0,
       image: null,
+      month: 0,
       rejected_reason: null,
     },
     classifications: ["International", "National", "NotApplicable", "Others"],
@@ -229,9 +179,7 @@ export default {
     editItem(item) {
       this.editedIndex = this.assignmentsData.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      if (this.editedItem.image) {
-        this.image_url = this.editedItem.image.url;
-      } else this.editedItem.image = 0;
+      this.renderKey += 1;
       this.dialog = true;
     },
 
@@ -299,42 +247,16 @@ export default {
     },
     close() {
       this.dialog = false;
-      this.image_url = "/image_placeholder.png";
+      this.image = "/image_placeholder.png";
     },
-    save() {
-      if (this.editedIndex > -1) {
-        this.editedItem.user = this.editedItem.user.id;
-        this.editedItem.department = this.editedItem.department.id;
-        var payload = this.editedItem;
-        console.log(payload);
-        this.$store
-          .dispatch("assignment/updateAssignment", payload)
-          .then((resp) => {
-            Swal.fire({
-              title: "Success",
-              text: "Updated Successfully!",
-              icon: "success",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-
-            if (this.imageToDelete) {
-              this.$store.dispatch("deleteFile", { id: this.imageToDelete });
-              this.imageToDelete = null;
-            }
-            this.reloadData();
-          })
-          .catch((err) => {
-            Swal.fire({
-              title: "Something Wrong!",
-              text: err,
-              icon: "warning",
-              showConfirmButton: false,
-              timer: 4500,
-            });
-          });
+    async save(assignment) {
+      var payload = assignment;
+      // console.log(payload);
+      await this.$store.dispatch("assignment/updateAssignment", payload);
+      if (this.$store.state.assignment.assignmentsData.success) {
+        this.close();
+        this.reloadData();
       }
-      this.close();
     },
   },
 };

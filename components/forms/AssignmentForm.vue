@@ -3,8 +3,8 @@
     <v-row>
       <v-col cols="12" md="12">
         <v-form ref="form" v-model="valid" lazy-validation @submit.prevent>
-          <v-row no-gutters v-if="$auth.user.userType === 'DEPARTMENT'">
-            <v-col cols="11" lg="11">
+          <v-row no-gutters>
+            <v-col cols="7" lg="7" v-if="$auth.user.userType === 'DEPARTMENT'">
               <v-select
                 v-model="assignment.user"
                 :items="dataFrom"
@@ -13,68 +13,31 @@
                 label="Data received from?"
                 placeholder="Select Faculty / Staff from the List"
                 color="success"
-                :rules="[
-                  (v) => !!v || 'Selecting the Faculty / Staff is Required',
-                ]"
+                :rules="[(v) => !!v || 'Selecting the Faculty / Staff is Required']"
               ></v-select>
             </v-col>
-            <v-col cols="1" lg="1" sm="1">
-              <AddUser
-                @new-user="getLatestUsers()"
-                @new-student="getLatestStudents()"
-              />
+            <v-col cols="1" lg="1" sm="1" v-if="$auth.user.userType === 'DEPARTMENT'">
+              <AddUser @new-user="getLatestUsers()" @new-student="getLatestStudents()" />
+            </v-col>
+            <v-col cols="4">
+              <v-select v-model="assignment.month" :items="months" item-value="id" item-text="text" label="for the Month of" placeholder="Select the month for the entry" color="success" :rules="[(v) => !!v || 'Required']"></v-select>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12">
-              <v-text-field
-                v-model="assignment.faculty_name"
-                :rules="[(v) => !!v || 'Item is required']"
-                label="Faculty Name(s)"
-                color="success"
-              ></v-text-field>
+              <v-text-field v-model="assignment.faculty_name" :rules="[(v) => !!v || 'Item is required']" label="Faculty Name(s)" color="success"></v-text-field>
             </v-col>
             <v-col cols="3">
-              <v-select
-                v-model="assignment.classification"
-                :rules="[(v) => !!v || 'Item is required']"
-                :items="classifications"
-                item-text="name"
-                item-value="value"
-                label="Classification"
-                color="success"
-              ></v-select>
+              <v-select v-model="assignment.classification" :rules="[(v) => !!v || 'Item is required']" :items="classifications" item-text="name" item-value="value" label="Classification" color="success"></v-select>
             </v-col>
             <v-col cols="9">
-              <v-text-field
-                v-model="assignment.roles"
-                :rules="[(v) => !!v || 'Item is required']"
-                label="Roles"
-                required
-                color="success"
-              >
-              </v-text-field>
+              <v-text-field v-model="assignment.roles" :rules="[(v) => !!v || 'Item is required']" label="Roles" required color="success"> </v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field
-                v-model="assignment.designation"
-                :rules="[(v) => !!v || 'Item is required']"
-                label="Designation"
-                required
-                color="success"
-              >
-              </v-text-field>
+              <v-text-field v-model="assignment.designation" :rules="[(v) => !!v || 'Item is required']" label="Designation" required color="success"> </v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-textarea
-                auto-grow
-                row-height="15"
-                counter
-                v-model="assignment.brief_report"
-                :rules="[(v) => !!v || 'Item is required']"
-                label="Brief Report"
-                color="success"
-              ></v-textarea>
+              <v-textarea auto-grow row-height="15" counter v-model="assignment.brief_report" :rules="[(v) => !!v || 'Item is required']" label="Brief Report" color="success"></v-textarea>
             </v-col>
           </v-row>
           <v-row>
@@ -82,43 +45,37 @@
               <h3><span class="frm-title">Upload Images (If any)</span></h3>
               <v-hover>
                 <template v-slot:default="{ hover }">
-                  <v-img
-                    :src="image_url?`${$axios.defaults.baseURL}${image_url}`:'/image_placeholder.png'"
-                    lazy-src="/image_placeholder.png"
-                    class="mt-3"
-                    max-width="100%"
-                    max-height="175"
-                  >
-                  <v-progress-linear
-                    :active="imgLoader"
-                    :indeterminate="imgLoader"
-                    absolute
-                    bottom
-                    color="deep-purple accent-4"
-                  ></v-progress-linear>
+                  <v-img :src="image ? `${$axios.defaults.baseURL}${image.url}` : '/image_placeholder.png'" lazy-src="/image_placeholder.png" class="mt-3" max-width="100%" max-height="175" contain>
+                    <v-progress-linear :active="imgLoader" :indeterminate="imgLoader" absolute bottom color="deep-purple accent-4"></v-progress-linear>
                     <v-fade-transition>
                       <v-overlay v-if="hover" absolute color="#00564c">
                         <v-btn @click="$refs.image.click()">
-                          Upload Image
+                          {{ image ? "Change Image" : "Upload Image" }}
+                        </v-btn>
+                        <v-btn v-if="image" class="mt-0" x-small fab dark color="red darken-3" @click="deleteImage(image.id)">
+                          <v-icon>mdi-delete</v-icon>
                         </v-btn>
                       </v-overlay>
                     </v-fade-transition>
                   </v-img>
                 </template>
               </v-hover>
-              <input
-                ref="image"
-                type="file"
-                style="display: none;"
-                label="File input"
-                @change="handleFileUpload"
-              />
+              <input ref="image" type="file" style="display: none;" label="File input" @change="handleFileUpload" />
             </v-col>
           </v-row>
         </v-form>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="assignmentData">
+      <v-spacer></v-spacer>
+      <v-btn small color="#d74f4f" dark @click="$emit('close')" class="mr-4">
+        Cancel
+      </v-btn>
+      <v-btn small color="#57a727" dark @click="$emit('save', assignment)" class="mr-4">
+        Update
+      </v-btn>
+    </v-row>
+    <v-row v-else>
       <v-spacer></v-spacer>
       <v-btn small color="#d74f4f" dark @click="reset" class="mr-4">
         Reset
@@ -135,9 +92,14 @@ import Swal from "sweetalert2";
 import { mapState } from "vuex";
 import AddUser from "@/components/forms/AddUser";
 export default {
-  props: ["dataFrom", "section"],
+  props: ["dataFrom", "section", "assignmentData"],
   components: {
     AddUser,
+  },
+  computed: {
+    ...mapState({
+      months: (state) => state.months,
+    }),
   },
   data: () => ({
     imgLoader: false,
@@ -158,21 +120,30 @@ export default {
       department: 0,
       image: null,
       user: 0,
+      month: 0,
     },
     selectedFile: null,
-    image_url: null,
+    image: null,
     classifications: ["International", "National", "NotApplicable", "Others"],
   }),
+  mounted() {
+    if (this.assignmentData) {
+      this.assignment = Object.assign({}, this.assignmentData);
+      this.image = this.assignment.image ? this.assignment.image : null;
+    }
+  },
   methods: {
+    async deleteImage(id) {
+      await this.$store.dispatch("deleteFile", { id: id });
+      this.image = null;
+    },
     getLatestUsers() {
-      console.log("recieving....");
       let queryString = "";
       queryString = `department.id=${this.$store.state.auth.user.department}&userType=FACULTY&blocked_ne=true`;
       this.$store.dispatch("setStaffs", { qs: queryString });
       this.dataFrom = this.$store.state.staffs;
     },
     getLatestStudents() {
-      console.log("recieving...");
       let queryString = "";
       queryString = `department.id=${this.$store.state.auth.user.department}&userType=STUDENT&blocked_ne=true`;
       this.$store.dispatch("setStudents", { qs: queryString });
@@ -180,14 +151,13 @@ export default {
     },
     reset() {
       this.$refs.form.reset();
-      this.image_url = null;
+      this.image = null;
     },
     async assignmentAdd() {
       if (this.$refs.form.validate()) {
         this.assignment.annual_year = this.$store.state.selectedYear;
-        
-        if (this.$store.state.auth.user.userType !== "DEPARTMENT")
-          this.assignment.user = this.$auth.user.id;
+
+        if (this.$store.state.auth.user.userType !== "DEPARTMENT") this.assignment.user = this.$auth.user.id;
 
         if (this.$store.state.auth.user.userType === "DEPARTMENT") {
           var today = new Date();
@@ -197,25 +167,14 @@ export default {
         var payload = this.assignment;
         // console.log(payload);
         var vm = this;
-        await this.$store
-          .dispatch("assignment/assignmentAdd", payload)
-          .then((resp) => {
-            Swal.fire({
-              title: "Success",
-              text: "Added Successfully!",
-              icon: "success",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            this.reset();
-          })
-          .catch((err) => {
-            Swal.fire("Something wrong!");
-          });
+        await this.$store.dispatch("assignment/assignmentAdd", payload);
+      }
+      if (this.$store.state.assignment.assignmentsData.success) {
+        this.$refs.form.reset();
       }
     },
     async handleFileUpload(event) {
-      this.imgLoader=true;
+      this.imgLoader = true;
       this.selectedFile = event.target.files[0];
       // console.log(this.selectedFile);
       const data = new FormData();
@@ -225,9 +184,9 @@ export default {
         url: "/upload",
         data,
       });
-      this.image_url = uploadRes.data[0].url;
+      this.image = uploadRes.data[0];
       this.assignment.image = uploadRes.data[0].id;
-      this.imgLoader=false;
+      this.imgLoader = false;
     },
   },
 };

@@ -8,17 +8,7 @@
         >
       </v-col>
       <v-col cols="12" lg="3" v-if="reportYears">
-        <v-select
-          filled
-          color="green"
-          v-model="annualYear"
-          :items="reportYears"
-          item-text="val"
-          item-value="id"
-          label="Reporting Year"
-          required
-          @input="reloadData"
-        ></v-select>
+        <v-select filled color="green" v-model="annualYear" :items="reportYears" item-text="val" item-value="id" label="Reporting Year" required @input="reloadData"></v-select>
       </v-col>
     </v-row>
     <v-row>
@@ -29,28 +19,9 @@
       </v-col>
       <v-col cols="12" md="9" lg="9">
         <v-row align="center" justify="start" no-gutters>
-          <v-col
-            cols="12"
-            md="4"
-            lg="4"
-            v-for="(activity, index) in $store.state.activities"
-            :key="index"
-          >
-            <v-skeleton-loader
-              v-if="loading"
-              height="94"
-              type="list-item-two-line"
-            >
-            </v-skeleton-loader>
-            <v-alert
-              v-else
-              class="mr-2"
-              border="left"
-              colored-border
-              color="yellow accent-4"
-              elevation="2"
-              tile
-            >
+          <v-col cols="12" md="4" lg="4" v-for="(activity, index) in $store.state.activities" :key="index">
+            <v-skeleton-loader v-if="loading" height="94" type="list-item-two-line"> </v-skeleton-loader>
+            <v-alert v-else class="mr-2" border="left" colored-border color="yellow accent-4" elevation="2" tile>
               <v-list-item three-line>
                 <v-list-item-content>
                   <v-list-item-title class="mb-0"
@@ -77,36 +48,34 @@ import { mapState } from "vuex";
 export default {
   head() {
     return {
-      title: "Activities & Resources of Faculty / Staff"
+      title: "Activities & Resources of Faculty / Staff",
     };
   },
   data: () => ({
     annualYear: 0,
-    loading: true
+    loading: true,
   }),
   computed: {
     ...mapState({
-      selectedYear: state => state.selectedYear
+      selectedYear: (state) => state.selectedYear,
     }),
     reportYears() {
-			return this.$store.state.reportYears
-		}
+      return this.$store.state.reportYears;
+    },
   },
   async fetch({ store }) {
     await store.dispatch("setActivities");
     let queryString = "";
-    if (store.state.auth.user.userType === "DEPARTMENT")
-      queryString = `department.id=${store.state.auth.user.department}&deleted_ne=true&annual_year=${store.state.selectedYear}&approval_status=Approved`;
-    else
-      queryString = `department.id=${store.state.auth.user.department}&user.id=${store.state.auth.user.id}&deleted_ne=true&annual_year=${store.state.selectedYear}&approval_status=Approved`;
+    if (store.state.auth.user.userType === "DEPARTMENT") queryString = `department.id=${store.state.auth.user.department}&deleted_ne=true&annual_year=${store.state.selectedYear}&approval_status=Approved&user.userType=FACULTY`;
+    else queryString = `department.id=${store.state.auth.user.department}&user.id=${store.state.auth.user.id}&deleted_ne=true&annual_year=${store.state.selectedYear}&approval_status=Approved`;
     await store.dispatch("program/countProgrammes", { qs: queryString });
     await store.dispatch("visitor/countVisitors", { qs: queryString });
     await store.dispatch("training/countTrainings", { qs: queryString });
     await store.dispatch("presentation/countPresentations", {
-      qs: queryString
+      qs: queryString,
     });
     await store.dispatch("participation/countParticipations", {
-      qs: queryString
+      qs: queryString,
     });
     await store.dispatch("public/countPublicEngagements", { qs: queryString });
     await store.dispatch("research/countResearch", { qs: queryString });
@@ -122,7 +91,7 @@ export default {
     selectedYear(val) {
       this.annualYear = this.selectedYear;
       this.reloadData();
-    }
+    },
   },
   async mounted() {
     this.annualYear = this.$store.state.selectedYear;
@@ -170,40 +139,38 @@ export default {
     async reloadData() {
       this.loading = true;
       let queryString = "";
-      if (this.$store.state.auth.user.userType === "DEPARTMENT")
-        queryString = `department.id=${this.$store.state.auth.user.department}&deleted_ne=true&annual_year=${this.annualYear}&approval_status=Approved`;
-      else
-        queryString = `department.id=${this.$store.state.auth.user.department}&user.id=${this.$auth.user.id}&deleted_ne=true&annual_year=${this.annualYear}&approval_status=Approved`;
+      if (this.$store.state.auth.user.userType === "DEPARTMENT") queryString = `department.id=${this.$store.state.auth.user.department}&deleted_ne=true&annual_year=${this.annualYear}&approval_status=Approved`;
+      else queryString = `department.id=${this.$store.state.auth.user.department}&user.id=${this.$auth.user.id}&deleted_ne=true&annual_year=${this.annualYear}&approval_status=Approved`;
       await this.$store.dispatch("program/countProgrammes", {
-        qs: queryString
+        qs: queryString,
       });
       await this.$store.dispatch("visitor/countVisitors", { qs: queryString });
       await this.$store.dispatch("training/countTrainings", {
-        qs: queryString
+        qs: queryString,
       });
       await this.$store.dispatch("presentation/countPresentations", {
-        qs: queryString
+        qs: queryString,
       });
       await this.$store.dispatch("participation/countParticipations", {
-        qs: queryString
+        qs: queryString,
       });
       await this.$store.dispatch("public/countPublicEngagements", {
-        qs: queryString
+        qs: queryString,
       });
       await this.$store.dispatch("research/countResearch", { qs: queryString });
       await this.$store.dispatch("publication/countPublications", {
-        qs: queryString
+        qs: queryString,
       });
       await this.$store.dispatch("recognition/countRecognitions", {
-        qs: queryString
+        qs: queryString,
       });
       await this.$store.dispatch("patent/countPatents", { qs: queryString });
       await this.$store.dispatch("assignment/countAssignments", {
-        qs: queryString
+        qs: queryString,
       });
       this.loading = false;
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

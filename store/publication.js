@@ -1,4 +1,5 @@
 const limit = "&_limit=1000";
+import Swal from "sweetalert2";
 export const state = () => ({
   publicationsData: {
     success: false,
@@ -23,6 +24,10 @@ export const getters = {
 export const mutations = {
   SET_STATS(state, response) {
     state.stats.push(response);
+  },
+  ADD_TO_PUBLICATIONSDATA(state, response) {
+    state.publicationsData.success = true;
+    state.publicationsData.result.push(response);
   },
   SET_PUBLICATIONSDATA(state, publicationsData) {
     if (publicationsData && Array.isArray(publicationsData)) {
@@ -93,6 +98,14 @@ export const mutations = {
     state.stats = response;
     console.log("resetted:" + state.stats);
   },
+  INIT_ERROR(state) {
+    state.publicationsData.success = false;
+    state.publicationsData.error = {};
+  },
+  UPDATE_SUCCESS(state) {
+    state.publicationsData.success = true;
+    state.publicationsData.error = {};
+  },
 };
 
 export const actions = {
@@ -123,7 +136,7 @@ export const actions = {
     await this.$axios({
       method: "get",
       url: `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${id}&retmode=json`,
-      headers: "",
+      headers: { Authorization: "" },
     })
       .then((response) => {
         // handle success
@@ -167,35 +180,42 @@ export const actions = {
         // always executed
       });
   },
-  async publicationAdd({ commit }, payload) {
+  async publicationAdd({ commit, dispatch }, payload) {
+    commit("INIT_ERROR");
     await this.$axios
       .$post("/publications", payload)
       .then((response) => {
-        // handle success
-        commit("SET_PUBLICATIONSDATA", response);
+        commit("ADD_TO_PUBLICATIONSDATA", response);
+        Swal.fire({
+          title: "Success",
+          text: "Added Successfully!",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+        });
       })
       .catch((e) => {
-        // handle error
-        // commit("SET_PUBLICATIONSDATA", error);
-        console.log(e);
-      })
-      .finally(function () {
-        // always executed
+        dispatch("snackbar/setSnackbar", { color: "red", text: "Publication Creation Failed!", timeout: 3000 }, { root: true });
       });
   },
-  async updatePublication({ commit }, payload) {
+  async updatePublication({ commit, dispatch }, payload) {
+    commit("INIT_ERROR");
     await this.$axios
       .$put(`/publications/${payload.id}`, payload)
       .then((response) => {
-        // handle success
-        commit("SET_PUBLICATIONSDATA", response);
+        commit("UPDATE_SUCCESS");
+        Swal.fire({
+          title: "Success",
+          text: "Updated Successfully!",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+        });
       })
       .catch((e) => {
-        // handle error
-        // commit("SET_PUBLICATIONSDATA", error);
-      })
-      .finally(function () {
-        // always executed
+        dispatch("snackbar/setSnackbar", { color: "red", text: "Publication update Failed!", timeout: 3000 }, { root: true });
       });
   },
   async deletePublication({ commit }, { id }) {
