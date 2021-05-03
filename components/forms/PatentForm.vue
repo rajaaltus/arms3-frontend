@@ -20,7 +20,7 @@
               <AddUser @new-user="getLatestUsers()" @new-student="getLatestStudents()" />
             </v-col>
             <v-col cols="4">
-              <v-select v-model="patent.month" :items="months" item-value="id" item-text="text" label="for the Month of" placeholder="Select the month for the entry" color="success" :rules="[(v) => !!v || 'Required']"></v-select>
+              <v-select v-model="patent.month" :items="months" item-value="id" item-text="text" label="Data for the month of" placeholder="Select the month for the entry" color="success" :rules="[(v) => !!v || 'Required']"></v-select>
             </v-col>
           </v-row>
           <v-row>

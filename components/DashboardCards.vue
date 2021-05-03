@@ -17,11 +17,11 @@
               </template>
             </vc-date-picker>
           </v-col>
-          <v-col cols="12" lg="2" class="my-5" v-if="$auth.user.userType === 'DEPARTMENT'">
+          <v-col cols="12" lg="3" class="my-5" v-if="$auth.user.userType === 'DEPARTMENT'">
             <v-select ref="user-type" outlined dense v-model="userType" label="Select User Type" placeholder="Select" :items="userTypes" color="success"></v-select>
           </v-col>
           <v-col cols="11" lg="3" class="my-5" v-if="$auth.user.userType === 'DEPARTMENT'">
-            <v-autocomplete v-model="selectedUser" outlined dense ref="user" :items="assignedPeople" color="blue-grey lighten-2" label="Select Individual" placeholder="My Name is" item-text="fullname" item-value="id">
+            <v-autocomplete v-model="selectedUser" outlined dense ref="user" :items="assignedPeople" color="blue-grey lighten-2" label="Select User" placeholder="My Name is" item-text="fullname" item-value="id">
               <template v-slot:selection="data">
                 {{ data.item.fullname }}
               </template>
@@ -42,7 +42,7 @@
             </v-autocomplete>
           </v-col>
 
-          <v-col cols="auto" lg="auto">
+          <v-col cols="auto" lg="auto" class="mt-3">
             <v-row>
               <v-layout align-start justify-start>
                 <v-btn v-if="selectedYear" :loading="loading" :disabled="loading" color="green" x-small class="mt-6 mr-1 white--text" fab @click="loader()">

@@ -4,10 +4,10 @@
       <v-col cols="12" lg="2" class="mt-5">
         <v-select outlined dense v-model="selectedYear" ref="year" :items="reportYears" item-value="id" item-text="val" label="Reporting Year" placeholder="Pick Year" color="success"></v-select>
       </v-col>
-      <v-col cols="12" lg="3" class="mt-5">
+      <v-col cols="12" lg="2" class="mt-5">
         <v-select :items="months" item-text="text" item-value="val" v-model="mon" outlined dense label="Month" placeholder="Select Month" color="success"> </v-select>
       </v-col>
-      <v-col cols="12" lg="3">
+      <v-col cols="12" lg="4">
         <vc-date-picker v-model="range" is-range style="display: flex; margin-top: 1.3rem; align-items: baseline; z-index: 99;">
           <template v-slot="{ inputValue, inputEvents }">
             <v-text-field :value="inputValue.start" label="From" v-on="inputEvents.start" outlined dense></v-text-field>
@@ -19,10 +19,10 @@
         </vc-date-picker>
       </v-col>
       <v-col cols="12" lg="3" class="mt-5" v-if="$auth.user.userType === 'DEPARTMENT'">
-        <v-select outlined dense ref="user-type" v-model="userType" label="Report of the" placeholder="Pick User Type" :items="userTypes" color="success"></v-select>
+        <v-select outlined dense ref="user-type" v-model="userType" label="Report for the" placeholder="Pick User Type" :items="userTypes" color="success"></v-select>
       </v-col>
 
-      <v-col cols="auto" lg="auto">
+      <v-col cols="auto" lg="auto" class="mt-3">
         <v-row>
           <v-layout align-start justify-start>
             <v-btn v-if="selectedYear && mon && range && userType" :loading="loading" :disabled="loading" color="green" x-small class="mt-6 mr-1 white--text" fab @click="loader()">
