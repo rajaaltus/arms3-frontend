@@ -214,15 +214,19 @@ export default {
   },
   mounted() {
     this.annualYear = this.$store.state.selectedYear;
-    this.departmentAbout = this.newAbout;
-    if (this.$store.state.about.newAbout.image_1 !== null) this.img_url1 = this.$store.state.about.newAbout.image_1.url;
-    else this.img_url1 = null;
+    if (this.newAbout) {
+      this.departmentAbout = this.newAbout;
+      if (this.$store.state.about.newAbout.image_1 !== null) this.img_url1 = this.$store.state.about.newAbout.image_1.url;
+      else this.img_url1 = null;
 
-    if (this.$store.state.about.newAbout.image_2 != null) this.img_url2 = this.$store.state.about.newAbout.image_2.url;
-    else this.img_url2 = null;
+      if (this.$store.state.about.newAbout.image_2 != null) this.img_url2 = this.$store.state.about.newAbout.image_2.url;
+      else this.img_url2 = null;
 
-    if (this.$store.state.about.newAbout.image_3 != null) this.img_url3 = this.$store.state.about.newAbout.image_3.url;
-    else this.img_url3 = null;
+      if (this.$store.state.about.newAbout.image_3 != null) this.img_url3 = this.$store.state.about.newAbout.image_3.url;
+      else this.img_url3 = null;
+    }
+    console.log(this.newAbout);
+    console.log(this.departmentAbout);
   },
 
   methods: {
