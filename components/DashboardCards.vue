@@ -7,7 +7,7 @@
             <v-select v-model="selectedYear" outlined dense ref="year" :items="reportYears" item-value="id" item-text="val" label="Reporting Year" placeholder="Pick Year" color="success" class="disp"></v-select>
           </v-col>
           <v-col cols="12" :lg="$auth.user.userType === 'DEPARTMENT' ? '3' : '4'">
-            <vc-date-picker v-model="range" is-range style="display: flex; margin-top: 1.3rem; align-items: baseline;">
+            <vc-date-picker ref="range" v-model="range" is-range style="display: flex; margin-top: 1.3rem; align-items: baseline;">
               <template v-slot="{ inputValue, inputEvents }">
                 <v-text-field :value="inputValue.start" label="From" v-on="inputEvents.start" outlined dense></v-text-field>
                 <svg style="width: 1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -329,10 +329,8 @@ export default {
       if (val === "DEPARTMENT") this.assignedPeople = this.people;
     },
     range(val) {
-      console.log(val);
       var range = Object.assign({}, val);
       this.monthParam = `&created_at_gt=${this.$moment(range.start).format("YYYY-MM-DD")}&created_at_lt=${this.$moment(range.end).format("YYYY-MM-DD")}`;
-      console.log("Month Param:", this.monthParam);
     },
     selectedUser(val) {
       this.userParam = `&user.id=${val}`;
@@ -384,11 +382,13 @@ export default {
       this.query = null;
       this.query = this.yearParam ? this.yearParam : "?deleted_ne=true&approval_status=Approved";
 
-      if (this.range) this.query += this.monthParam;
+      if (this.range !== null) this.query += this.monthParam;
       if (this.userType) this.query += this.userTypeParam;
       if (this.selectedUser) this.query += this.userParam;
 
-      if (this.$auth.user.userType === "FACULTY" || this.$auth.user.userType === "STUDENT") this.query += `&user.id=${this.$auth.user.id}`;
+      if (this.$auth.user.userType === "FACULTY" || this.$auth.user.userType === "STUDENT") {
+        this.query += `&user.id=${this.$auth.user.id}`;
+      }
 
       let queryString = "";
       queryString = this.query + `&department.id=${this.$auth.user.department}&deleted_ne=true&approval_status=Approved`;
@@ -428,9 +428,7 @@ export default {
 
     resetFilter() {
       this.getAllyears();
-      this.range = {};
-      this.range.start = null;
-      this.range.end = null;
+      this.range = null;
       this.selectedYear = 0;
       this.userType = null;
       this.yearParam = null;
@@ -481,13 +479,16 @@ export default {
     async reloadData() {
       this.loading = true;
       let queryString = "";
-      // if (this.$store.state.auth.user.userType === "DEPARTMENT")
-      //   queryString = `department.id=${this.$store.state.auth.user.department}&deleted_ne=true&annual_year=${this.selectedYear}`;
-      // else
+
       if (this.resetCall) {
-        if (this.$store.state.auth.user.userType === "DEPARTMENT") queryString = `department.id=${this.$store.state.auth.user.department}&deleted_ne=true`;
-        else queryString = `department.id=${this.$store.state.auth.user.department}&user.id=${this.$auth.user.id}&deleted_ne=true`;
-      } else queryString = `department.id=${this.$store.state.auth.user.department}&user.id=${this.$auth.user.id}&deleted_ne=true&annual_year=${this.selectedYear}`;
+        if (this.$store.state.auth.user.userType === "DEPARTMENT") {
+          queryString = `department.id=${this.$store.state.auth.user.department}&deleted_ne=true`;
+        } else {
+          queryString = `department.id=${this.$store.state.auth.user.department}&user.id=${this.$auth.user.id}&deleted_ne=true`;
+        }
+      } else {
+        queryString = `department.id=${this.$store.state.auth.user.department}&user.id=${this.$auth.user.id}&deleted_ne=true&annual_year=${this.selectedYear}`;
+      }
       await this.$store.dispatch("program/countProgrammes", {
         qs: queryString,
       });
