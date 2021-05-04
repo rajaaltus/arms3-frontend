@@ -4,55 +4,19 @@
       <v-container fluid>
         <v-row>
           <v-col cols="3">
-            <v-select
-              color="green"
-              v-model="faculty.faculty_status"
-              :rules="[v => !!v || 'Item is required']"
-              label="Status"
-              :items="facultyStatus"
-            >
-            </v-select>
+            <v-select color="green" v-model="faculty.faculty_status" :rules="[(v) => !!v || 'Item is required']" label="Status" :items="facultyStatus"> </v-select>
           </v-col>
           <v-col cols="3">
-            <v-text-field
-              color="green"
-              v-model="faculty.faculty_name"
-              :rules="[v => !!v || 'Item is required']"
-              label="Name of the Official"
-              required
-            >
-            </v-text-field>
+            <v-text-field color="green" v-model="faculty.faculty_name" :rules="[(v) => !!v || 'Item is required']" label="Name of the Official" required> </v-text-field>
           </v-col>
 
           <v-col cols="3">
-            <v-text-field
-              color="green"
-              v-model="faculty.designation"
-              :rules="[v => !!v || 'Item is required']"
-              label="Designation"
-              required
-            >
-            </v-text-field>
+            <v-text-field color="green" v-model="faculty.designation" :rules="[(v) => !!v || 'Item is required']" label="Designation" required> </v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-menu
-              ref="menu1"
-              v-model="duration_from"
-              :close-on-content-click="false"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
+            <v-menu ref="menu1" v-model="duration_from" :close-on-content-click="false" transition="scale-transition" offset-y min-width="290px">
               <template v-slot:activator="{ on }">
-                <v-text-field
-                  color="green"
-                  v-model="faculty.leaving_date"
-                  :rules="[v => !!v || 'Item is required']"
-                  :return-value.sync="duration_from"
-                  readonly
-                  label="Leaving Date"
-                  v-on="on"
-                ></v-text-field>
+                <v-text-field color="green" v-model="faculty.leaving_date" :rules="[(v) => !!v || 'Item is required']" :return-value.sync="duration_from" readonly label="Leaving Date" v-on="on"></v-text-field>
               </template>
               <v-date-picker v-model="faculty.leaving_date" no-title scrollable>
                 <v-spacer></v-spacer>
@@ -69,37 +33,22 @@
             <h3><span class="frm-title">Upload Image (If any)</span></h3>
             <v-hover>
               <template v-slot:default="{ hover }">
-                <v-img
-                  :src="`${$axios.defaults.baseURL}${image_url}`"
-                  lazy-src="/image_placeholder.png"
-                  class="mt-3"
-                  max-width="100%"
-                  max-height="175"
-                >
-                  <v-progress-linear
-                    :active="imgLoader"
-                    :indeterminate="imgLoader"
-                    absolute
-                    bottom
-                    color="deep-purple accent-4"
-                  ></v-progress-linear>
+                <v-img :src="image ? `${$axios.defaults.baseURL}${image.url}` : '/image_placeholder.png'" lazy-src="/image_placeholder.png" class="mt-3" max-width="100%" max-height="175" contain>
+                  <v-progress-linear :active="imgLoader" :indeterminate="imgLoader" absolute bottom color="deep-purple accent-4"></v-progress-linear>
                   <v-fade-transition>
                     <v-overlay v-if="hover" absolute color="#00564c">
                       <v-btn @click="$refs.image.click()">
-                        Upload Image
+                        {{ image ? "Change Image" : "Upload Image" }}
+                      </v-btn>
+                      <v-btn v-if="image" class="mt-0" x-small fab dark color="red darken-3" @click="deleteImage(image.id)">
+                        <v-icon>mdi-delete</v-icon>
                       </v-btn>
                     </v-overlay>
                   </v-fade-transition>
                 </v-img>
               </template>
             </v-hover>
-            <input
-              ref="image"
-              type="file"
-              style="display:none;"
-              label="File input"
-              @change="handleFileUpload"
-            />
+            <input ref="image" accept="image/png, image/jpeg" type="file" style="display: none;" label="File input" @change="handleFileUpload" />
           </v-col>
         </v-row>
       </v-container>
@@ -132,15 +81,19 @@ export default {
       leaving_date: "",
       deleted: false,
       department: 0,
-      image: null
+      image: null,
     },
     selectedFile: null,
-    image_url: null,
-    facultyStatus: ["Superannuated", "Retired", "VRS"]
+    image: null,
+    facultyStatus: ["Superannuated", "Retired", "VRS"],
   }),
   methods: {
+    async deleteImage(id) {
+      await this.$store.dispatch("deleteFile", { id: id });
+      this.image = null;
+    },
     async handleFileUpload(event) {
-      this.imgLoader=true;
+      this.imgLoader = true;
       this.selectedFile = event.target.files[0];
       // console.log(this.selectedFile);
       const data = new FormData();
@@ -148,11 +101,11 @@ export default {
       const uploadRes = await this.$axios({
         method: "POST",
         url: "/upload",
-        data
+        data,
       });
-      this.image_url = uploadRes.data[0].url;
+      this.image = uploadRes.data[0];
       this.faculty.image = uploadRes.data[0].id;
-      this.imgLoader=false;
+      this.imgLoader = false;
     },
     async addFaculty() {
       if (this.$refs.form.validate()) {
@@ -162,18 +115,18 @@ export default {
         // console.log(payload);
         this.$store
           .dispatch("faculty/addFaculty", payload)
-          .then(resp => {
+          .then((resp) => {
             Swal.fire({
               title: "Success",
               text: "Added Successfully!",
               icon: "success",
               showConfirmButton: false,
-              timer: 1500
+              timer: 1500,
             });
             this.reset();
             this.reloadData();
           })
-          .catch(err => {
+          .catch((err) => {
             this.snackbar = true;
             this.submitMessage = err;
           });
@@ -189,7 +142,7 @@ export default {
     reset() {
       this.$refs.form.reset();
       this.image_url = null;
-    }
-  }
+    },
+  },
 };
 </script>

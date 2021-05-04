@@ -20,7 +20,16 @@
               <AddUser @new-user="getLatestUsers()" @new-student="getLatestStudents()" />
             </v-col>
             <v-col cols="4">
-              <v-select v-model="participation.month" :items="months" item-value="id" item-text="text" label="Data for the month of" placeholder="Select the month for the entry" color="success" :rules="[(v) => !!v || 'Required']"></v-select>
+              <v-select
+                v-model="participation.month"
+                :items="months"
+                item-value="id"
+                item-text="text"
+                label="Data for the month of"
+                placeholder="Select the month for the entry"
+                color="success"
+                :rules="[(v) => !!v || 'Required']"
+              ></v-select>
             </v-col>
           </v-row>
           <v-row>
@@ -96,7 +105,7 @@
                   </v-img>
                 </template>
               </v-hover>
-              <input ref="image" type="file" style="display: none;" label="File input" @change="handleFileUpload" />
+              <input ref="image" accept="image/png, image/jpeg" type="file" style="display: none;" label="File input" @change="handleFileUpload" />
             </v-col>
           </v-row>
           <!-- <span style="color:red; font-size:12px;">* Mandatory fields</span> -->

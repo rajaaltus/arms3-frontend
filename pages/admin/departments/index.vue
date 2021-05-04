@@ -70,7 +70,7 @@
           </v-img>
         </template>
       </v-hover>
-      <input ref="image1" type="file" max-size="10485760" style="display: none;" label="File input" @change="handleFileUpload1" />
+      <input ref="image1" type="file" accept="image/png, image/jpeg" max-size="10485760" style="display: none;" label="File input" @change="handleFileUpload1" />
       <v-hover>
         <template v-slot:default="{ hover }">
           <v-img :src="`${$axios.defaults.baseURL}${img_url2}`" lazy-src="/image_placeholder.png" aspect-ratio="1" class="grey lighten-2" max-width="30%" max-height="300">
@@ -92,7 +92,7 @@
           </v-img>
         </template>
       </v-hover>
-      <input ref="image2" type="file" style="display: none;" label="File input" @change="handleFileUpload2" />
+      <input ref="image2" accept="image/png, image/jpeg" type="file" style="display: none;" label="File input" @change="handleFileUpload2" />
       <v-hover>
         <template v-slot:default="{ hover }">
           <v-img :src="`${$axios.defaults.baseURL}${img_url3}`" lazy-src="/image_placeholder.png" class="grey lighten-2" max-width="30%" max-height="300">
@@ -114,7 +114,7 @@
           </v-img>
         </template>
       </v-hover>
-      <input ref="image3" type="file" style="display: none;" label="File input" @change="handleFileUpload3" />
+      <input ref="image3" accept="image/png, image/jpeg" type="file" style="display: none;" label="File input" @change="handleFileUpload3" />
     </v-row>
   </v-container>
 </template>

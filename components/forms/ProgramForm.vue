@@ -112,7 +112,7 @@
                   </v-img>
                 </template>
               </v-hover>
-              <input ref="image" type="file" style="display: none;" label="File input" @change="handleFileUpload" />
+              <input ref="image" accept="image/png, image/jpeg" type="file" style="display: none;" label="File input" @change="handleFileUpload" />
             </v-col>
           </v-row>
         </v-form>
@@ -141,7 +141,6 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
 import { mapState } from "vuex";
 import AddUser from "@/components/forms/AddUser";
 export default {

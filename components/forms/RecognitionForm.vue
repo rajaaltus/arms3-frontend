@@ -72,7 +72,7 @@
                   </v-img>
                 </template>
               </v-hover>
-              <input ref="image" type="file" style="display: none;" label="File input" @change="handleFileUpload" />
+              <input ref="image" type="file" accept="image/png, image/jpeg" style="display: none;" label="File input" @change="handleFileUpload" />
             </v-col>
           </v-row>
         </v-form>
