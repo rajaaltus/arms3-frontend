@@ -41,7 +41,7 @@
         </v-autocomplete>
       </v-col>
 
-      <v-col cols="auto" lg="auto">
+      <v-col cols="auto" lg="auto" class="mt-3">
         <v-row>
           <v-layout align-start justify-start>
             <v-btn v-if="selectedYear" :loading="loading" :disabled="loading" color="green" x-small class="mt-6 mr-1 white--text" fab @click="loader()">

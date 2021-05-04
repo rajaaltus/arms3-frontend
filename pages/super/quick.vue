@@ -66,16 +66,16 @@
               <FomattingAboutDataFormat :aboutData="aboutData" />
             </div>
 
-            <h3>2. PATIENT CARE ACTIVITIES</h3>
-            <h3>A. Clinical Services</h3>
+            <h4 style="font-family: Calibri; font-style: normal;"><b>2. PATIENT CARE ACTIVITIES</b></h4>
+            <h4 style="font-family: Calibri; font-style: normal;">A. Clinical Services</h4>
             <div>
               <FomattingPatientCareFormat :clinicalData="clinicalData" />
             </div>
-            <h3>B. Emergency Services</h3>
+            <h4 style="font-family: Calibri; font-style: normal;"><b>B. Emergency Services</b></h4>
             <div>
               <FomattingEmergencyFormat :emergencyData="emergencyData" />
             </div>
-            <h3>C. Diagnostic Services</h3>
+            <h4 style="font-family: Calibri; font-style: normal;"><b>C. Diagnostic Services</b></h4>
             <div>
               <FomattingDiagnosticFormat :diagnosticsData="diagnosticsData" />
             </div>

@@ -2,12 +2,12 @@
   <div>
     <table>
       <tr>
-        <th style="border: 1px solid #dddddd;">Lab Services</th>
-        <th style="border: 1px solid #dddddd;">Total No.Of Samples Analyzed</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Lab Services</b>&nbsp;</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Total No.Of Samples Analyzed</b>&nbsp;</th>
       </tr>
       <tr v-for="(dd, index) in diagnosticsData" :key="index">
-        <td style="border: 1px solid #dddddd;">{{ dd.pc_diagnostic_test && dd.pc_diagnostic_test.test_name }}</td>
-        <td style="border: 1px solid #dddddd;">{{ dd.samples_analyzed && dd.samples_analyzed }}</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ dd.pc_diagnostic_test && dd.pc_diagnostic_test.test_name }}&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ dd.samples_analyzed && dd.samples_analyzed }}&nbsp;</td>
       </tr>
     </table>
   </div>

@@ -1,23 +1,23 @@
 <template>
   <div>
-    <h3>D. Special Clinics / Services / Procedures</h3>
+    <h4 style="font-family: Calibri; font-style: normal;">D. Special Clinics / Services / Procedures</h4>
     <table>
       <tr>
-        <th style="border: 1px solid #dddddd;">Special Services</th>
-        <th style="border: 1px solid #dddddd;">New Patients</th>
-        <th style="border: 1px solid #dddddd;">Follow-up Patients</th>
-        <th style="border: 1px solid #dddddd;">Referrals</th>
-        <th style="border: 1px solid #dddddd;">Description</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Special Services</b>&nbsp;</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>New Patients</b>&nbsp;</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Follow-up Patients</b>&nbsp;</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Referrals</b>&nbsp;</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Description</b>&nbsp;</th>
       </tr>
       <tr v-for="(sd, index) in specialData" :key="index">
-        <td style="border: 1px solid #dddddd;">{{ sd.service_name }}</td>
-        <td style="border: 1px solid #dddddd;">{{ sd.new_patients }}</td>
-        <td style="border: 1px solid #dddddd;">{{ sd.followup_patients }}</td>
-        <td style="border: 1px solid #dddddd;">{{ sd.referrals }}</td>
-        <td style="border: 1px solid #dddddd;">{{ sd.description }}</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ sd.service_name }}&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ sd.new_patients }}&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ sd.followup_patients }}&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ sd.referrals }}&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ sd.description }}&nbsp;</td>
       </tr>
     </table>
-  </div>
+  </div>  
 </template>
 
 <script>
