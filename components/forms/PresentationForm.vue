@@ -39,6 +39,25 @@
             <v-col cols="12">
               <v-text-field v-model="presentation.coauthors" label="Co-author(s)" :rules="[(v) => !!v || 'Item is required']" color="success"></v-text-field>
             </v-col>
+            <v-col cols="4">
+              <v-menu ref="menu"  :close-on-content-click="false" transition="scale-transition" offset-y min-width="290px">
+                <template v-slot:activator="{ on }">
+                  <v-text-field  :return-value.sync="duration_from" :rules="[(v) => !!v || 'Item is required']" readonly color="success" label="Date" v-on="on"></v-text-field>
+                </template>
+                <v-date-picker  color="green lighten-1" no-title scrollable>
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="duration_from = false">
+                    Cancel
+                  </v-btn>
+                  <v-btn text color="primary" @click="$refs.menu.save(duration_from)">
+                    OK
+                  </v-btn>
+                </v-date-picker>
+              </v-menu>
+            </v-col>
+            <v-col cols="8">
+              <v-text-field  label="Place of Presentation / Poster" :rules="[(v) => !!v || 'Item is required']" color="success"></v-text-field>
+            </v-col>
           </v-row>
           <v-row>
             <v-container fluid>
