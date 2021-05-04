@@ -340,6 +340,7 @@ export default {
     if (this.userType) {
       if (this.userType === "FACULTY") this.assignedPeople = this.faculties;
     } else this.assignedPeople = this.people;
+    this.resetFilter()
   },
   methods: {
     getActivityCount(id) {
