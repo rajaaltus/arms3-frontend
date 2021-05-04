@@ -30,7 +30,12 @@
               </v-toolbar>
               <v-card-text>
                 <v-container>
-                  <FormsParticipationForm :dataFrom="staffs" :participationData="editedItem" :key="renderKey" @close="close" @save="save" />
+                  <div v-if="$route.matched[0].path === '/admin/activities/students/participation'">
+                    <FormsParticipationForm :dataFrom="students" :participationData="editedItem" :key="renderKey" @close="close" @save="save" />
+                  </div>
+                  <div v-else>
+                    <FormsParticipationForm :dataFrom="staffs" :participationData="editedItem" :key="renderKey" @close="close" @save="save" />
+                  </div>
                 </v-container>
               </v-card-text>
             </v-card>
@@ -125,6 +130,7 @@ export default {
     ...mapState({
       participationsData: (state) => state.participation.participationsData.result,
       staffs: (state) => state.staffs,
+      students: (state) => state.students,
     }),
     studentsData() {
       return this.participationsData.filter((participation) => participation.user.userType === "STUDENT");

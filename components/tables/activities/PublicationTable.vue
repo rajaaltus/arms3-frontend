@@ -35,7 +35,12 @@
                 <v-container>
                   <v-form ref="editForm" v-model="valid" lazy-validation @submit.prevent>
                     <v-container>
-                      <FormsPublicationForm :dataFrom="staffs" :publicationTypes="publicationTypes" :publicationType="publication_type" :publicationData="editedItem" :key="renderKey" @close="close" @save="save" />
+                      <div v-if="$route.matched[0].path === '/admin/activities/students/publication'">
+                        <FormsPublicationForm :dataFrom="students" :publicationTypes="publicationTypes" :publicationType="publication_type" :publicationData="editedItem" :key="renderKey" @close="close" @save="save" />
+                      </div>
+                      <div v-else>
+                        <FormsPublicationForm :dataFrom="staffs" :publicationTypes="publicationTypes" :publicationType="publication_type" :publicationData="editedItem" :key="renderKey" @close="close" @save="save" />
+                      </div>
                     </v-container>
                   </v-form>
                 </v-container>
@@ -146,6 +151,7 @@ export default {
     ...mapState({
       publicationsData: (state) => state.publication.publicationsData.result,
       staffs: (state) => state.staffs,
+      students: (state) => state.students,
       publicationTypes: (state) => state.publication.publicationTypes,
       journalArticles: (state) => state.publication.journalArticle,
     }),
