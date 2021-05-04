@@ -47,7 +47,7 @@ export const mutations = {
 export const actions = {
   async setProgrammesData({ commit }, { qs }) {
     await this.$axios
-      .$get(`/programmes?${qs}${limit}`)
+      .$get(`/programmes?${qs}${limit}&_sort=forum:ASC`)
       .then((response) => {
         commit("SET_PROGRAMMESDATA", response);
       })

@@ -193,8 +193,8 @@ export default {
   },
   methods: {
     loader() {
-      this.selectedQuery = this.query.year + this.query.range + this.query.userType + this.query.selectedUser;
-      this.$emit("go", this.selectedQuery, this.selectedYear, this.range);
+      this.selectedQuery = this.query.year + this.query.range + this.query.selectedUser;
+      this.$emit("go", this.selectedQuery, this.selectedYear, this.range, this.userType);
       console.log("Selected Query: ", this.selectedQuery);
     },
     resetFilter() {

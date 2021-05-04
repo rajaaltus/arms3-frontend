@@ -23,7 +23,7 @@
           <v-col cols="11" lg="3" class="my-5" v-if="$auth.user.userType === 'DEPARTMENT'">
             <v-autocomplete v-model="selectedUser" outlined dense ref="user" :items="assignedPeople" color="blue-grey lighten-2" label="Select User" placeholder="My Name is" item-text="fullname" item-value="id">
               <template v-slot:selection="data">
-                {{ data.item.fullname }}
+                {{ data.item.name }}
               </template>
               <template v-slot:item="data">
                 <template v-if="typeof data.item !== 'object'">
@@ -31,11 +31,11 @@
                 </template>
                 <template v-else>
                   <v-list-item-avatar>
-                    <img :src="data.item.avatar !== null ? $axios.defaults.baseURL + data.item.avatar.url : '/avatar-default-icon.png'" />
+                    <img :src="data.item.user.avatar !== null ? $axios.defaults.baseURL + data.item.user.avatar.url : '/avatar-default-icon.png'" />
                   </v-list-item-avatar>
                   <v-list-item-content>
-                    <v-list-item-title v-html="data.item.fullname"></v-list-item-title>
-                    <v-list-item-subtitle v-html="data.item.userType"></v-list-item-subtitle>
+                    <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                    <v-list-item-subtitle v-html="data.item.user.userType"></v-list-item-subtitle>
                   </v-list-item-content>
                 </template>
               </template>
@@ -340,7 +340,7 @@ export default {
     if (this.userType) {
       if (this.userType === "FACULTY") this.assignedPeople = this.faculties;
     } else this.assignedPeople = this.people;
-    this.resetFilter()
+    this.resetFilter();
   },
   methods: {
     getActivityCount(id) {

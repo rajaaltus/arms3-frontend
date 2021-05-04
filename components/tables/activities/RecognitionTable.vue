@@ -29,7 +29,12 @@
               </v-toolbar>
               <v-card-text>
                 <v-container>
-                  <FormsRecognitionForm :dataFrom="staffs" :recognitionData="editedItem" :key="renderKey" @close="close" @save="save" />
+                  <div v-if="$route.matched[0].path === '/admin/activities/students/recognition'">
+                    <FormsRecognitionForm :dataFrom="students" :recognitionData="editedItem" :key="renderKey" @close="close" @save="save" />
+                  </div>
+                  <div v-else>
+                    <FormsRecognitionForm :dataFrom="staffs" :recognitionData="editedItem" :key="renderKey" @close="close" @save="save" />
+                  </div>
                 </v-container>
               </v-card-text>
             </v-card>
@@ -112,6 +117,7 @@ export default {
     ...mapState({
       recognitionsData: (state) => state.recognition.recognitionsData.result,
       staffs: (state) => state.staffs,
+      students: (state) => state.students,
     }),
     studentsData() {
       return this.recognitionsData.filter((recognition) => recognition.user.userType === "STUDENT");

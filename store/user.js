@@ -223,7 +223,7 @@ export const actions = {
   },
   async setActiveUsersList({ commit }, { qs }) {
     await this.$axios
-      .$get(`/users?${qs}${limit}`)
+      .$get(`/user-profiles?${qs}${limit}`)
       .then((response) => {
         // handle success
         commit("SET_ACTIVE_USERS_LIST", response);
