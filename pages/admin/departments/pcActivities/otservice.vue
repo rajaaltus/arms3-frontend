@@ -14,11 +14,7 @@
         <v-card tile>
           <v-card-text>
             <YearDialog v-if="$store.state.selectedYear == 0" />
-            <PageHeader
-              :title="$metaInfo.title"
-              :reportYears="reportYears"
-              class="ml-0 pb-0 pt-0"
-            />
+            <PageHeader :title="$metaInfo.title" :reportYears="reportYears" class="ml-0 pb-0 pt-0" />
             <v-row>
               <v-col cols="12" md="3" lg="3">
                 <v-card class="mx-auto">
@@ -26,7 +22,7 @@
                 </v-card>
               </v-col>
               <v-col cols="12" md="9" lg="9">
-                <OtserviceForm />
+                <FormsPatientCareOtserviceForm />
               </v-col>
             </v-row>
           </v-card-text>
@@ -38,9 +34,7 @@
           <v-card-text class="px-0 py-1">
             <v-row>
               <v-col cols="12">
-                <OtserviceTable
-                  :reportYears="reportYears"
-                />
+                <OtserviceTable :reportYears="reportYears" />
               </v-col>
             </v-row>
           </v-card-text>
@@ -54,22 +48,22 @@
 export default {
   head() {
     return {
-      title: "OT & Other Procedures"
+      title: "OT & Other Procedures",
     };
   },
   data: () => ({
-    selectedYear: 0
+    selectedYear: 0,
   }),
   computed: {
     reportYears() {
       return this.$store.state.reportYears;
-    }
+    },
   },
   async fetch({ store }) {
     let queryString = "";
     queryString = `department.id=${store.state.auth.user.department}&deleted_ne=true&annual_year=${store.state.selectedYear}`;
     await store.dispatch("otservice/setOTServicesData", { qs: queryString });
-  }
+  },
 };
 </script>
 

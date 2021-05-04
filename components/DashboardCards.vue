@@ -18,7 +18,7 @@
             </vc-date-picker>
           </v-col>
           <v-col cols="12" lg="3" class="my-5" v-if="$auth.user.userType === 'DEPARTMENT'">
-            <v-select ref="user-type" outlined dense v-model="userType" label="Select User Type" placeholder="Select" :items="userTypes" color="success"></v-select>
+            <v-select ref="user-type" outlined dense v-model="userType" label="Select User Type" placeholder="Select" :items="userTypes" @input="setAssignedPeople(userType)" color="success"></v-select>
           </v-col>
           <v-col cols="11" lg="3" class="my-5" v-if="$auth.user.userType === 'DEPARTMENT'">
             <v-autocomplete v-model="selectedUser" outlined dense ref="user" :items="assignedPeople" color="blue-grey lighten-2" label="Select User" placeholder="My Name is" item-text="fullname" item-value="id">
@@ -322,11 +322,18 @@ export default {
       this.yearParam = "annual_year=" + val;
     },
     userType(val) {
+      console.log(val);
       this.userParam = null;
       this.userTypeParam = `&user.userType=${val}`;
-      if (val === "FACULTY") this.assignedPeople = this.faculties;
-      if (val === "STUDENT") this.assignedPeople = this.students;
-      if (val === "DEPARTMENT") this.assignedPeople = this.people;
+      if (val === "FACULTY") {
+        this.assignedPeople = this.faculties;
+      }
+      if (val === "STUDENT") {
+        this.assignedPeople = this.students;
+      }
+      if (val === "DEPARTMENT") {
+        this.assignedPeople = this.people;
+      }
     },
     range(val) {
       var range = Object.assign({}, val);
@@ -343,6 +350,17 @@ export default {
     this.resetFilter();
   },
   methods: {
+    setAssignedPeople(userType) {
+      if (userType === "FACULTY") {
+        this.assignedPeople = this.faculties;
+      }
+      if (userType === "STUDENT") {
+        this.assignedPeople = this.students;
+      }
+      if (userType === "DEPARTMENT") {
+        this.assignedPeople = this.people;
+      }
+    },
     getActivityCount(id) {
       if (id == 1) {
         return this.$store.state.program.programmesCount;
