@@ -40,28 +40,48 @@ export default {
     let queryString = "";
     if ($auth.user.userType === "DEPARTMENT") queryString = `department.id=${store.state.auth.user.department}&deleted_ne=true&approval_status=Approved`;
     else queryString = `department.id=${store.state.auth.user.department}&deleted_ne=true&user.id=${$auth.user.id}&approval_status=Approved`;
-    await store.dispatch("program/countProgrammes", { qs: queryString });
-    await store.dispatch("visitor/countVisitors", { qs: queryString });
-    await store.dispatch("training/countTrainings", { qs: queryString });
+    await store.dispatch("program/countProgrammes", {
+      qs: queryString,
+    });
+    await store.dispatch("visitor/countVisitors", {
+      qs: queryString,
+    });
+    await store.dispatch("training/countTrainings", {
+      qs: queryString,
+    });
     await store.dispatch("presentation/countPresentations", {
       qs: queryString,
     });
     await store.dispatch("participation/countParticipations", {
       qs: queryString,
     });
-    await store.dispatch("public/countPublicEngagements", { qs: queryString });
-    await store.dispatch("research/countResearch", { qs: queryString });
-    await store.dispatch("publication/countPublications", { qs: queryString });
+    await store.dispatch("public/countPublicEngagements", {
+      qs: queryString,
+    });
+    await store.dispatch("research/countResearch", {
+      qs: queryString,
+    });
+    await store.dispatch("publication/countPublications", {
+      qs: queryString,
+    });
     await store.dispatch("publication/setPublicationsData", {
       qs: queryString,
     });
-    await store.dispatch("recognition/countRecognitions", { qs: queryString });
-    await store.dispatch("patent/countPatents", { qs: queryString });
-    await store.dispatch("assignment/countAssignments", { qs: queryString });
+    await store.dispatch("recognition/countRecognitions", {
+      qs: queryString,
+    });
+    await store.dispatch("patent/countPatents", {
+      qs: queryString,
+    });
+    await store.dispatch("assignment/countAssignments", {
+      qs: queryString,
+    });
 
     let queryString1 = "";
-    queryString1 = `department=${store.state.auth.user.department}&blocked_ne=true`;
-    await store.dispatch("user/setActiveUsersList", { qs: queryString1 });
+    queryString1 = `user.department=${store.state.auth.user.department}&user.blocked_ne=true`;
+    await store.dispatch("user/setActiveUsersList", {
+      qs: queryString1,
+    });
   },
 
   mounted() {
@@ -82,14 +102,17 @@ export default {
   border-color: rgba(255, 255, 255, 0.3) !important;
   color: rgba(255, 255, 255, 0.5) !important;
 }
+
 .customMonth input:hover {
   border-color: rgba(255, 255, 255, 0.9) !important;
 }
+
 .cust-icon {
   font-size: 20px;
   color: #ff7e00;
   padding-right: 10px;
 }
+
 .disp {
   color: #ffffff;
   font-size: 15px;

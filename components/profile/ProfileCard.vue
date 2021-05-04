@@ -10,11 +10,15 @@
       <div>
         <v-hover>
           <template v-slot:default="{ hover }">
-            <v-img :src="image_url !== null ? `${$axios.defaults.baseURL}${image_url}` : '/image_placeholder.png'" class="mt-3" max-width="100%">
+            <v-img :src="image && image.url !== null ? `${$axios.defaults.baseURL}${image.url}` : '/image_placeholder.png'" class="mt-3" max-width="100%">
+              <v-progress-linear :active="imgLoader" :indeterminate="imgLoader" absolute bottom color="deep-purple accent-4"></v-progress-linear>
               <v-fade-transition>
                 <v-overlay v-if="hover" absolute color="#00564c">
                   <v-btn @click="$refs.image.click()">
-                    {{ image_url ? "Edit Image" : "Upload Image" }}
+                    {{ image && image.url ? "Edit Image" : "Upload Image" }}
+                  </v-btn>
+                  <v-btn v-if="image" class="mt-0" x-small fab dark color="red darken-3" @click="deleteImage(image.id)">
+                    <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </v-overlay>
               </v-fade-transition>
@@ -58,7 +62,8 @@ export default {
   props: ["profile"],
   data() {
     return {
-      image_url: null,
+      imgLoader: false,
+      image: null,
       imageToDelete: null,
       publicProfile: false,
     };
@@ -69,17 +74,21 @@ export default {
     },
   },
   mounted() {
-    // console.log(this.profile);
+    console.log(this.profile);
     this.publicProfile = this.profile.active_status;
-    if (this.profile.image !== null) this.image_url = this.profile.image.url;
+    if (this.profile.image !== null) this.image = this.profile.image;
     // console.log('its not null')
     // else
     //   console.log('its null')
   },
   methods: {
+    async deleteImage(id) {
+      await this.$store.dispatch("deleteFile", { id: id });
+      this.image = null;
+    },
     async handleFileUpload(event) {
-      console.log(this.image_url);
-      if (this.image_url !== null) {
+      this.imgLoader = true;
+      if (this.image && this.image.url !== null) {
         this.imageToDelete = this.profile.image.id;
         this.selectedFile = event.target.files[0];
         const data = new FormData();
@@ -89,7 +98,7 @@ export default {
           url: "/upload",
           data,
         });
-        this.image_url = uploadRes.data[0].url;
+        this.image = uploadRes.data[0];
         var payload = Object.assign(
           {},
           {
@@ -140,7 +149,7 @@ export default {
           url: "/upload",
           data,
         });
-        this.image_url = uploadRes.data[0].url;
+        this.image = uploadRes.data[0];
         var payload = Object.assign(
           {},
           {
@@ -182,6 +191,7 @@ export default {
           });
         this.$store.dispatch("user/updateUser", userPayload);
       }
+      this.imgLoader = false;
     },
   },
 };
