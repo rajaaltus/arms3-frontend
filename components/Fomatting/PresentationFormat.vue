@@ -6,7 +6,7 @@
         presentation.forum
       }})
     </p>
-    <p v-if="presentation.image">
+    <p v-if="presentation.image && (presentation.image.ext==='.jpg' || presentation.image.ext==='.png')">
       <img
         :src="$axios.defaults.baseURL + presentation.image.url"
         alt="presentation"

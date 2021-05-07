@@ -6,7 +6,7 @@
       {{ $moment(training.from_date).format("Do MMMM YYYY") }} to
       {{ $moment(training.to_date).format("Do MMMM YYYY") }}.
     </p>
-    <p v-if="training.image">
+    <p v-if="training.image && (training.image.ext==='.jpg' || training.image.ext==='.png')">
       <img
         :src="$axios.defaults.baseURL + training.image.url"
         alt="training"

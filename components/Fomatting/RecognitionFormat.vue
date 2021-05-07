@@ -6,7 +6,7 @@
       {{ recognition.place }},
       {{ $moment(recognition.date).format("Do MMMM YYYY") }}.
     </p>
-    <p v-if="recognition.image">
+    <p v-if="recognition.image!==null && (recognition.image.ext==='.jpg' || recognition.image.ext==='.png')">
       <img
         :src="$axios.defaults.baseURL + recognition.image.url"
         alt="recognition"

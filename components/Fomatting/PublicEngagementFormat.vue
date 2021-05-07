@@ -6,7 +6,7 @@
       {{ $moment(publicE.date).format("Do MMMM YYYY") }}. Target Group:
       {{ publicE.target_audience }}.
     </p>
-    <p v-if="publicE.image">
+    <p v-if="publicE.image && (publicE.image.ext==='.jpg' || publicE.image.ext==='.png') ">
       <img
         :src="$axios.defaults.baseURL + publicE.image.url"
         alt="publicE"

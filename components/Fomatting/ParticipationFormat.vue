@@ -4,8 +4,13 @@
       {{ index + 1 }}. {{ participation.faculty_name }}, {{ participation.designation }}. {{ participation.program_name }} from {{ $moment(participation.from_date).format("Do MMMM YYYY") }} to
       {{ $moment(participation.to_date).format("Do MMMM YYYY") }}. ({{ participation.forum }})
     </p>
-    <p v-if="participation.image && participation.image.ext !== '.pdf'">
-      <img :src="$axios.defaults.baseURL + participation.image.url" alt="participation" width="600" height="350" />
+   <p v-if="participation.image!==null && (participation.image.ext==='.jpg' || participation.image.ext==='.png') ">
+      <img
+        :src="$axios.defaults.baseURL + participation.image.url"
+        alt="participation"
+        width="600"
+        height="350"
+      />
     </p>
   </div>
 </template>

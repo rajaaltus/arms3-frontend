@@ -37,7 +37,7 @@
               <v-text-field v-model="presentation.title" :rules="[(v) => !!v || 'Item is required']" label="Title" required color="success"> </v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field v-model="presentation.coauthors" label="Co-author(s)" :rules="[(v) => !!v || 'Item is required']" color="success"></v-text-field>
+              <v-text-field v-model="presentation.coauthors" label="Co-author(s)"  color="success"></v-text-field>
             </v-col>
             <v-col cols="4">
               <v-menu ref="menu"  :close-on-content-click="false" transition="scale-transition" offset-y min-width="290px">

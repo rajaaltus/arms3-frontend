@@ -105,35 +105,35 @@
             <!-- Program -->
             <!-- International -->
             <div v-if="internationalProgrammes.length > 0">
-              <h4>International</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
               <div v-for="(program, index) in internationalProgrammes" :key="program.id">
                 <FomattingProgramFormat :index="index" :program="program" />
               </div>
             </div>
             <!-- National -->
             <div v-if="nationalProgrammes.length > 0">
-              <h4>National</h4>
+              <h4 style="font-family: Calibri; font-style: normal;">National</h4>
               <div v-for="(program, index) in nationalProgrammes" :key="program.id">
                 <FomattingProgramFormat :index="index" :program="program" />
               </div>
             </div>
             <!-- Regional -->
             <div v-if="regionalProgrammes.length > 0">
-              <h4>Regional</h4>
+              <h4 style="font-family: Calibri; font-style: normal;">Regional</h4>
               <div v-for="(program, index) in regionalProgrammes" :key="program.id">
                 <FomattingProgramFormat :index="index" :program="program" />
               </div>
             </div>
             <!-- State -->
             <div v-if="stateProgrammes.length > 0">
-              <h4>State</h4>
+              <h4 style="font-family: Calibri; font-style: normal;">State</h4>
               <div v-for="(program, index) in stateProgrammes" :key="program.id">
                 <FomattingProgramFormat :index="index" :program="program" />
               </div>
             </div>
             <!-- Local -->
             <div v-if="localProgrammes.length > 0">
-              <h4>Local</h4>
+              <h4 style="font-family: Calibri; font-style: normal;">Local</h4>
               <div v-for="(program, index) in localProgrammes" :key="program.id">
                 <FomattingProgramFormat :index="index" :program="program" />
               </div>
@@ -160,18 +160,34 @@
               <b>4. CONTRIBUTION TO SCIENTIFIC DELIBERATIONS</b>
             </h4>
             <h4 style="font-family: Calibri; font-style: normal;">
-              <b>A. PRESENTATIONS/ POSTERS</b>
+              <b>A1. PRESENTATIONS</b>
             </h4>
             <div v-if="internationalPresentations.length > 0">
-              <h4>International</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
               <div v-for="(presentation, index) in internationalPresentations" :key="presentation.id">
                 <FomattingPresentationFormat :index="index" :presentation="presentation" />
               </div>
             </div>
             <div v-if="nationalPresentations.length > 0">
-              <h4>National</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
               <div v-for="(presentation, index) in nationalPresentations" :key="presentation.id">
                 <FomattingPresentationFormat :index="index" :presentation="presentation" />
+              </div>
+            </div>
+
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>A2. POSTERS</b>
+            </h4>
+            <div v-if="internationalPosters.length > 0">
+              <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
+              <div v-for="(poster, index) in internationalPosters" :key="poster.id">
+                <FomattingPresentationFormat :index="index" :presentation="poster" />
+              </div>
+            </div>
+            <div v-if="nationalPosters.length > 0">
+              <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
+              <div v-for="(poster, index) in nationalPosters" :key="poster.id">
+                <FomattingPresentationFormat :index="index" :presentation="poster" />
               </div>
             </div>
 
@@ -181,22 +197,22 @@
             </h4>
 
             <div v-if="internationalParticipations.length > 0">
-              <h4>InterNational</h4>
+               <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
               <div v-for="(participation, index) in internationalParticipations" :key="participation.id">
                 <FomattingParticipationFormat :index="index" :participation="participation" />
               </div>
             </div>
 
             <div v-if="nationalParticipations.length > 0">
-              <h4>National</h4>
+               <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
               <div v-for="(participation, index) in nationalParticipations" :key="participation.id">
                 <FomattingParticipationFormat :index="index" :participation="participation" />
               </div>
             </div>
 
-            <div v-for="(participation, index) in participations" :key="participation.id">
+            <!-- <div v-for="(participation, index) in participations" :key="participation.id">
               <FomattingParticipationFormat :index="index" :participation="participation" />
-            </div>
+            </div> -->
 
             <!-- Public Engagement -->
             <h4 style="font-family: Calibri; font-style: normal;">
@@ -219,37 +235,37 @@
               <b>7. PUBLICATIONS</b>
             </h4>
             <div v-if="journalArticles.length > 0">
-              <h4>Journal Articles</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>Journal Articles</u></h4>
               <div v-for="(item, index) in journalArticles" :key="item.id">
                 <FomattingPublicationFormat :index="index" :item="item" />
               </div>
             </div>
             <div v-if="newsLetters.length > 0">
-              <h4>Articles for Professionals in Souvenirs Newsletters etc</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>Articles for Professionals in Souvenirs Newsletters etc</u></h4>
               <div v-for="(item, index) in newsLetters" :key="item.id">
                 <FomattingPublicationFormat :index="index" :item="item" />
               </div>
             </div>
             <div v-if="books.length > 0">
-              <h4>Books</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>Books</u></h4>
               <div v-for="(item, index) in books" :key="item.id">
                 <FomattingPublicationFormat :index="index" :item="item" />
               </div>
             </div>
             <div v-if="bookChapters.length > 0">
-              <h4>Book Chapters</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>Book Chapters</u></h4>
               <div v-for="(item, index) in bookChapters" :key="item.id">
                 <FomattingPublicationFormat :index="index" :item="item" />
               </div>
             </div>
             <div v-if="monoGraphs.length > 0">
-              <h4>Monographs</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>Monographs</u></h4>
               <div v-for="(item, index) in monoGraphs" :key="item.id">
                 <FomattingPublicationFormat :index="index" :item="item" />
               </div>
             </div>
             <div v-if="manuals.length > 0">
-              <h4>Manuals</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>Manuals</u></h4>
               <div v-for="(item, index) in manuals" :key="item.id">
                 <FomattingPublicationFormat :index="index" :item="item" />
               </div>
@@ -262,7 +278,7 @@
             <h4 style="font-family: Calibri; font-style: normal;">
               <b>A. AWARDS AND HONORS</b>
             </h4>
-            <div v-for="(recognition, index) in recognitions" :key="recognition.id">
+            <div v-for="(recognition, index) in recognitionsFaculty" :key="recognition.id">
               <FomattingRecognitionFormat :index="index" :recognition="recognition" />
             </div>
 
@@ -293,20 +309,37 @@
               <b>1. CONTRIBUTION TO SCIENTIFIC DELIBERATIONS</b>
             </h4>
             <h4 style="font-family: Calibri; font-style: normal;">
-              <b>A. PRESENTATIONS/ POSTERS</b>
+              <b>A1. PRESENTATIONS</b>
             </h4>
             <div v-if="internationalStudentPresentations.length > 0">
-              <h4>International</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
               <div v-for="(presentation, index) in internationalStudentPresentations" :key="presentation.id">
                 <FomattingPresentationFormat :index="index" :presentation="presentation" />
               </div>
             </div>
             <div v-if="nationalStudentPresentations.length > 0">
-              <h4>National</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
               <div v-for="(presentation, index) in nationalStudentPresentations" :key="presentation.id">
                 <FomattingPresentationFormat :index="index" :presentation="presentation" />
               </div>
             </div>
+
+            <h4 style="font-family: Calibri; font-style: normal;" v-if="internationalStudentPosters.length > 0">
+              <b>A2. POSTERS</b>
+            </h4>
+            <div v-if="internationalStudentPosters.length > 0">
+              <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
+              <div v-for="(poster, index) in internationalStudentPosters" :key="poster.id">
+                <FomattingPresentationFormat :index="index" :presentation="poster" />
+              </div>
+            </div>
+            <div v-if="nationalStudentPosters.length > 0">
+              <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
+              <div v-for="(poster, index) in nationalStudentPosters" :key="poster.id">
+                <FomattingPresentationFormat :index="index" :presentation="poster" />
+              </div>
+            </div>
+
 
             <h4 style="font-family: Calibri; font-style: normal;">
               <b>2. PARTICIPATION</b>
@@ -314,14 +347,14 @@
 
             <!-- Participation  -->
             <div v-if="internationalStudentParticipations.length > 0">
-              <h4>InterNational</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
               <div v-for="(participation, index) in internationalStudentParticipations" :key="participation.id">
                 <FomattingParticipationFormat :index="index" :participation="participation" />
               </div>
             </div>
 
             <div v-if="nationalStudentParticipations.length > 0">
-              <h4>National</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
               <div v-for="(participation, index) in nationalStudentParticipations" :key="participation.id">
                 <FomattingParticipationFormat :index="index" :participation="participation" />
               </div>
@@ -329,40 +362,40 @@
 
             <!-- Publication -->
             <h4 style="font-family: Calibri; font-style: normal;">
-              <b>7. PUBLICATIONS</b>
+              <b>3. PUBLICATIONS</b>
             </h4>
             <div v-if="journalArticlesStudents.length > 0">
-              <h4>Journal Articles</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>Journal Articles</u></h4>
               <div v-for="(item, index) in journalArticlesStudents" :key="item.id">
                 <FomattingPublicationFormat :index="index" :item="item" />
               </div>
             </div>
             <div v-if="newsLettersStudents.length > 0">
-              <h4>Articles for Professionals in Souvenirs Newsletters etc</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>Articles for Professionals in Souvenirs Newsletters etc</u></h4>
               <div v-for="(item, index) in newsLettersStudents" :key="item.id">
                 <FomattingPublicationFormat :index="index" :item="item" />
               </div>
             </div>
             <div v-if="booksStudents.length > 0">
-              <h4>Books</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>Books</u></h4>
               <div v-for="(item, index) in booksStudents" :key="item.id">
                 <FomattingPublicationFormat :index="index" :item="item" />
               </div>
             </div>
             <div v-if="bookChaptersStudents.length > 0">
-              <h4>Book Chapters</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>Book Chapters</u></h4>
               <div v-for="(item, index) in bookChaptersStudents" :key="item.id">
                 <FomattingPublicationFormat :index="index" :item="item" />
               </div>
             </div>
             <div v-if="monoGraphsStudents.length > 0">
-              <h4>Monographs</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>Monographs</u></h4>
               <div v-for="(item, index) in monoGraphsStudents" :key="item.id">
                 <FomattingPublicationFormat :index="index" :item="item" />
               </div>
             </div>
             <div v-if="manualsStudents.length > 0">
-              <h4>Manuals</h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>Manuals</u></h4>
               <div v-for="(item, index) in manualsStudents" :key="item.id">
                 <FomattingPublicationFormat :index="index" :item="item" />
               </div>
@@ -375,16 +408,16 @@
             <h4 style="font-family: Calibri; font-style: normal;">
               <b>A. AWARDS AND HONORS</b>
             </h4>
-            <div v-for="(recognition, index) in recognitions" :key="recognition.id">
+            <div v-for="(recognition, index) in recognitionsStudents" :key="recognition.id">
               <FomattingRecognitionFormat :index="index" :recognition="recognition" />
             </div>
 
             <!-- Theses -->
             <h4 style="font-family: Calibri; font-style: normal;">
-              <b>5. THESES</b>
+              <b>5. THESES AND DISSERTATIONS</b>
             </h4>
             <div v-for="(item, index) in theses" :key="item.id">
-              <FomattingThesesFormat :index="index" :these="item" />
+              <FomattingThesesFormat :index="index" :theses="item" />
             </div>
           </div>
         </div>
@@ -445,16 +478,28 @@ export default {
       return this.programmes.filter((item) => item.forum === "Local");
     },
     internationalPresentations() {
-      return this.presentations.filter((item) => item.forum === "International" && item.user.userType === "FACULTY");
+      return this.presentations.filter((item) =>  item.type==="Presentation" && item.forum === "International" && item.user.userType === "FACULTY");
     },
     nationalPresentations() {
-      return this.presentations.filter((item) => item.forum === "National" && item.user.userType === "FACULTY");
+      return this.presentations.filter((item) => item.type==="Presentation" && item.forum === "National" && item.user.userType === "FACULTY");
+    },
+     internationalPosters() {
+      return this.presentations.filter((item) => item.type==="Poster" && item.forum === "International" && item.user.userType === "FACULTY");
+    },
+    nationalPosters() {
+      return this.presentations.filter((item) =>  item.type==="Poster" && item.forum === "National" && item.user.userType === "FACULTY");
     },
     internationalStudentPresentations() {
-      return this.presentations.filter((item) => item.forum === "International" && item.user.userType === "STUDENT");
+      return this.presentations.filter((item) => item.type==="Presentation" && item.forum === "International" && item.user.userType === "STUDENT");
     },
     nationalStudentPresentations() {
-      return this.presentations.filter((item) => item.forum === "National" && item.user.userType === "STUDENT");
+      return this.presentations.filter((item) => item.type==="Presentation" && item.forum === "National" && item.user.userType === "STUDENT");
+    },
+     internationalStudentPosters() {
+      return this.presentations.filter((item) => item.type==="Poster" && item.forum === "International" && item.user.userType === "STUDENT");
+    },
+    nationalStudentPosters() {
+      return this.presentations.filter((item) =>  item.type==="Poster" && item.forum === "National" && item.user.userType === "STUDENT");
     },
     internationalParticipations() {
       return this.participations.filter((item) => item.forum === "International" && item.user.userType === "FACULTY");
@@ -504,7 +549,12 @@ export default {
     manualsStudents() {
       return this.publications.filter((item) => item.publication_type === "Manual" && item.user.userType === "STUDENT");
     },
-
+    recognitionsStudents() {
+      return this.recognitions.filter((item)=> item.user.userType==='STUDENT')
+    },
+    recognitionsFaculty() {
+      return this.recognitions.filter((item)=>item.user.userType==='FACULTY')
+    },
     reportYears() {
       return this.$store.state.reportYears;
     },

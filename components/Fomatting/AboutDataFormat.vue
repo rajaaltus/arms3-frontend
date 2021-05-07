@@ -10,9 +10,9 @@
     </h2>
     <h4 style="font-family: Calibri; font-style: normal;"><b>1. ABOUT THE DEPARTMENT</b></h4>
     <h4 style="font-family: Calibri; font-style: normal;"><b>A. Introduction: Specifically indicate the recognition / contribution of the Department during the year to policies, planning and programmes at State / National and International levels.</b></h4>
-    <p v-html="aboutData && aboutData.introduction"></p>
+    <p style="text-align:justify; font-family: Calibri; font-style: normal;" v-html="aboutData && aboutData.introduction"></p>
     <h4 style="font-family: Calibri; font-style: normal;"><b>B. New facilities developed: New initiatives taken up by the Department(s) within NIMHANS during the year.</b></h4>
-    <p v-html="aboutData && aboutData.facilities && aboutData.facilities"></p>
+    <p style="text-align:justify; font-family: Calibri; font-style: normal;" v-html="aboutData && aboutData.facilities && aboutData.facilities"></p>
   </div>
 </template>
 

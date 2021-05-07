@@ -6,16 +6,14 @@
       <tr>
         <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Superannuated / Resigned / VRS</b>&nbsp;</th>
         <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Name of the Official and Designation</b>&nbsp;</th>
-        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Date of Joining</b>&nbsp;</th>
         <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Date of Leaving</b>&nbsp;</th>
-        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Image URL</b>&nbsp;</th>
+        <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Image</b>&nbsp;</th>
       </tr>
       <tr v-for="(rd, index) in retaired" :key="index">
         <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ rd.faculty_status }}&nbsp;</td>
         <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ rd.faculty_name }}&nbsp;</td>
-        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;&nbsp;</td>
         <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ rd.leaving_date }}&nbsp;</td>
-        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ rd.image ? this.retaired[i].image : "" }}&nbsp;</td>
+        <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;"><img width="250" height="200" v-if="rd.image" :src="`${$axios.defaults.baseURL}${rd.image.url}`" alt="ianmge" /></td>
       </tr>
     </table>
   </div>

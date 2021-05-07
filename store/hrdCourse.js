@@ -1,4 +1,4 @@
-
+const limit = "&_limit=1000";
 export const state = () => ({
 	
 	hrdCourses: {
@@ -32,7 +32,7 @@ export const mutations = {
 export const actions = {
   
 	async setHRDCourses ({commit}, {qs}) {
-		await this.$axios.$get(`/hrd-courses?${qs}&_sort=course_name:ASC`)
+		await this.$axios.$get(`/hrd-courses?${qs}&_sort=course_name:ASC&${limit}`)
 			.then(response =>  {
 				// handle success
 				commit("SET_HRD_COURSES", response);
