@@ -2,7 +2,7 @@
   <div>
     <QuerySelectorStepper :reportYears="reportYears" :userTypes="userTypes" @goStepper="loader" @resetFilters="dataLoaded = false" />
     <v-stepper alt-labels v-if="dataLoaded && $auth.user.userType === 'DEPARTMENT'" v-model="report" style="border-radius: 0;">
-      <v-stepper-header>
+      <v-stepper-header v-if="this.userType === 'FACULTY'">
         <v-stepper-step :complete="report > 1" step="1">Programmes / Events</v-stepper-step>
         <v-divider></v-divider>
 
@@ -39,8 +39,24 @@
         <!-- <v-stepper-step step="12">Theses / Dissertions</v-stepper-step>
         <v-divider></v-divider> -->
       </v-stepper-header>
+      <v-stepper-header v-else>
+        <v-stepper-step :complete="report > 1" step="1">Presentaions / Posters</v-stepper-step>
+        <v-divider></v-divider>
 
-      <v-stepper-items>
+        <v-stepper-step :complete="report > 2" step="2">Participations</v-stepper-step>
+        <v-divider></v-divider>
+
+        <v-stepper-step :complete="report > 3" step="3">Publications</v-stepper-step>
+        <v-divider></v-divider>
+
+        <v-stepper-step :complete="report > 4" step="4">Recogntions</v-stepper-step>
+        <v-divider></v-divider>
+
+        <v-stepper-step step="5">Theses / Dissertions</v-stepper-step>
+        <v-divider></v-divider>
+      </v-stepper-header>
+
+      <v-stepper-items v-if="this.userType === 'FACULTY'">
         <v-stepper-content step="1" style="padding: 0px;">
           <Editor :content="formattedProgrammes" :step="1" @next="handleNext(1)" :available="showAvailableReports" :selectedYear="selectedYear" :selectedMonth="selectedMonth" :from="from" :to="to" :selectedUserType="userType" />
         </v-stepper-content>
@@ -88,6 +104,27 @@
         <!-- <v-stepper-content step="12" style="padding: 0px;">
           <Editor :content="formattedTheses" :step="12" @next="handleNext(12)" :available="showAvailableReports" :selectedYear="selectedYear" :selectedMonth="selectedMonth" :from="from" :to="to" :selectedUserType="userType"  />
         </v-stepper-content> -->
+      </v-stepper-items>
+      <v-stepper-items v-else>
+        <v-stepper-content step="1" style="padding: 0px;">
+          <Editor :content="formattedPresentations" :step="1" @next="handleNext(1)" :available="showAvailableReports" :selectedYear="selectedYear" :selectedMonth="selectedMonth" :from="from" :to="to" :selectedUserType="userType" />
+        </v-stepper-content>
+
+        <v-stepper-content step="2" style="padding: 0px;">
+          <Editor :content="formattedParticipations" :step="2" @next="handleNext(2)" :available="showAvailableReports" :selectedYear="selectedYear" :selectedMonth="selectedMonth" :from="from" :to="to" :selectedUserType="userType" />
+        </v-stepper-content>
+
+        <v-stepper-content step="3" style="padding: 0px;">
+          <Editor :content="formattedPublications" :step="3" @next="handleNext(3)" :available="showAvailableReports" :selectedYear="selectedYear" :selectedMonth="selectedMonth" :from="from" :to="to" :selectedUserType="userType" />
+        </v-stepper-content>
+
+        <v-stepper-content step="4" style="padding: 0px;">
+          <Editor :content="formattedRecognitions" :step="4" @next="handleNext(4)" :available="showAvailableReports" :selectedYear="selectedYear" :selectedMonth="selectedMonth" :from="from" :to="to" :selectedUserType="userType" />
+        </v-stepper-content>
+
+        <v-stepper-content step="5" style="padding: 0px;">
+          <Editor :content="formattedTheses" :step="5" @next="handleNext(5)" :available="showAvailableReports" :selectedYear="selectedYear" :selectedMonth="selectedMonth" :from="from" :to="to" :selectedUserType="userType" />
+        </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
     <div v-else>
@@ -287,6 +324,28 @@ export default {
     </p>
             `,
           assignment.image && assignment.image.url ? `<img src="${this.$axios.defaults.baseURL}${assignment.image.url}" alt="${assignment.name}" width="600" height="350" />` : "",
+        ])
+        .join("");
+    },
+    formattedTheses() {
+      return this.theses
+        .flatMap((item, index) => [
+          `
+        <p style="text-align: justify; font-family: Calibri; font-style: normal;">
+      {{ index + 1 }}. {{ item.student_name}}, {{ item.thesis_title }}. Guide: {{ item.guide}}, Co-guides: {{ item.coguides}}. Funding: {{ item.funding}}. ({{ item.status}})
+    </p>
+    <p style="text-align: justify; font-family: Calibri; font-style: normal;">
+     {{ item.brief_report}}
+    </p>
+    <p v-if="item.image!==null && (item.image.ext==='.jpg' || item.image.ext==='.png') ">
+      <img
+        :src="$axios.defaults.baseURL + item.image.url"
+        alt="item"
+        width="600"
+        height="350"
+      />
+    </p>
+        `,
         ])
         .join("");
     },

@@ -37,100 +37,152 @@
           </div>
           <h6 style="text-align: right; font-family: Calibri; font-style: normal; color: gray;">Generated On: {{ $moment().format("Do MMMM YYYY, h:mm:ss a") }}</h6>
 
-          <h2 style="font-family: Calibri; font-style: normal;">
-            <b><u>Section B:</u></b>
-          </h2>
-          <h4 style="font-family: Calibri; font-style: normal;">
-            <b>1. CONFERENCES / WORKSHOPS / SEMINARS /SYMPOSIUM / SCIENTIFIC PROGRAMMES</b>
-          </h4>
-          <!-- Program -->
-          <div>
-            <v-sheet v-html="savedData.program"></v-sheet>
-          </div>
-          <!-- Visitor -->
-          <h4 style="font-family: Calibri; font-style: normal;">
-            <b>2. VISITORS TO THE DEPARTMENT</b>
-          </h4>
-          <div>
-            <v-sheet v-html="savedData.visitor"></v-sheet>
-          </div>
+          <div v-if="this.savedData.userType !== 'STUDENT'">
+            <h2 style="font-family: Calibri; font-style: normal;">
+              <b><u>Section B:</u></b>
+            </h2>
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>1. CONFERENCES / WORKSHOPS / SEMINARS /SYMPOSIUM / SCIENTIFIC PROGRAMMES</b>
+            </h4>
+            <!-- Program -->
+            <div>
+              <v-sheet v-html="savedData.program"></v-sheet>
+            </div>
+            <!-- Visitor -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>2. VISITORS TO THE DEPARTMENT</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.visitor"></v-sheet>
+            </div>
 
-          <!-- Training -->
-          <h4 style="font-family: Calibri; font-style: normal;">
-            <b>3. SPECIFIC TRAINING UNDERWENT BY THE FACULTY /STAFF /STUDENTS OUTSIDE NIMHANS</b>
-          </h4>
-          <div>
-            <v-sheet v-html="savedData.training"></v-sheet>
-          </div>
+            <!-- Training -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>3. SPECIFIC TRAINING UNDERWENT BY THE FACULTY /STAFF /STUDENTS OUTSIDE NIMHANS</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.training"></v-sheet>
+            </div>
 
-          <!-- Presentation -->
-          <h4 style="font-family: Calibri; font-style: normal;">
-            <b>4. CONTRIBUTION TO SCIENTIFIC DELIBERATIONS</b>
-          </h4>
-          <h4 style="font-family: Calibri; font-style: normal;">
-            <b>A. PRESENTATIONS/ POSTERS</b>
-          </h4>
-          <div>
-            <v-sheet v-html="savedData.presentation"></v-sheet>
-          </div>
+            <!-- Presentation -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>4. CONTRIBUTION TO SCIENTIFIC DELIBERATIONS</b>
+            </h4>
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>A. PRESENTATIONS/ POSTERS</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.presentation"></v-sheet>
+            </div>
 
-          <!-- Participation -->
-          <h4 style="font-family: Calibri; font-style: normal;">
-            <b>B. PARTICIPATION</b>
-          </h4>
-          <div>
-            <v-sheet v-html="savedData.participation"></v-sheet>
-          </div>
+            <!-- Participation -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>B. PARTICIPATION</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.participation"></v-sheet>
+            </div>
 
-          <!-- Public Engagement -->
-          <h4 style="font-family: Calibri; font-style: normal;">
-            <b>5. PUBLIC ENGAGEMENT &amp; OUTREACH ACTIVITIES</b>
-          </h4>
-          <div>
-            <v-sheet v-html="savedData.publicEngagement"></v-sheet>
-          </div>
+            <!-- Public Engagement -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>5. PUBLIC ENGAGEMENT &amp; OUTREACH ACTIVITIES</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.publicEngagement"></v-sheet>
+            </div>
 
-          <!-- Research Activities -->
-          <h4 style="font-family: Calibri; font-style: normal;">
-            <b>6. RESEARCH ACTIVITIES</b>
-          </h4>
-          <div>
-            <v-sheet v-html="savedData.research"></v-sheet>
-          </div>
+            <!-- Research Activities -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>6. RESEARCH ACTIVITIES</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.research"></v-sheet>
+            </div>
 
-          <!-- Publications -->
-          <h4 style="font-family: Calibri; font-style: normal;">
-            <b>7. PUBLICATIONS</b>
-          </h4>
-          <div>
-            <v-sheet v-html="savedData.publication"></v-sheet>
-          </div>
+            <!-- Publications -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>7. PUBLICATIONS</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.publication"></v-sheet>
+            </div>
 
-          <!-- Recognition -->
-          <h4 style="font-family: Calibri; font-style: normal;">
-            <b>8. RECOGNITION OF NIMHANS CONTRIBUTION</b>
-          </h4>
-          <h4 style="font-family: Calibri; font-style: normal;">
-            <b>A. AWARDS AND HONORS</b>
-          </h4>
-          <div>
-            <v-sheet v-html="savedData.recognition"></v-sheet>
-          </div>
+            <!-- Recognition -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>8. RECOGNITION OF NIMHANS CONTRIBUTION</b>
+            </h4>
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>A. AWARDS AND HONORS</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.recognition"></v-sheet>
+            </div>
 
-          <!-- Patents -->
-          <h4 style="font-family: Calibri; font-style: normal;">
-            <b>B. PATENTS</b>
-          </h4>
-          <div>
-            <v-sheet v-html="savedData.patent"></v-sheet>
-          </div>
+            <!-- Patents -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>B. PATENTS</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.patent"></v-sheet>
+            </div>
 
-          <!-- Key Assignments -->
-          <h4 style="font-family: Calibri; font-style: normal;">
-            <b>C. KEY ASSIGNMENTS </b>
-          </h4>
-          <div>
-            <v-sheet v-html="savedData.assignment"></v-sheet>
+            <!-- Key Assignments -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>C. KEY ASSIGNMENTS </b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.assignment"></v-sheet>
+            </div>
+          </div>
+          <div v-if="this.savedData.userType !== 'FACULTY'">
+            <h2 style="font-family: Calibri; font-style: normal;">
+              <b><u>Section C:</u></b>
+            </h2>
+            <!-- Presentation -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>1. CONTRIBUTION TO SCIENTIFIC DELIBERATIONS</b>
+            </h4>
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>A. PRESENTATIONS/ POSTERS</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.presentation"></v-sheet>
+            </div>
+
+            <!-- Participation -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>2. PARTICIPATION</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.participation"></v-sheet>
+            </div>
+
+            <!-- Publications -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>3. PUBLICATIONS</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.publication"></v-sheet>
+            </div>
+
+            <!-- Recognition -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>4. RECOGNITION OF NIMHANS CONTRIBUTION</b>
+            </h4>
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>A. AWARDS AND HONORS</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.recognition"></v-sheet>
+            </div>
+
+            <!-- Theses -->
+            <h4 style="font-family: Calibri; font-style: normal;">
+              <b>5. THESES AND DISSERTATIONS</b>
+            </h4>
+            <div>
+              <v-sheet v-html="savedData.recognition"></v-sheet>
+            </div>
           </div>
         </div>
       </v-sheet>
@@ -474,7 +526,6 @@ export default {
     await store.dispatch("report/getById", { id: params.id });
   },
   mounted() {
-    console.log("im in");
     this.$store.dispatch("setDepartmentName", this.$auth.user.department);
     this.formattedFileName =
       this.$store.state.departmentName +

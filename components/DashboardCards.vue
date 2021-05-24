@@ -18,7 +18,7 @@
             </vc-date-picker>
           </v-col>
           <v-col cols="12" lg="3" class="my-5" v-if="$auth.user.userType === 'DEPARTMENT'">
-            <v-select ref="user-type" outlined dense v-model="userType" label="Select User Type" placeholder="Select" :items="userTypes" @input="setAssignedPeople(userType)" color="success"></v-select>
+            <v-select ref="user-type" outlined dense v-model="userType" label="Select User Type" placeholder="Select" :items="userTypes" @change="setAssignedPeople(userType)" color="success"></v-select>
           </v-col>
           <v-col cols="11" lg="3" class="my-5" v-if="$auth.user.userType === 'DEPARTMENT'">
             <v-autocomplete v-model="selectedUser" outlined dense ref="user" :items="assignedPeople" color="blue-grey lighten-2" label="Select User" placeholder="My Name is" item-text="fullname" item-value="id">
@@ -254,10 +254,6 @@ export default {
       userType: null,
       userTypes: [
         {
-          text: "Department",
-          value: "DEPARTMENT",
-        },
-        {
           text: "Faculty",
           value: "FACULTY",
         },
@@ -305,10 +301,10 @@ export default {
       return this.$store.state.user.activeUsersList.result;
     },
     faculties() {
-      return this.people.filter((item) => item.userType === "FACULTY");
+      return this.$store.state.user.activeUsersList.result.filter((item) => item.user.userType === "FACULTY");
     },
     students() {
-      return this.people.filter((item) => item.userType === "STUDENT");
+      return this.$store.state.user.activeUsersList.result.filter((item) => item.user.userType === "STUDENT");
     },
     reportYears() {
       return this.$store.state.reportYears;
@@ -322,7 +318,6 @@ export default {
       this.yearParam = "annual_year=" + val;
     },
     userType(val) {
-      console.log(val);
       this.userParam = null;
       this.userTypeParam = `&user.userType=${val}`;
       if (val === "FACULTY") {
@@ -330,9 +325,6 @@ export default {
       }
       if (val === "STUDENT") {
         this.assignedPeople = this.students;
-      }
-      if (val === "DEPARTMENT") {
-        this.assignedPeople = this.people;
       }
     },
     range(val) {
@@ -345,21 +337,15 @@ export default {
   },
   mounted() {
     if (this.userType) {
-      if (this.userType === "FACULTY") this.assignedPeople = this.faculties;
-    } else this.assignedPeople = this.people;
+      this.userType === "FACULTY" && (this.assignedPeople = this.faculties);
+      this.userType === "STUDENT" && (this.assignedPeople = this.students);
+    }
     this.resetFilter();
   },
   methods: {
     setAssignedPeople(userType) {
-      if (userType === "FACULTY") {
-        this.assignedPeople = this.faculties;
-      }
-      if (userType === "STUDENT") {
-        this.assignedPeople = this.students;
-      }
-      if (userType === "DEPARTMENT") {
-        this.assignedPeople = this.people;
-      }
+      userType === "FACULTY" && (this.assignedPeople = this.faculties);
+      userType === "STUDENT" && (this.assignedPeople = this.students);
     },
     getActivityCount(id) {
       if (id == 1) {
@@ -456,7 +442,7 @@ export default {
       this.userParam = null;
       this.query = null;
       this.selectedUser = null;
-      this.assignedPeople = this.people;
+      this.assignedPeople = [];
     },
     async getAllyears() {
       this.loading = true;

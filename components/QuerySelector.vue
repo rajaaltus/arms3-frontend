@@ -16,13 +16,13 @@
         </vc-date-picker>
       </v-col>
       <v-col cols="12" lg="2" class="mt-5" v-if="$auth.user.userType === 'DEPARTMENT' || $auth.user.userType === 'SUPER_ADMIN'">
-        <v-select outlined dense ref="user-type" v-model="userType" label="User Type" placeholder="I am a" :items="userTypes" color="success"></v-select>
+        <v-select outlined dense ref="user-type" v-model="userType" label="User Type" placeholder="I am a" :items="userTypes" color="success" @change="setAssignedPeople(userType)"></v-select>
       </v-col>
 
-      <v-col cols="12" lg="3" class="mt-5" v-if="$auth.user.userType === 'DEPARTMENT' || $auth.user.userType === 'SUPER_ADMIN'">
-        <v-autocomplete outlined dense v-model="selectedUser" ref="user" :items="assignedPeople" color="blue-grey lighten-2" label="Faculty / Staff / Student" placeholder="My Name is" item-text="fullname" item-value="id">
+      <v-col cols="12" lg="2" class="mt-5" v-if="$auth.user.userType === 'DEPARTMENT' || $auth.user.userType === 'SUPER_ADMIN'">
+        <v-autocomplete v-model="selectedUser" outlined dense ref="user" :items="assignedPeople" color="blue-grey lighten-2" label="Select User" placeholder="My Name is" item-text="fullname" item-value="id">
           <template v-slot:selection="data">
-            {{ data.item.fullname }}
+            {{ data.item.name }}
           </template>
           <template v-slot:item="data">
             <template v-if="typeof data.item !== 'object'">
@@ -30,15 +30,19 @@
             </template>
             <template v-else>
               <v-list-item-avatar>
-                <img :src="data.item.avatar !== null ? $axios.defaults.baseURL + data.item.avatar.url : '/avatar-default-icon.png'" />
+                <img :src="data.item.user.avatar !== null ? $axios.defaults.baseURL + data.item.user.avatar.url : '/avatar-default-icon.png'" />
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title v-html="data.item.fullname"></v-list-item-title>
-                <v-list-item-subtitle v-html="data.item.userType"></v-list-item-subtitle>
+                <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                <v-list-item-subtitle v-html="data.item.user.userType"></v-list-item-subtitle>
               </v-list-item-content>
             </template>
           </template>
         </v-autocomplete>
+      </v-col>
+
+      <v-col cols="12" lg="2" class="mt-5" v-if="$auth.user.userType === 'DEPARTMENT' || $auth.user.userType === 'SUPER_ADMIN'">
+        <v-select outlined dense ref="user-activities" v-model="selectedActivity" label="Activities" placeholder="Select Activities" :items="assignedActivities" item-text="title" color="success"></v-select>
       </v-col>
 
       <v-col cols="auto" lg="auto" class="mt-3">
@@ -79,7 +83,9 @@ export default {
       sheet: false,
       dataLoaded: false,
       assignedPeople: [],
+      assignedActivities: [],
       loading: false,
+      selectedActivity: "",
       selectedUser: "",
       selectedYear: 0,
       selectedQuery: "",
@@ -121,7 +127,6 @@ export default {
         this.query.userType = this.userTypeParam;
         if (val === "FACULTY") this.assignedPeople = this.faculties;
         if (val === "STUDENT") this.assignedPeople = this.students;
-        if (val === "DEPARTMENT") this.assignedPeople = this.people;
       }
     },
     selectedUser(val) {
@@ -136,22 +141,34 @@ export default {
     people() {
       return this.$store.state.user.activeUsersList.result;
     },
+    activities() {
+      return this.$store.state.activities;
+    },
+    studentActivities() {
+      return this.$store.state.studentActivities;
+    },
     faculties() {
-      return this.people.filter((item) => item.userType === "FACULTY");
+      return this.people.filter((item) => item.user.userType === "FACULTY");
     },
     students() {
-      return this.people.filter((item) => item.userType === "STUDENT");
+      return this.people.filter((item) => item.user.userType === "STUDENT");
     },
   },
   async mounted() {
     let querySelector = "";
     querySelector = "department.id=" + `${this.$auth.user.department}` + "&blocked_ne=true";
     this.$store.dispatch("user/setActiveUsersList", { qs: querySelector });
+    this.$store.dispatch("setActivities");
+    this.$store.dispatch("setStudentActivities");
   },
   methods: {
+    setAssignedPeople(userType) {
+      userType === "FACULTY" && ((this.assignedPeople = this.faculties), (this.assignedActivities = this.activities));
+      userType === "STUDENT" && ((this.assignedPeople = this.students), (this.assignedActivities = this.studentActivities));
+    },
     loader() {
       this.selectedQuery = this.query.year + this.query.range + this.query.userType + this.query.selectedUser;
-      this.$emit("go", this.selectedQuery, this.selectedYear, this.range, this.userType);
+      this.$emit("go", this.selectedQuery, this.selectedYear, this.range, this.userType, this.selectedActivity);
       console.log("Selected Query: ", this.selectedQuery);
     },
     resetFilter() {

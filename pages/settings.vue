@@ -90,6 +90,11 @@
               <template v-slot:[`item.blocked`]="{ item }">
                 <v-switch color="red" class="pl-2" :value="false" :input-value="item.blocked" @change="blockUser(item.id, $event !== null, $event)"></v-switch>
               </template>
+              <template v-slot:[`item.action`]="{ item }">
+                <v-btn plain @click="deleteItem(item)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </template>
             </v-data-table>
           </v-card-text>
         </v-card>
@@ -157,6 +162,7 @@ export default {
       { text: "Email", value: "email" },
       { text: "Role", value: "userType" },
       { text: "Block user", value: "blocked" },
+      { text: "Delete user", value: "action" },
     ],
     chartOptions: {
       series: [
@@ -184,11 +190,28 @@ export default {
   },
   methods: {
     deleteItem(item) {
-      let result = this.$store.dispatch("user/deleteUser", { id: item.id });
-      if (result) {
-        Swal.fire("deleted");
-        this.reloadData();
-      }
+      Swal.fire({
+        title: `Are you sure to delete ${item.fullname}?`,
+        showCancelButton: true,
+        confirmButtonText: "Yes, I am sure.",
+        allowOutsideClick: () => !Swal.isLoading(),
+      }).then((result) => {
+        if (!result.dismiss) {
+          this.$store.dispatch("user/deleteUser", { id: item.id }).then((response) => {
+            Swal.fire({
+              type: "success",
+              title: "Deleted successfully!",
+              position: "top-end",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            let queryString = "";
+            queryString = `department.id=${this.$store.state.auth.user.department}&userType_ne=DEPARTMENT`;
+            this.$store.dispatch("user/setUsersList", { qs: queryString });
+          });
+        }
+      });
     },
     blockUser(index, value, event) {
       var payload = Object.assign({

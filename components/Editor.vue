@@ -10,7 +10,7 @@
     <div class="my-8">
       <!-- {{ content }} -->
     </div>
-    <v-card flat class="mb-5" v-if="step == 11">
+    <v-card flat class="mb-5" v-if="step == 11 || (step == 5 && selectedUserType === 'STUDENT')">
       <v-layout align-center justify-center>
         <v-btn small id="submit" color="green darken-2" dark @click="save">
           Submit &amp; Generate Report
@@ -89,8 +89,7 @@ export default {
       console.log("Report Id: ", this.$store.state.report.reportId);
 
       if (this.$store.state.report.reportId == 0) {
-        if (this.step == 1) {
-          console.log(this.$content);
+        if (this.step == 1 && this.selectedUserType === "FACULTY") {
           var payload = Object.assign(
             {},
             {
@@ -104,9 +103,23 @@ export default {
             }
           );
           await this.$store.dispatch("report/addReport", payload);
+        } else {
+          var payload = Object.assign(
+            {},
+            {
+              annual_year: this.selectedYear,
+              userType: this.selectedUserType,
+              Month: this.selectedMonth,
+              from: this.from,
+              to: this.to,
+              department: this.$auth.user.department,
+              presentation: this.newContent,
+            }
+          );
+          await this.$store.dispatch("report/addReport", payload);
         }
       } else {
-        if (this.step == 1) {
+        if (this.step == 1 && this.selectedUserType === "FACULTY") {
           var payload = Object.assign(
             {},
             {
@@ -121,8 +134,23 @@ export default {
             }
           );
           await this.$store.dispatch("report/updateReport", payload);
+        } else {
+          var payload = Object.assign(
+            {},
+            {
+              id: this.$store.state.report.reportId,
+              annual_year: this.selectedYear,
+              userType: this.selectedUserType,
+              Month: this.selectedMonth,
+              from: this.from,
+              to: this.to,
+              department: this.$auth.user.department,
+              presentation: this.newContent,
+            }
+          );
+          await this.$store.dispatch("report/updateReport", payload);
         }
-        if (this.step == 2) {
+        if (this.step == 2 && this.selectedUserType === "FACULTY") {
           var payload = Object.assign(
             {},
             {
@@ -134,9 +162,21 @@ export default {
             }
           );
           await this.$store.dispatch("report/updateReport", payload);
+        } else {
+          var payload = Object.assign(
+            {},
+            {
+              id: this.$store.state.report.reportId,
+              annual_year: this.selectedYear,
+              userType: this.selectedUserType,
+              department: this.$auth.user.department,
+              presentation: this.newContent,
+            }
+          );
+          await this.$store.dispatch("report/updateReport", payload);
         }
 
-        if (this.step == 3) {
+        if (this.step == 3 && this.selectedUserType === "FACULTY") {
           var payload = Object.assign(
             {},
             {
@@ -148,9 +188,21 @@ export default {
             }
           );
           await this.$store.dispatch("report/updateReport", payload);
+        } else {
+          var payload = Object.assign(
+            {},
+            {
+              id: this.$store.state.report.reportId,
+              annual_year: this.selectedYear,
+              userType: this.selectedUserType,
+              department: this.$auth.user.department,
+              publication: this.newContent,
+            }
+          );
+          await this.$store.dispatch("report/updateReport", payload);
         }
 
-        if (this.step == 4) {
+        if (this.step == 4 && this.selectedUserType === "FACULTY") {
           var payload = Object.assign(
             {},
             {
@@ -159,6 +211,18 @@ export default {
               userType: this.selectedUserType,
               department: this.$auth.user.department,
               presentation: this.newContent,
+            }
+          );
+          await this.$store.dispatch("report/updateReport", payload);
+        } else {
+          var payload = Object.assign(
+            {},
+            {
+              id: this.$store.state.report.reportId,
+              annual_year: this.selectedYear,
+              userType: this.selectedUserType,
+              department: this.$auth.user.department,
+              recognition: this.newContent,
             }
           );
           await this.$store.dispatch("report/updateReport", payload);
