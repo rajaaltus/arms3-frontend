@@ -201,7 +201,7 @@ export default {
         await this.$store.dispatch("public/publicAdd", payload);
       }
       if (this.$store.state.public.publicData.success) {
-        this.$refs.form.reset();
+        this.reset();
       }
     },
     async handleFileUpload(event) {

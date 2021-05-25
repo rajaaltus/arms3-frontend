@@ -170,7 +170,7 @@ export default {
         await this.$store.dispatch("assignment/assignmentAdd", payload);
       }
       if (this.$store.state.assignment.assignmentsData.success) {
-        this.$refs.form.reset();
+        this.reset();
       }
     },
     async handleFileUpload(event) {

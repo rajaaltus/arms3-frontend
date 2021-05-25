@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="px-5">
+    <v-row>
       <v-col cols="12" :lg="$auth.user.userType === 'DEPARTMENT' ? '2' : '3'" class="mt-5">
         <v-select outlined dense v-model="selectedYear" ref="year" :items="reportYears" item-value="id" item-text="val" label="Reporting Year" placeholder="Pick Year" color="success"></v-select>
       </v-col>
@@ -39,10 +39,6 @@
             </template>
           </template>
         </v-autocomplete>
-      </v-col>
-
-      <v-col cols="12" lg="2" class="mt-5" v-if="$auth.user.userType === 'DEPARTMENT' || $auth.user.userType === 'SUPER_ADMIN'">
-        <v-select outlined dense ref="user-activities" v-model="selectedActivity" label="Activities" placeholder="Select Activities" :items="assignedActivities" item-text="title" color="success"></v-select>
       </v-col>
 
       <v-col cols="auto" lg="auto" class="mt-3">

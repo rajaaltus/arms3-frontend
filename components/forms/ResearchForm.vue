@@ -204,7 +204,7 @@ export default {
       }
 
       if (this.$store.state.research.researchData.success) {
-        this.$refs.form.reset();
+        this.reset();
       }
     },
     async handleFileUpload(event) {

@@ -174,7 +174,7 @@ export default {
         await this.$store.dispatch("theses/thesesAdd", payload);
       }
       if (this.$store.state.theses.thesesData.success) {
-        this.$refs.form.reset();
+        this.reset();
       }
     },
     async handleFileUpload(event) {

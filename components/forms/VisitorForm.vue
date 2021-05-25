@@ -228,7 +228,7 @@ export default {
         await this.$store.dispatch("visitor/addVisitor", payload);
       }
       if (this.$store.state.visitor.visitorsData.success) {
-        this.$refs.form.reset();
+        this.reset();
       }
     },
   },

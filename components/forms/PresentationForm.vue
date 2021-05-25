@@ -37,14 +37,14 @@
               <v-text-field v-model="presentation.title" :rules="[(v) => !!v || 'Item is required']" label="Title" required color="success"> </v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field v-model="presentation.coauthors" label="Co-author(s)"  color="success"></v-text-field>
+              <v-text-field v-model="presentation.coauthors" label="Co-author(s)" color="success"></v-text-field>
             </v-col>
             <v-col cols="4">
-              <v-menu ref="menu"  :close-on-content-click="false" transition="scale-transition" offset-y min-width="290px">
+              <v-menu ref="menu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
-                  <v-text-field  :return-value.sync="duration_from" :rules="[(v) => !!v || 'Item is required']" readonly color="success" label="Date" v-on="on"></v-text-field>
+                  <v-text-field :return-value.sync="duration_from" :rules="[(v) => !!v || 'Item is required']" readonly color="success" label="Date" v-on="on"></v-text-field>
                 </template>
-                <v-date-picker  color="green lighten-1" no-title scrollable>
+                <v-date-picker color="green lighten-1" no-title scrollable>
                   <v-spacer></v-spacer>
                   <v-btn text color="primary" @click="duration_from = false">
                     Cancel
@@ -56,7 +56,7 @@
               </v-menu>
             </v-col>
             <v-col cols="8">
-              <v-text-field  label="Place of Presentation / Poster" :rules="[(v) => !!v || 'Item is required']" color="success"></v-text-field>
+              <v-text-field label="Place of Presentation / Poster" :rules="[(v) => !!v || 'Item is required']" color="success"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
@@ -199,7 +199,7 @@ export default {
         var vm = this;
         await this.$store.dispatch("presentation/addPresentation", payload);
         if (this.$store.state.presentation.presentationsData.success) {
-          this.$refs.form.reset();
+          this.reset();
         }
       }
     },

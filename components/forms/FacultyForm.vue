@@ -52,13 +52,22 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-row no-gutters>
+      <v-row v-if="facultyData">
         <v-spacer></v-spacer>
-        <v-btn small color="#d74f4f" dark class="mr-2" @click="reset">
+        <v-btn small color="#d74f4f" dark @click="$emit('close')" class="mr-4">
+          Cancel
+        </v-btn>
+        <v-btn small color="#57a727" dark @click="$emit('save', faculty)" class="mr-4">
+          Update
+        </v-btn>
+      </v-row>
+      <v-row v-else>
+        <v-spacer></v-spacer>
+        <v-btn small color="#d74f4f" dark @click="reset" class="mr-4">
           Reset
         </v-btn>
-        <v-btn small color="#57a727" dark @click="addFaculty">
-          Add
+        <v-btn small color="#57a727" dark @click="addFaculty" class="mr-4">
+          Submit
         </v-btn>
       </v-row>
     </v-form>
@@ -69,6 +78,7 @@
 import { mapState } from "vuex";
 import Swal from "sweetalert2";
 export default {
+  props: ["facultyData"],
   data: () => ({
     imgLoader: false,
     duration_from: false,
@@ -87,6 +97,12 @@ export default {
     image: null,
     facultyStatus: ["Superannuated", "Retired", "VRS"],
   }),
+  mounted() {
+    if (this.facultyData) {
+      this.faculty = Object.assign({}, this.facultyData);
+      this.image = this.faculty.image ? this.faculty.image : null;
+    }
+  },
   methods: {
     async deleteImage(id) {
       await this.$store.dispatch("deleteFile", { id: id });

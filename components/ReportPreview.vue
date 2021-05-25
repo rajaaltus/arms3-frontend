@@ -1,8 +1,30 @@
 <template>
   <div>
     <v-card flat>
-      <v-card-text class="px-0 py-0">
+      <v-card-text>
         <QuerySelector :reportYears="reportYears" :userTypes="userTypes" @go="loader" @resetFilters="dataLoaded = false" />
+        <v-row>
+          <v-col cols="2">
+            <v-checkbox v-model="isSectionA" label="Section A"></v-checkbox>
+          </v-col>
+          <v-col cols="10">
+            <v-select
+              outlined
+              multiple
+              small-chips
+              deletable-chips
+              dense
+              clearable
+              ref="user-activities"
+              v-model="selectedActivity"
+              label="Activities"
+              placeholder="Select Activities"
+              :items="filteredActivities"
+              color="success"
+              @change="renderKey += 1"
+            ></v-select>
+          </v-col>
+        </v-row>
         <div class="preview">
           <v-sheet width="100%" v-if="dataLoaded">
             <v-toolbar color="blue-grey darken-3" dark>
@@ -17,8 +39,8 @@
                 <span>Download Report</span>
               </v-tooltip>
             </v-toolbar>
-            <div id="download" elevation="6" class="mx-auto pa-4 doc" width="100%">
-              <div style="margin: 0 auto; width: 800px; line-height: 5px; text-align: center;">
+            <div id="download" elevation="6" class="mx-auto pa-4 doc" width="100%" :key="renderKey">
+              <div style="margin: 0 auto; width: 600px; line-height: 5px; text-align: center;">
                 <div style="margin-right: 10px; float: left;">
                   <img style="width: 140px;" src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Nimhans_logo.png/230px-Nimhans_logo.png" alt="logo" />
                 </div>
@@ -34,7 +56,7 @@
                   </p>
                   <p style="text-align: center; font-family: Calibri; line-height: 5px; font-style: normal; font-size: 1rem; font-weight: bold;">
                     DEPARTMENT OF
-                    {{ $store.state.departmentName.toUpperCase() }}
+                    {{ selectedDepartmentName.toUpperCase() }}
                   </p>
                   <p style="text-align: center; font-family: Calibri; line-height: 5px; font-style: normal;">
                     {{ reportTitle }}
@@ -42,109 +64,397 @@
                 </div>
               </div>
               <h6 style="text-align: right; font-family: Calibri; font-style: normal; color: gray;">Generated On: {{ $moment().format("Do MMMM YYYY, h:mm:ss a") }}</h6>
+              <div v-if="isSectionA">
+                <div>
+                  <FomattingAboutDataFormat :aboutData="aboutData" />
+                </div>
 
-              <h2 style="font-family: Calibri; font-style: normal;">
-                <b><u>Section B:</u></b>
-              </h2>
-              <h4 style="font-family: Calibri; font-style: normal;">
-                <b>1. CONFERENCES / WORKSHOPS / SEMINARS /SYMPOSIUM / SCIENTIFIC PROGRAMMES</b>
-              </h4>
-              <!-- Program -->
-              <div v-for="(program, index) in programmes" :key="program.id">
-                <fomattingProgramFormat :index="index" :program="program" />
+                <h4 style="font-family: Calibri; font-style: normal;"><b>2. PATIENT CARE ACTIVITIES</b></h4>
+                <h4 style="font-family: Calibri; font-style: normal;">A. Clinical Services</h4>
+                <div>
+                  <FomattingPatientCareFormat :clinicalData="clinicalData" />
+                </div>
+                <h4 style="font-family: Calibri; font-style: normal;"><b>B. Emergency Services</b></h4>
+                <div>
+                  <FomattingEmergencyFormat :emergencyData="emergencyData" />
+                </div>
+                <h4 style="font-family: Calibri; font-style: normal;"><b>C. Diagnostic Services</b></h4>
+                <div>
+                  <FomattingDiagnosticFormat :diagnosticsData="diagnosticsData" />
+                </div>
+                <div>
+                  <FomattingSpecialFormat :specialData="specialData" />
+                </div>
+                <div>
+                  <FomattingOTFormat :otservicesData="otservicesData" />
+                </div>
+                <div>
+                  <FomattingHRDFormat :hrdCourses="hrdCourses" />
+                </div>
+                <div>
+                  <FomattingHrdTrainingsFormat :hrdTrainings="hrdTrainings" />
+                </div>
+                <div>
+                  <FomattingRetairedFormat :retaired="retaired" />
+                </div>
               </div>
-              <!-- Visitor -->
-              <h4 style="font-family: Calibri; font-style: normal;">
-                <b>2. VISITORS TO THE DEPARTMENT</b>
-              </h4>
-              <div v-for="(visitor, index) in visitors" :key="visitor.id">
-                <fomattingVisitorFormat :visitor="visitor" :index="index" :deptartmentName="$store.state.departmentName" />
+              <div v-if="selectedUserType !== 'STUDENT'">
+                <h2 style="font-family: Calibri; font-style: normal;">
+                  <b><u>Section B:</u></b>
+                </h2>
+                <div v-if="selectedActivity.includes('isProgram')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>1. CONFERENCES / WORKSHOPS / SEMINARS /SYMPOSIUM / SCIENTIFIC PROGRAMMES</b>
+                  </h4>
+                  <!-- Program -->
+                  <!-- International -->
+                  <div v-if="internationalProgrammes.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
+                    <div v-for="(program, index) in internationalProgrammes" :key="program.id">
+                      <FomattingProgramFormat :index="index" :program="program" />
+                    </div>
+                  </div>
+                  <!-- National -->
+                  <div v-if="nationalProgrammes.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;">National</h4>
+                    <div v-for="(program, index) in nationalProgrammes" :key="program.id">
+                      <FomattingProgramFormat :index="index" :program="program" />
+                    </div>
+                  </div>
+                  <!-- Regional -->
+                  <div v-if="regionalProgrammes.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;">Regional</h4>
+                    <div v-for="(program, index) in regionalProgrammes" :key="program.id">
+                      <FomattingProgramFormat :index="index" :program="program" />
+                    </div>
+                  </div>
+                  <!-- State -->
+                  <div v-if="stateProgrammes.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;">State</h4>
+                    <div v-for="(program, index) in stateProgrammes" :key="program.id">
+                      <FomattingProgramFormat :index="index" :program="program" />
+                    </div>
+                  </div>
+                  <!-- Local -->
+                  <div v-if="localProgrammes.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;">Local</h4>
+                    <div v-for="(program, index) in localProgrammes" :key="program.id">
+                      <FomattingProgramFormat :index="index" :program="program" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Visitor -->
+                <div v-if="selectedActivity.includes('isVisitor')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>2. VISITORS TO THE DEPARTMENT</b>
+                  </h4>
+                  <div v-for="(visitor, index) in visitors" :key="visitor.id">
+                    <FomattingVisitorFormat :visitor="visitor" :index="index" :departmentName="selectedDepartmentName" />
+                  </div>
+                </div>
+
+                <!-- Training -->
+                <div v-if="selectedActivity.includes('isTraining')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>3. SPECIFIC TRAINING UNDERWENT BY THE FACULTY /STAFF /STUDENTS OUTSIDE NIMHANS</b>
+                  </h4>
+                  <div v-for="(training, index) in trainings" :key="training.id">
+                    <FomattingTrainingFormat :index="index" :training="training" />
+                  </div>
+                </div>
+
+                <!-- Presentation -->
+                <div v-if="selectedActivity.includes('isPresentation')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>4. CONTRIBUTION TO SCIENTIFIC DELIBERATIONS</b>
+                  </h4>
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>A1. PRESENTATIONS</b>
+                  </h4>
+                  <div v-if="internationalPresentations.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
+                    <div v-for="(presentation, index) in internationalPresentations" :key="presentation.id">
+                      <FomattingPresentationFormat :index="index" :presentation="presentation" />
+                    </div>
+                  </div>
+                  <div v-if="nationalPresentations.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
+                    <div v-for="(presentation, index) in nationalPresentations" :key="presentation.id">
+                      <FomattingPresentationFormat :index="index" :presentation="presentation" />
+                    </div>
+                  </div>
+
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>A2. POSTERS</b>
+                  </h4>
+                  <div v-if="internationalPosters.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
+                    <div v-for="(poster, index) in internationalPosters" :key="poster.id">
+                      <FomattingPresentationFormat :index="index" :presentation="poster" />
+                    </div>
+                  </div>
+                  <div v-if="nationalPosters.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
+                    <div v-for="(poster, index) in nationalPosters" :key="poster.id">
+                      <FomattingPresentationFormat :index="index" :presentation="poster" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Participation -->
+                <div v-if="selectedActivity.includes('isParticipation')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>B. PARTICIPATION</b>
+                  </h4>
+
+                  <div v-if="internationalParticipations.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
+                    <div v-for="(participation, index) in internationalParticipations" :key="participation.id">
+                      <FomattingParticipationFormat :index="index" :participation="participation" />
+                    </div>
+                  </div>
+
+                  <div v-if="nationalParticipations.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
+                    <div v-for="(participation, index) in nationalParticipations" :key="participation.id">
+                      <FomattingParticipationFormat :index="index" :participation="participation" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div v-for="(participation, index) in participations" :key="participation.id">
+              <FomattingParticipationFormat :index="index" :participation="participation" />
+            </div> -->
+
+                <!-- Public Engagement -->
+                <div v-if="selectedActivity.includes('isPublic')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>5. PUBLIC ENGAGEMENT &amp; OUTREACH ACTIVITIES</b>
+                  </h4>
+                  <div v-for="(publicE, index) in publics" :key="publicE.id">
+                    <FomattingPublicEngagementFormat :index="index" :publicE="publicE" />
+                  </div>
+                </div>
+
+                <!-- Research Activities -->
+                <div v-if="selectedActivity.includes('isResearch')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>6. RESEARCH ACTIVITIES</b>
+                  </h4>
+                  <div v-for="(research, index) in researchData" :key="research.id">
+                    <FomattingResearchFormat :index="index" :research="research" />
+                  </div>
+                </div>
+
+                <!-- Publications -->
+                <div v-if="selectedActivity.includes('isPublication')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>7. PUBLICATIONS</b>
+                  </h4>
+                  <div v-if="journalArticles.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>Journal Articles</u></h4>
+                    <div v-for="(item, index) in journalArticles" :key="item.id">
+                      <FomattingPublicationFormat :index="index" :item="item" />
+                    </div>
+                  </div>
+                  <div v-if="newsLetters.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>Articles for Professionals in Souvenirs Newsletters etc</u></h4>
+                    <div v-for="(item, index) in newsLetters" :key="item.id">
+                      <FomattingPublicationFormat :index="index" :item="item" />
+                    </div>
+                  </div>
+                  <div v-if="books.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>Books</u></h4>
+                    <div v-for="(item, index) in books" :key="item.id">
+                      <FomattingPublicationFormat :index="index" :item="item" />
+                    </div>
+                  </div>
+                  <div v-if="bookChapters.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>Book Chapters</u></h4>
+                    <div v-for="(item, index) in bookChapters" :key="item.id">
+                      <FomattingPublicationFormat :index="index" :item="item" />
+                    </div>
+                  </div>
+                  <div v-if="monoGraphs.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>Monographs</u></h4>
+                    <div v-for="(item, index) in monoGraphs" :key="item.id">
+                      <FomattingPublicationFormat :index="index" :item="item" />
+                    </div>
+                  </div>
+                  <div v-if="manuals.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>Manuals</u></h4>
+                    <div v-for="(item, index) in manuals" :key="item.id">
+                      <FomattingPublicationFormat :index="index" :item="item" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Recognition -->
+                <div v-if="selectedActivity.includes('isRecognition')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>8. RECOGNITION OF NIMHANS CONTRIBUTION</b>
+                  </h4>
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>A. AWARDS AND HONORS</b>
+                  </h4>
+                  <div v-for="(recognition, index) in recognitionsFaculty" :key="recognition.id">
+                    <FomattingRecognitionFormat :index="index" :recognition="recognition" />
+                  </div>
+                </div>
+
+                <!-- Patents -->
+                <div v-if="selectedActivity.includes('isPatent')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>B. PATENTS</b>
+                  </h4>
+                  <div v-for="(patent, index) in patents" :key="patent.id">
+                    <FomattingPatentFormat :index="index" :patent="patent" />
+                  </div>
+                </div>
+
+                <!-- Key Assignments -->
+                <div v-if="selectedActivity.includes('isAssignment')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>C. KEY ASSIGNMENTS </b>
+                  </h4>
+                  <div v-for="(assignment, index) in assignments" :key="assignment.id">
+                    <FomattingAssignmentFormat :index="index" :assignment="assignment" />
+                  </div>
+                </div>
               </div>
 
-              <!-- Training -->
-              <h4 style="font-family: Calibri; font-style: normal;">
-                <b>3. SPECIFIC TRAINING UNDERWENT BY THE FACULTY /STAFF /STUDENTS OUTSIDE NIMHANS</b>
-              </h4>
-              <div v-for="(training, index) in trainings" :key="training.id">
-                <fomattingTrainingFormat :index="index" :training="training" />
-              </div>
+              <!-- SECTION C -->
+              <div v-if="selectedUserType !== 'FACULTY'">
+                <h2 style="font-family: Calibri; font-style: normal;">
+                  <b><u>Section C:</u></b>
+                </h2>
+                <!-- Presentation -->
+                <div v-if="selectedActivity.includes('isPresentaion')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>1. CONTRIBUTION TO SCIENTIFIC DELIBERATIONS</b>
+                  </h4>
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>A1. PRESENTATIONS</b>
+                  </h4>
+                  <div v-if="internationalStudentPresentations.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
+                    <div v-for="(presentation, index) in internationalStudentPresentations" :key="presentation.id">
+                      <FomattingPresentationFormat :index="index" :presentation="presentation" />
+                    </div>
+                  </div>
+                  <div v-if="nationalStudentPresentations.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
+                    <div v-for="(presentation, index) in nationalStudentPresentations" :key="presentation.id">
+                      <FomattingPresentationFormat :index="index" :presentation="presentation" />
+                    </div>
+                  </div>
 
-              <!-- Presentation -->
-              <h4 style="font-family: Calibri; font-style: normal;">
-                <b>4. CONTRIBUTION TO SCIENTIFIC DELIBERATIONS</b>
-              </h4>
-              <h4 style="font-family: Calibri; font-style: normal;">
-                <b>A. PRESENTATIONS/ POSTERS</b>
-              </h4>
-              <div v-for="(presentation, index) in presentations" :key="presentation.id">
-                <fomattingPresentationFormat :index="index" :presentation="presentation" />
-              </div>
+                  <h4 style="font-family: Calibri; font-style: normal;" v-if="internationalStudentPosters.length > 0">
+                    <b>A2. POSTERS</b>
+                  </h4>
+                  <div v-if="internationalStudentPosters.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
+                    <div v-for="(poster, index) in internationalStudentPosters" :key="poster.id">
+                      <FomattingPresentationFormat :index="index" :presentation="poster" />
+                    </div>
+                  </div>
+                  <div v-if="nationalStudentPosters.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
+                    <div v-for="(poster, index) in nationalStudentPosters" :key="poster.id">
+                      <FomattingPresentationFormat :index="index" :presentation="poster" />
+                    </div>
+                  </div>
+                </div>
 
-              <!-- Participation -->
-              <h4 style="font-family: Calibri; font-style: normal;">
-                <b>B. PARTICIPATION</b>
-              </h4>
-              <div v-for="(participation, index) in participations" :key="participation.id">
-                <fomattingParticipationFormat :index="index" :participation="participation" />
-              </div>
+                <!-- Participation  -->
+                <div v-if="selectedActivity.includes('isParticipation')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>2. PARTICIPATION</b>
+                  </h4>
+                  <div v-if="internationalStudentParticipations.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
+                    <div v-for="(participation, index) in internationalStudentParticipations" :key="participation.id">
+                      <FomattingParticipationFormat :index="index" :participation="participation" />
+                    </div>
+                  </div>
 
-              <!-- Public Engagement -->
-              <h4 style="font-family: Calibri; font-style: normal;">
-                <b>5. PUBLIC ENGAGEMENT &amp; OUTREACH ACTIVITIES</b>
-              </h4>
-              <div v-for="(publicE, index) in publics" :key="publicE.id">
-                <fomattingPublicEngagementFormat :index="index" :publicE="publicE" />
-              </div>
+                  <div v-if="nationalStudentParticipations.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
+                    <div v-for="(participation, index) in nationalStudentParticipations" :key="participation.id">
+                      <FomattingParticipationFormat :index="index" :participation="participation" />
+                    </div>
+                  </div>
+                </div>
 
-              <!-- Research Activities -->
-              <h4 style="font-family: Calibri; font-style: normal;">
-                <b>6. RESEARCH ACTIVITIES</b>
-              </h4>
-              <div v-for="(research, index) in researchData" :key="research.id">
-                <fomattingResearchFormat :index="index" :research="research" />
-              </div>
+                <!-- Publication -->
+                <div v-if="selectedActivity.includes('isPublication')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>3. PUBLICATIONS</b>
+                  </h4>
+                  <div v-if="journalArticlesStudents.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>Journal Articles</u></h4>
+                    <div v-for="(item, index) in journalArticlesStudents" :key="item.id">
+                      <FomattingPublicationFormat :index="index" :item="item" />
+                    </div>
+                  </div>
+                  <div v-if="newsLettersStudents.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>Articles for Professionals in Souvenirs Newsletters etc</u></h4>
+                    <div v-for="(item, index) in newsLettersStudents" :key="item.id">
+                      <FomattingPublicationFormat :index="index" :item="item" />
+                    </div>
+                  </div>
+                  <div v-if="booksStudents.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>Books</u></h4>
+                    <div v-for="(item, index) in booksStudents" :key="item.id">
+                      <FomattingPublicationFormat :index="index" :item="item" />
+                    </div>
+                  </div>
+                  <div v-if="bookChaptersStudents.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>Book Chapters</u></h4>
+                    <div v-for="(item, index) in bookChaptersStudents" :key="item.id">
+                      <FomattingPublicationFormat :index="index" :item="item" />
+                    </div>
+                  </div>
+                  <div v-if="monoGraphsStudents.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>Monographs</u></h4>
+                    <div v-for="(item, index) in monoGraphsStudents" :key="item.id">
+                      <FomattingPublicationFormat :index="index" :item="item" />
+                    </div>
+                  </div>
+                  <div v-if="manualsStudents.length > 0">
+                    <h4 style="font-family: Calibri; font-style: normal;"><u>Manuals</u></h4>
+                    <div v-for="(item, index) in manualsStudents" :key="item.id">
+                      <FomattingPublicationFormat :index="index" :item="item" />
+                    </div>
+                  </div>
+                </div>
 
-              <!-- Publications -->
-              <h4 style="font-family: Calibri; font-style: normal;">
-                <b>7. PUBLICATIONS</b>
-              </h4>
-              <div v-for="(item, index) in publications" :key="item.id">
-                <fomattingPublicationFormat :index="index" :item="item" />
-              </div>
+                <!-- Recognition -->
+                <div v-if="selectedActivity.includes('isRecognition')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>4. RECOGNITION OF NIMHANS CONTRIBUTION</b>
+                  </h4>
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>A. AWARDS AND HONORS</b>
+                  </h4>
+                  <div v-for="(recognition, index) in recognitionsStudents" :key="recognition.id">
+                    <FomattingRecognitionFormat :index="index" :recognition="recognition" />
+                  </div>
+                </div>
 
-              <!-- Recognition -->
-              <h4 style="font-family: Calibri; font-style: normal;">
-                <b>8. RECOGNITION OF NIMHANS CONTRIBUTION</b>
-              </h4>
-              <h4 style="font-family: Calibri; font-style: normal;">
-                <b>A. AWARDS AND HONORS</b>
-              </h4>
-              <div v-for="(recognition, index) in recognitions" :key="recognition.id">
-                <fomattingRecognitionFormat :index="index" :recognition="recognition" />
-              </div>
-
-              <!-- Patents -->
-              <h4 style="font-family: Calibri; font-style: normal;">
-                <b>B. PATENTS</b>
-              </h4>
-              <div v-for="(patent, index) in patents" :key="patent.id">
-                <fomattingPatentFormat :index="index" :patent="patent" />
-              </div>
-
-              <!-- Key Assignments -->
-              <h4 style="font-family: Calibri; font-style: normal;">
-                <b>C. KEY ASSIGNMENTS </b>
-              </h4>
-              <div v-for="(assignment, index) in assignments" :key="assignment.id">
-                <fomattingAssignmentFormat :index="index" :assignment="assignment" />
+                <!-- Theses -->
+                <div v-if="selectedActivity.includes('isTheses')">
+                  <h4 style="font-family: Calibri; font-style: normal;">
+                    <b>5. THESES AND DISSERTATIONS</b>
+                  </h4>
+                  <div v-for="(item, index) in theses" :key="item.id">
+                    <FomattingThesesFormat :index="index" :theses="item" />
+                  </div>
+                </div>
               </div>
             </div>
           </v-sheet>
-          <div v-else>
-            <img class="stars py-12" src="/counting_stars.svg" alt="counting_stars" width="300" />
-            <h2 class="pb-2">No Data</h2>
-            <span class="pb-4">Please choose Reporting Year &amp; Month / Date Range / User type</span>
-          </div>
         </div>
       </v-card-text>
     </v-card>
@@ -166,7 +476,74 @@ export default {
         start: null,
         end: null,
       },
+      filteredActivities: [],
+      activities: [
+        {
+          text: "Programmes/Events",
+          value: "isProgram",
+          usertype: ["FACULTY"],
+        },
+        {
+          text: "Department visitors",
+          value: "isVisitor",
+          usertype: ["FACULTY"],
+        },
+        {
+          text: "Training Underwent",
+          value: "isTraining",
+          usertype: ["FACULTY"],
+        },
+        {
+          text: "Presentations/Posters",
+          value: "isPresentation",
+          usertype: ["FACULTY", "STUDENT"],
+        },
+        {
+          text: "Participations",
+          value: "isParticipation",
+          usertype: ["FACULTY", "STUDENT"],
+        },
+        {
+          text: "Public Engagement",
+          value: "isPublic",
+          usertype: ["FACULTY"],
+        },
+        {
+          text: "Research Activities",
+          value: "isResearch",
+          usertype: ["FACULTY"],
+        },
+        {
+          text: "Publications",
+          value: "isPublication",
+          usertype: ["FACULTY", "STUDENT"],
+        },
+        {
+          text: "Recognitions",
+          value: "isRecognition",
+          usertype: ["FACULTY", "STUDENT"],
+        },
+        {
+          text: "Patents",
+          value: "isPatent",
+          usertype: ["FACULTY"],
+        },
+        {
+          text: "Key Assignments",
+          value: "isAssignment",
+          usertype: ["FACULTY"],
+        },
+        {
+          text: "Theses",
+          value: "isTheses",
+          usertype: ["STUDENT"],
+        },
+      ],
+      renderKey: 0,
+      isSectionA: false,
       previewData: [],
+      selectedUserType: null,
+      selectedActivity: [],
       formattedFileName: "",
       reportTitle: "",
       dataLoaded: false,
@@ -185,12 +562,111 @@ export default {
     };
   },
   computed: {
+    selectedDepartmentName() {
+      return this.$store.state.departmentName;
+    },
     // departmentName() {
-    //   // return this.$store.state.department.departments.filter((dept) => dept.id == this.$store.state.user.department);
-    //   console.log("departmentName: " + this.$store.state.department.departments.filter((dept) => dept.id == this.$store.state.user.department));
+    //   return this.$store.state.department.departments.filter((dept) => dept.id == this.$store.state.user.department);
+    //   // console.log("departmentName: " + this.$store.state.department.departments.filter((dept) => dept.id == this.$store.state.user.department));
     // },
+    internationalProgrammes() {
+      return this.programmes.filter((item) => item.forum === "International");
+    },
+    nationalProgrammes() {
+      return this.programmes.filter((item) => item.forum === "National");
+    },
+    regionalProgrammes() {
+      return this.programmes.filter((item) => item.forum === "Regional");
+    },
+    stateProgrammes() {
+      return this.programmes.filter((item) => item.forum === "State");
+    },
+    localProgrammes() {
+      return this.programmes.filter((item) => item.forum === "Local");
+    },
+    internationalPresentations() {
+      return this.presentations.filter((item) => item.type === "Presentation" && item.forum === "International" && item.user.userType === "FACULTY");
+    },
+    nationalPresentations() {
+      return this.presentations.filter((item) => item.type === "Presentation" && item.forum === "National" && item.user.userType === "FACULTY");
+    },
+    internationalPosters() {
+      return this.presentations.filter((item) => item.type === "Poster" && item.forum === "International" && item.user.userType === "FACULTY");
+    },
+    nationalPosters() {
+      return this.presentations.filter((item) => item.type === "Poster" && item.forum === "National" && item.user.userType === "FACULTY");
+    },
+    internationalStudentPresentations() {
+      return this.presentations.filter((item) => item.type === "Presentation" && item.forum === "International" && item.user.userType === "STUDENT");
+    },
+    nationalStudentPresentations() {
+      return this.presentations.filter((item) => item.type === "Presentation" && item.forum === "National" && item.user.userType === "STUDENT");
+    },
+    internationalStudentPosters() {
+      return this.presentations.filter((item) => item.type === "Poster" && item.forum === "International" && item.user.userType === "STUDENT");
+    },
+    nationalStudentPosters() {
+      return this.presentations.filter((item) => item.type === "Poster" && item.forum === "National" && item.user.userType === "STUDENT");
+    },
+    internationalParticipations() {
+      return this.participations.filter((item) => item.forum === "International" && item.user.userType === "FACULTY");
+    },
+    nationalParticipations() {
+      return this.participations.filter((item) => item.forum === "National" && item.user.userType === "FACULTY");
+    },
+    internationalStudentParticipations() {
+      return this.participations.filter((item) => item.forum === "International" && item.user.userType === "STUDENT");
+    },
+    nationalStudentParticipations() {
+      return this.participations.filter((item) => item.forum === "National" && item.user.userType === "STUDENT");
+    },
+    journalArticles() {
+      return this.publications.filter((item) => item.publication_type === "Journal_Article" && item.user.userType === "FACULTY");
+    },
+    journalArticlesStudents() {
+      return this.publications.filter((item) => item.publication_type === "Journal_Article" && item.user.userType === "STUDENT");
+    },
+    newsLetters() {
+      return this.publications.filter((item) => item.publication_type === "Articles_for_professionals" && item.user.userType === "FACULTY");
+    },
+    newsLettersStudents() {
+      return this.publications.filter((item) => item.publication_type === "Articles_for_professionals" && item.user.userType === "STUDENT");
+    },
+    books() {
+      return this.publications.filter((item) => item.publication_type === "Books" && item.user.userType === "FACULTY");
+    },
+    booksStudents() {
+      return this.publications.filter((item) => item.publication_type === "Books" && item.user.userType === "STUDENT");
+    },
+    bookChapters() {
+      return this.publications.filter((item) => item.publication_type === "Book_Chapter" && item.user.userType === "FACULTY");
+    },
+    bookChaptersStudents() {
+      return this.publications.filter((item) => item.publication_type === "Book_Chapter" && item.user.userType === "STUDENT");
+    },
+    monoGraphs() {
+      return this.publications.filter((item) => item.publication_type === "Monograph" && item.user.userType === "FACULTY");
+    },
+    monoGraphsStudents() {
+      return this.publications.filter((item) => item.publication_type === "Monograph" && item.user.userType === "STUDENT");
+    },
+    manuals() {
+      return this.publications.filter((item) => item.publication_type === "Manual" && item.user.userType === "FACULTY");
+    },
+    manualsStudents() {
+      return this.publications.filter((item) => item.publication_type === "Manual" && item.user.userType === "STUDENT");
+    },
+    recognitionsStudents() {
+      return this.recognitions.filter((item) => item.user.userType === "STUDENT");
+    },
+    recognitionsFaculty() {
+      return this.recognitions.filter((item) => item.user.userType === "FACULTY");
+    },
     reportYears() {
       return this.$store.state.reportYears;
+    },
+    departments() {
+      return this.$store.state.department.departments;
     },
     people() {
       return this.$store.state.user.activeUsersList.result;
@@ -203,6 +679,14 @@ export default {
     },
     ...mapState({
       aboutData: (state) => state.about.newAbout,
+      clinicalData: (state) => state.clinical.clinicalData,
+      emergencyData: (state) => state.emergency.emergencyData,
+      diagnosticsData: (state) => state.diagnostic.diagnosticData,
+      specialData: (state) => state.special.specialData,
+      otservicesData: (state) => state.otservice.otservicesData,
+      hrdCourses: (state) => state.hrdCourse.hrdCourses.result,
+      hrdTrainings: (state) => state.hrdTraining.hrdTrainings.result,
+      retaired: (state) => state.faculty.facultyData.result,
       programmes: (state) => state.program.programmesData.result,
       visitors: (state) => state.visitor.visitorsData.result,
       trainings: (state) => state.training.trainingsData.result,
@@ -226,15 +710,29 @@ export default {
     }
   },
   methods: {
-    async loader(selectedQuery, selectedYear, range, selectedUser) {
-      console.log(selectedUser);
+    setActivities(userType) {
+      if (userType === "FACULTY") {
+        this.filteredActivities = this.activities.filter((activity) => activity.usertype.includes("FACULTY"));
+      }
+      if (userType === "STUDENT") {
+        this.filteredActivities = this.activities.filter((activity) => activity.usertype.includes("STUDENT"));
+      }
+      if (userType === null) {
+        this.filteredActivities = this.activities;
+      }
+    },
+    async loader(selectedQuery, selectedYear, range, userType) {
+      this.selectedUserType = userType;
+      this.setActivities(userType);
+      this.renderKey += 1;
+      this.$nuxt.$loading.start();
       if (range && range.start) {
         this.reportTitle = "Report for the period of " + this.$moment(range.start).format("Do MMMM YYYY") + " to " + this.$moment(range.end).format("Do MMMM YYYY") + ", RY (" + selectedYear + " - " + `${selectedYear + 1}` + ")";
 
         this.formattedFileName =
           this.$store.state.departmentName +
           "_" +
-          selectedUser +
+          userType +
           "_Report_for_the_period_of_" +
           this.$moment(range.start).format("Do_MMMM_YYYY") +
           " to " +
@@ -246,11 +744,26 @@ export default {
           ")";
       } else {
         this.reportTitle = "Report for the period of RY (" + selectedYear + " - " + `${selectedYear + 1}` + ")";
-        this.formattedFileName = this.$store.state.departmentName + "_" + selectedUser + "_Report_for_the_period_of_RY (" + selectedYear + " - " + `${selectedYear + 1}` + ")";
+        this.formattedFileName = this.$store.state.departmentName + "_" + userType + "_Report_for_the_period_of_RY (" + selectedYear + " - " + `${selectedYear + 1}` + ")";
       }
 
       this.selectedYear = selectedYear;
       this.loading = true;
+
+      queryString = selectedQuery + `&department.id=${this.selectedDepartment}&deleted_ne=true`;
+      let queryStringA = "";
+      queryStringA = `annual_year=${selectedYear}&department.id=${this.selectedDepartment}&deleted_ne=true`;
+      //Section A fetch
+      await this.$store.dispatch("about/setAboutData", { qs: queryStringA });
+      await this.$store.dispatch("clinical/setClinicalData", { qs: queryStringA });
+      await this.$store.dispatch("emergency/setEmergencyData", { qs: queryStringA });
+      await this.$store.dispatch("diagnostic/setDiagnosticData", { qs: queryStringA });
+      await this.$store.dispatch("special/setSpecialData", { qs: queryStringA });
+      await this.$store.dispatch("otservice/setOTServicesData", { qs: queryStringA });
+      await this.$store.dispatch("hrdCourse/setHRDCourses", { qs: queryStringA });
+      await this.$store.dispatch("hrdTraining/setHRDTrainings", { qs: queryStringA });
+      await this.$store.dispatch("faculty/setFacultyData", { qs: queryStringA });
+
       if (this.$auth.user.userType === "FACULTY" || this.$auth.user.userType === "STUDENT") selectedQuery += `&user.id=${this.$auth.user.id}`;
 
       let queryString = "";
@@ -287,6 +800,7 @@ export default {
       });
       this.loading = false;
       this.dataLoaded = true;
+      this.$nuxt.$loading.finish();
     },
 
     async changeReportingYear() {

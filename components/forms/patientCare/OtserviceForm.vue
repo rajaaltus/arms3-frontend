@@ -14,23 +14,17 @@
               item-text="Procedure"
               item-value="Procedure"
               label="Procedure"
-              :rules="[v => !!v || 'Enter the procedure']"
+              :rules="[(v) => !!v || 'Enter the procedure']"
             >
               <template v-slot:no-data>
                 <v-list-item>
                   <v-list-item-content>
-                    <v-list-item-title>
-                      No results matching. Press <kbd>tab</kbd> to create a new
-                      one
-                    </v-list-item-title>
+                    <v-list-item-title> No results matching. Press <kbd>tab</kbd> to create a new one </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </template>
               <template v-slot:item="{ item }">
-                <v-list-item-avatar
-                  color="indigo"
-                  class="headline font-weight-light white--text"
-                >
+                <v-list-item-avatar color="indigo" class="headline font-weight-light white--text">
                   {{ item.charAt(0) }}
                 </v-list-item-avatar>
                 <v-list-item-content>
@@ -40,32 +34,13 @@
             </v-combobox>
           </v-col>
           <v-col cols="6">
-            <v-text-field
-              color="green"
-              v-model="otservice.classification"
-              :rules="[v => !!v || 'Enter the Classification']"
-              label="Classification"
-              required
-            >
-            </v-text-field>
+            <v-text-field color="green" v-model="otservice.classification" :rules="[(v) => !!v || 'Enter the Classification']" label="Classification" required> </v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-text-field
-              color="green"
-              v-model="otservice.no_of_patients"
-              label="Number Of Patients"
-              type="number"
-              :rules="[v => !!v || 'Enter the Total No. of Patients']"
-            >
-            </v-text-field>
+            <v-text-field color="green" v-model="otservice.no_of_patients" label="Number Of Patients" type="number" oninput="if(this.value < 0) this.value = 0;" :rules="[(v) => !!v || 'Enter the Total No. of Patients']"> </v-text-field>
           </v-col>
           <v-col cols="12">
-            <v-textarea
-              color="green"
-              v-model="otservice.description"
-              label="Description"
-            >
-            </v-textarea>
+            <v-textarea color="green" v-model="otservice.description" label="Description"> </v-textarea>
           </v-col>
         </v-row>
       </v-container>
@@ -97,14 +72,14 @@ export default {
         no_of_patients: null,
         department: null,
         annual_year: null,
-        deleted: false
-      }
+        deleted: false,
+      },
     };
   },
   computed: {
     procedures() {
-      return this.$store.state.otservice.otservicesData.map(item => item.Procedure);
-    }
+      return this.$store.state.otservice.otservicesData.map((item) => item.Procedure);
+    },
   },
   methods: {
     // getProcedures() {
@@ -124,18 +99,18 @@ export default {
 
         await this.$store
           .dispatch("otservice/addOTService", payload)
-          .then(resp => {
+          .then((resp) => {
             Swal.fire({
               title: "Success",
               text: "Added Successfully!",
               icon: "success",
               showConfirmButton: false,
-              timer: 1500
+              timer: 1500,
             });
             this.reloadData();
             this.reset();
           })
-          .catch(err => {
+          .catch((err) => {
             this.snackbar = true;
             this.submitMessage = err;
           });
@@ -146,13 +121,13 @@ export default {
       let queryString = "";
       queryString = `department.id=${this.$store.state.auth.user.department}&deleted_ne=true&annual_year=${this.$store.state.selectedYear}`;
       await this.$store.dispatch("otservice/setOTServicesData", {
-        qs: queryString
+        qs: queryString,
       });
       this.loading = false;
     },
     reset() {
       this.$refs.form.reset();
-    }
-  }
+    },
+  },
 };
 </script>

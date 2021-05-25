@@ -84,7 +84,7 @@
           </v-row>
           <v-row>
             <v-col cols="12">
-              <v-text-field v-model="program.coordinators" label="Co-ordinators"  color="success"></v-text-field>
+              <v-text-field v-model="program.coordinators" label="Co-ordinators" color="success"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
@@ -232,7 +232,7 @@ export default {
         await this.$store.dispatch("program/addProgram", payload);
       }
       if (this.$store.state.program.programmesData.success) {
-        this.$refs.form.reset();
+        this.reset();
       }
     },
     async reloadData() {

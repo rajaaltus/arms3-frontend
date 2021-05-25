@@ -174,7 +174,7 @@ export default {
         await this.$store.dispatch("patent/patentAdd", payload);
       }
       if (this.$store.state.patent.patentsData.success) {
-        this.$refs.form.reset();
+        this.reset();
       }
     },
     async handleFileUpload(event) {

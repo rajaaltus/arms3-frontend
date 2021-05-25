@@ -4,21 +4,13 @@
       <v-container>
         <v-row>
           <v-col cols="3">
-            <v-select
-              color="green"
-              v-model="diagnostic.lab_type"
-              label="Lab Service Type"
-              :rules="[v => !!v || 'Select the Lab Service Type']"
-              :items="serviceType"
-              @change="getTests(diagnostic.lab_type)"
-            >
-            </v-select>
+            <v-select color="green" v-model="diagnostic.lab_type" label="Lab Service Type" :rules="[(v) => !!v || 'Select the Lab Service Type']" :items="serviceType" @change="getTests(diagnostic.lab_type)"> </v-select>
           </v-col>
           <v-col cols="6">
             <v-combobox
               color="green"
               v-model="diagnostic.test_name"
-              :rules="[v => !!v || 'Enter the Test Name']"
+              :rules="[(v) => !!v || 'Enter the Test Name']"
               label="Test Name"
               required
               :items="$store.state.diagnostic.testData"
@@ -39,13 +31,7 @@
             </v-combobox>
           </v-col>
           <v-col cols="3">
-            <v-text-field
-              color="green"
-              v-model="diagnostic.samples_analyzed"
-              label="Samples Analysed"
-              type="number"
-              :rules="[v => !!v || 'Enter the Total No. of Samples Analysed']"
-            >
+            <v-text-field color="green" v-model="diagnostic.samples_analyzed" label="Samples Analysed" type="number" oninput="if(this.value < 0) this.value = 0;" :rules="[(v) => !!v || 'Enter the Total No. of Samples Analysed']">
             </v-text-field>
           </v-col>
         </v-row>
@@ -68,13 +54,13 @@ import Swal from "sweetalert2";
 export default {
   data: () => ({
     valid: false,
-    search:  '',
+    search: "",
     testData: [],
     newTest: {
       lab_type: "",
       test_name: "",
       deleted: false,
-      department: 0
+      department: 0,
     },
     diagnostic: {
       annual_year: 0,
@@ -82,9 +68,9 @@ export default {
       samples_analyzed: 0,
       deleted: false,
       department: 0,
-      pc_diagnostic_test: 0
+      pc_diagnostic_test: 0,
     },
-    serviceType: ["Routine_Test", "Special_Test"]
+    serviceType: ["Routine_Test", "Special_Test"],
   }),
   watch: {
     dialog(val) {
@@ -93,55 +79,48 @@ export default {
     search(val) {
       if (this.procedures.length > 0) return;
       this.getTests();
-    }
+    },
   },
 
   methods: {
     async addTest() {
-      if (
-        typeof this.diagnostic.test_name != "object" &&
-        this.diagnostic.test_name != null
-      ) {
+      if (typeof this.diagnostic.test_name != "object" && this.diagnostic.test_name != null) {
         this.newTest = Object.assign(
           {},
           {
             lab_type: this.diagnostic.lab_type,
             test_name: this.diagnostic.test_name,
             deleted: false,
-            department: this.$store.state.auth.user.department
+            department: this.$store.state.auth.user.department,
           }
         );
         var payload = this.newTest;
-        await this.$store.dispatch("diagnostic/addTest", payload).then(resp => {
+        await this.$store.dispatch("diagnostic/addTest", payload).then((resp) => {
           Swal.fire({
             title: "Added",
-            html:
-              "New Test Name is Added!<br>Please go back and select it from list.",
+            html: "New Test Name is Added!<br>Please go back and select it from list.",
             icon: "info",
             showConfirmButton: false,
-            timer: 3000
+            timer: 3000,
           });
           this.reset();
         });
       }
     },
     async editTest() {
-      if (
-        typeof this.editedItem.pc_diagnostic_test === "string" &&
-        this.editedItem.pc_diagnostic_test != null
-      ) {
+      if (typeof this.editedItem.pc_diagnostic_test === "string" && this.editedItem.pc_diagnostic_test != null) {
         this.newTest = Object.assign(
           {},
           {
             lab_type: this.editedItem.lab_type,
             test_name: this.editedItem.pc_diagnostic_test,
             deleted: false,
-            department: this.$store.state.auth.user.department
+            department: this.$store.state.auth.user.department,
           }
         );
         var payload = this.newTest;
 
-        await this.$store.dispatch("diagnostic/addTest", payload).then(resp => {
+        await this.$store.dispatch("diagnostic/addTest", payload).then((resp) => {
           Swal.fire("New Test Name Added!");
           this.$refs.editedForm.reset();
         });
@@ -164,18 +143,18 @@ export default {
 
         await this.$store
           .dispatch("diagnostic/addDiagnostic", payload)
-          .then(resp => {
+          .then((resp) => {
             Swal.fire({
               title: "Success",
               text: "Added Successfully!",
               icon: "success",
               showConfirmButton: false,
-              timer: 1500
+              timer: 1500,
             });
             this.reset();
             this.reloadByYear();
           })
-          .catch(err => {
+          .catch((err) => {
             this.snackbar = true;
             this.submitMessage = err;
           });
@@ -186,14 +165,14 @@ export default {
       let queryString = "";
       queryString = `department.id=${this.$store.state.auth.user.department}&deleted_ne=true&annual_year=${this.$store.state.selectedYear}`;
       await this.$store.dispatch("diagnostic/setDiagnosticData", {
-        qs: queryString
+        qs: queryString,
       });
       this.loading = false;
     },
     reset() {
       this.$refs.form.reset();
-    }
-  }
+    },
+  },
 };
 </script>
 

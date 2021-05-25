@@ -184,7 +184,7 @@ export default {
         await this.$store.dispatch("recognition/recognitionAdd", payload);
       }
       if (this.$store.state.recognition.recognitionsData.success) {
-        this.$refs.form.reset();
+        this.reset();
       }
     },
     async handleFileUpload(event) {

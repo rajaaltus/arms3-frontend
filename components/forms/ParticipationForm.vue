@@ -219,7 +219,7 @@ export default {
         await this.$store.dispatch("participation/participationAdd", payload);
       }
       if (this.$store.state.participation.participationsData.success) {
-        this.$refs.form.reset();
+        this.reset();
       }
     },
     async handleFileUpload(event) {

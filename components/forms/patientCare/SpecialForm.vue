@@ -4,22 +4,13 @@
       <v-container>
         <v-row>
           <v-col cols="12">
-            <v-text-field
-              color="green"
-              v-model="special.service_name"
-              :rules="[
-                v => !!v || 'Enter Special Clinic / Service / Procedure Name'
-              ]"
-              label="Special Clinic / Service / Procedure Name"
-              required
-            >
-            </v-text-field>
+            <v-text-field color="green" v-model="special.service_name" :rules="[(v) => !!v || 'Enter Special Clinic / Service / Procedure Name']" label="Special Clinic / Service / Procedure Name" required> </v-text-field>
           </v-col>
           <v-col cols="12">
             <v-textarea
               color="green"
               v-model="special.description"
-              :rules="[v => !!v || 'Enter a Brief Description']"
+              :rules="[(v) => !!v || 'Enter a Brief Description']"
               label="Description"
               placeholder="Specify the services offered and the number of patients benefitted from the services."
               required
@@ -27,39 +18,16 @@
             </v-textarea>
           </v-col>
           <v-col cols="4">
-            <v-text-field
-              color="green"
-              v-model="special.new_patients"
-              :rules="[v => !!v || 'Enter the Total No. of New Patients']"
-              label="New Patients"
-              required
-              type="number"
-            >
+            <v-text-field color="green" v-model="special.new_patients" :rules="[(v) => !!v || 'Enter the Total No. of New Patients']" label="New Patients" required type="number" oninput="if(this.value < 0) this.value = 0;"> </v-text-field>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field color="green" v-model="special.followup_patients" :rules="[(v) => !!v || 'Enter the Total No. of Follow-up Patients']" label="Follow-up Patients" required type="number" oninput="if(this.value < 0) this.value = 0;">
             </v-text-field>
           </v-col>
           <v-col cols="4">
-            <v-text-field
-              color="green"
-              v-model="special.followup_patients"
-              :rules="[v => !!v || 'Enter the Total No. of Follow-up Patients']"
-              label="Follow-up Patients"
-              required
-              type="number"
-            >
-            </v-text-field>
+            <v-text-field color="green" v-model="special.referrals" :rules="[(v) => !!v || 'Enter the Total No. of Referrals']" label="Referrals" required type="number" oninput="if(this.value < 0) this.value = 0;"> </v-text-field>
           </v-col>
-          <v-col cols="4">
-            <v-text-field
-              color="green"
-              v-model="special.referrals"
-              :rules="[v => !!v || 'Enter the Total No. of Referrals']"
-              label="Referrals"
-              required
-              type="number"
-            >
-            </v-text-field>
-          </v-col>
-           <span class="caption font-weight-light grey lighten-4 px-2 py-1">Note: Please include all the special clinics / services / procedures being run by the department.</span>
+          <span class="caption font-weight-light grey lighten-4 px-2 py-1">Note: Please include all the special clinics / services / procedures being run by the department.</span>
         </v-row>
       </v-container>
       <v-row no-gutters>
@@ -87,10 +55,10 @@ export default {
       followup_patients: null,
       referrals: null,
       deleted: false,
-      department: null
+      department: null,
     },
     valid: false,
-    selectedYear: 0
+    selectedYear: 0,
   }),
   methods: {
     async addSpecial() {
@@ -101,18 +69,18 @@ export default {
         // console.log(payload);
         this.$store
           .dispatch("special/addSpecial", payload)
-          .then(resp => {
+          .then((resp) => {
             Swal.fire({
               title: "Success",
               text: "Added Successfully!",
               icon: "success",
               showConfirmButton: false,
-              timer: 1500
+              timer: 1500,
             });
             this.reset();
             this.reloadData();
           })
-          .catch(err => {
+          .catch((err) => {
             this.snackbar = true;
             this.submitMessage = err;
           });
@@ -127,7 +95,7 @@ export default {
     },
     reset() {
       this.$refs.form.reset();
-    }
-  }
+    },
+  },
 };
 </script>

@@ -209,7 +209,7 @@ export default {
         //  console.log(payload);
         await this.$store.dispatch("training/addTraining", payload);
         if (this.$store.state.training.trainingsData.success) {
-          this.$refs.form.reset();
+          this.reset();
         }
       }
     },

@@ -22,7 +22,7 @@
                 </v-card>
               </v-col>
               <v-col cols="12" md="9" lg="9">
-                <formsPatientCareClinicalForm />
+                <FormsPatientCareClinicalForm />
               </v-col>
             </v-row>
           </v-card-text>

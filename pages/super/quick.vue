@@ -197,14 +197,14 @@
             </h4>
 
             <div v-if="internationalParticipations.length > 0">
-               <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>International</u></h4>
               <div v-for="(participation, index) in internationalParticipations" :key="participation.id">
                 <FomattingParticipationFormat :index="index" :participation="participation" />
               </div>
             </div>
 
             <div v-if="nationalParticipations.length > 0">
-               <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
+              <h4 style="font-family: Calibri; font-style: normal;"><u>National</u></h4>
               <div v-for="(participation, index) in nationalParticipations" :key="participation.id">
                 <FomattingParticipationFormat :index="index" :participation="participation" />
               </div>
@@ -339,7 +339,6 @@
                 <FomattingPresentationFormat :index="index" :presentation="poster" />
               </div>
             </div>
-
 
             <h4 style="font-family: Calibri; font-style: normal;">
               <b>2. PARTICIPATION</b>
@@ -478,28 +477,28 @@ export default {
       return this.programmes.filter((item) => item.forum === "Local");
     },
     internationalPresentations() {
-      return this.presentations.filter((item) =>  item.type==="Presentation" && item.forum === "International" && item.user.userType === "FACULTY");
+      return this.presentations.filter((item) => item.type === "Presentation" && item.forum === "International" && item.user.userType === "FACULTY");
     },
     nationalPresentations() {
-      return this.presentations.filter((item) => item.type==="Presentation" && item.forum === "National" && item.user.userType === "FACULTY");
+      return this.presentations.filter((item) => item.type === "Presentation" && item.forum === "National" && item.user.userType === "FACULTY");
     },
-     internationalPosters() {
-      return this.presentations.filter((item) => item.type==="Poster" && item.forum === "International" && item.user.userType === "FACULTY");
+    internationalPosters() {
+      return this.presentations.filter((item) => item.type === "Poster" && item.forum === "International" && item.user.userType === "FACULTY");
     },
     nationalPosters() {
-      return this.presentations.filter((item) =>  item.type==="Poster" && item.forum === "National" && item.user.userType === "FACULTY");
+      return this.presentations.filter((item) => item.type === "Poster" && item.forum === "National" && item.user.userType === "FACULTY");
     },
     internationalStudentPresentations() {
-      return this.presentations.filter((item) => item.type==="Presentation" && item.forum === "International" && item.user.userType === "STUDENT");
+      return this.presentations.filter((item) => item.type === "Presentation" && item.forum === "International" && item.user.userType === "STUDENT");
     },
     nationalStudentPresentations() {
-      return this.presentations.filter((item) => item.type==="Presentation" && item.forum === "National" && item.user.userType === "STUDENT");
+      return this.presentations.filter((item) => item.type === "Presentation" && item.forum === "National" && item.user.userType === "STUDENT");
     },
-     internationalStudentPosters() {
-      return this.presentations.filter((item) => item.type==="Poster" && item.forum === "International" && item.user.userType === "STUDENT");
+    internationalStudentPosters() {
+      return this.presentations.filter((item) => item.type === "Poster" && item.forum === "International" && item.user.userType === "STUDENT");
     },
     nationalStudentPosters() {
-      return this.presentations.filter((item) =>  item.type==="Poster" && item.forum === "National" && item.user.userType === "STUDENT");
+      return this.presentations.filter((item) => item.type === "Poster" && item.forum === "National" && item.user.userType === "STUDENT");
     },
     internationalParticipations() {
       return this.participations.filter((item) => item.forum === "International" && item.user.userType === "FACULTY");
@@ -550,10 +549,10 @@ export default {
       return this.publications.filter((item) => item.publication_type === "Manual" && item.user.userType === "STUDENT");
     },
     recognitionsStudents() {
-      return this.recognitions.filter((item)=> item.user.userType==='STUDENT')
+      return this.recognitions.filter((item) => item.user.userType === "STUDENT");
     },
     recognitionsFaculty() {
-      return this.recognitions.filter((item)=>item.user.userType==='FACULTY')
+      return this.recognitions.filter((item) => item.user.userType === "FACULTY");
     },
     reportYears() {
       return this.$store.state.reportYears;

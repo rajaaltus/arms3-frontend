@@ -1,6 +1,9 @@
 <template>
   <div>
-    <table>
+    <pre>
+      {{ emergencyData }}
+    </pre>
+    <!-- <table>
       <tr>
         <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>Emergency Services</b>&nbsp;</th>
         <th style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;<b>No. of Patients / Cases</b>&nbsp;</th>
@@ -25,7 +28,7 @@
         <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;Internal Reference&nbsp;</td>
         <td style="font-family: Calibri; font-style: normal; border: 1px solid #dddddd;">&nbsp;{{ emergencyData.reduce((sum, item) => sum + item.internal_ref, 0) }}&nbsp;</td>
       </tr>
-    </table>
+    </table> -->
   </div>
 </template>
 
