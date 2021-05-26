@@ -42,21 +42,21 @@
             <v-col cols="4">
               <v-menu ref="menu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
-                  <v-text-field :return-value.sync="duration_from" :rules="[(v) => !!v || 'Item is required']" readonly color="success" label="Date" v-on="on"></v-text-field>
+                  <v-text-field v-model="presentation.date" :return-value.sync="date" :rules="[(v) => !!v || 'Item is required']" readonly color="success" label="Date" v-on="on"></v-text-field>
                 </template>
-                <v-date-picker color="green lighten-1" no-title scrollable>
+                <v-date-picker v-model="presentation.date" color="green lighten-1" no-title scrollable>
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="duration_from = false">
+                  <v-btn text color="primary" @click="date = false">
                     Cancel
                   </v-btn>
-                  <v-btn text color="primary" @click="$refs.menu.save(duration_from)">
+                  <v-btn text color="primary" @click="$refs.menu.save(date)">
                     OK
                   </v-btn>
                 </v-date-picker>
               </v-menu>
             </v-col>
             <v-col cols="8">
-              <v-text-field label="Place of Presentation / Poster" :rules="[(v) => !!v || 'Item is required']" color="success"></v-text-field>
+              <v-text-field v-model="presentation.place" label="Place of Presentation / Poster" :rules="[(v) => !!v || 'Item is required']" color="success"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
@@ -132,8 +132,7 @@ export default {
   data: () => ({
     renderKey: 0,
     imgLoader: false,
-    duration_from: false,
-    duration_to: false,
+    date: false,
     valid: false,
     coAuthors: [],
     presentation: {
@@ -148,6 +147,8 @@ export default {
       approved_by: null,
       approved_date: null,
       deleted: false,
+      date: "",
+      place: "",
       image: null,
       department: 0,
       user: 0,

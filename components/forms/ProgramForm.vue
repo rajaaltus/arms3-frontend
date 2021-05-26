@@ -79,7 +79,7 @@
               <v-select v-model="program.location" :rules="[(v) => !!v || 'Item is required']" :items="locations" label="Location " color="success"></v-select>
             </v-col>
             <v-col v-if="program.location === 'OUTSIDE_NIMHANS'" cols="12">
-              <v-text-field v-model="program.outsidelocation" :rules="[(v) => !!v || 'Item is required']" label="Specify the place where the program happened" color="success"></v-text-field>
+              <v-text-field v-model="program.outside_location" :rules="[(v) => !!v || 'Item is required']" label="Specify the place where the program happened" color="success"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
@@ -166,6 +166,7 @@ export default {
         type: "",
         name: "",
         location: "",
+        outside_location: "",
         forum: "",
         colloborations: "",
         from_date: "",

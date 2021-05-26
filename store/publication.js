@@ -128,27 +128,14 @@ export const actions = {
       });
   },
   async setJournalArticle({ commit }, { id }) {
-    // await this.$axios({
-    // 	method: 'get',
-    // 	baseURL: `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${id}&retmode=json`,
-    // 	headers:{ 'Authorization': ''}
-    // })
-    await this.$axios({
-      method: "get",
-      url: `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${id}&retmode=json`,
-      headers: { Authorization: "" },
-    })
+    await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${id}&retmode=json`)
       .then((response) => {
-        // handle success
-        commit("SET_JOURNALARTICLE", response.data.result[`${id}`]);
+        return response.json();
       })
-      .catch((e) => {
-        // handle error
-        // commit("SET_JOURNALARTICLE", error);
+      .then((res) => {
+        commit("SET_JOURNALARTICLE", res.result[`${id}`]);
       })
-      .finally(function () {
-        // always executed
-      });
+      .catch((e) => {});
   },
   async countPublications({ commit }, { qs }) {
     await this.$axios

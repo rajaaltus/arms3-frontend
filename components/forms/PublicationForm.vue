@@ -301,7 +301,7 @@ export default {
         edition: "",
         place: "",
         publisher: "",
-        year: null,
+        year: 0,
         chapter_title: "",
         editor_names: "",
         reference: "",
@@ -427,7 +427,7 @@ export default {
     },
     composeReference() {
       console.log("Publication Type:" + this.publication_type);
-      this.publication.year = this.publication.year > 0 ? this.publication.year : "";
+      this.publication.year = this.publication.year > 0 ? this.publication.year : null;
       if (this.publication_type == 1) {
         this.publication.reference = this.authorNames + "." + this.journalArticle.title + "." + this.journalArticle.fulljournalname + "." + this.journalArticle.epubdate + ";" + this.journalArticle.volume + ":" + this.journalArticle.pages;
       }

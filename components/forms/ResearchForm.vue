@@ -158,7 +158,7 @@ export default {
       user: 0,
     },
     fundingSource: ["Intramural", "Extramural", "Non_Funded"],
-    investigatorTypes: ["Principal_Investigator", "CoInvestigator"],
+    investigatorTypes: ["Principal_Investigator"],
     researchStatus: ["Completed", "Ongoing", "New"],
     studentProject: [true, false],
     selectedFile: null,
